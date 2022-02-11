@@ -1,4 +1,4 @@
-# Raspberry-Pi
+# PiGuide
 The all-in-one guide for programs installed on my Raspberry Pi 4 and Zero 2 W.
 
 Click the link to view:
