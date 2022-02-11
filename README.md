@@ -1,4 +1,5 @@
 # Raspberry-Pi
-Guide for installed programs on my Raspberry Pi 4 and Zero 2 W.
+My all-in-one guide for programs installed on my Raspberry Pi 4 and Zero 2 W.
 
-[Guides](https://github.com/justinknguyen/Raspberry-Pi/wiki)
+Follow the link below to view the guide:
+[PiGuide](https://github.com/justinknguyen/Raspberry-Pi/wiki)
