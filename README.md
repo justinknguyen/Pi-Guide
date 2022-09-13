@@ -1,8 +1,8 @@
-# PiGuide
+# Pi-Guide
 The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W. 
 
 Click the link to view:
-[PiGuide](https://github.com/justinknguyen/PiGuide/wiki)
+[Pi-Guide](https://github.com/justinknguyen/Pi-Guide/wiki)
 
 ## Validation
 * On Feb 16, 2022: gone through all the steps and manually verified my guides.
