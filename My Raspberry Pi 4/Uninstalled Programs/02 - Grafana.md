@@ -1,6 +1,5 @@
 # Grafana
 Monitor the Pi hardware. Most important information to me are CPU temp/load and storage.
-
 ## Installation
 1. Run everything as sudo:
     ```
@@ -46,7 +45,6 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
     ```
     docker run -d --name=grafana -p 3000:3000 grafana/grafana
     ```
-
 ## Configuration
 1. Login to Grafana by typing `[PIIPADDRESS]:3000` into your search bar. The default username and password is `admin`. Click on "Add your first data source" then select "Prometheus".
 2. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
@@ -56,9 +54,7 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 6. Paste in the ID and click "Load".
 7. Under "VictoriaMetrics", select "Prometheus" and then import.
 8. <ins>IMPORTANT:</ins> login to Portainer and click on your "Local" environment then "Containers". You should see node exporter, prometheus, and grafana installed. Click on each one and scroll down until you see "RESTART POLICIES" then set each to "Always". They will now start on their own whenever the Pi is rebooted.
-
 ## Testing
 Gathering data metrics will take some time, so check back later and see if the data metrics are registering in your dashboard.
-
 ## Sources
 * https://www.youtube.com/watch?v=83LWo7h_hvs&t=54s

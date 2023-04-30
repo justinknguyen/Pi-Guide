@@ -1,6 +1,5 @@
 # Watchdog 
 Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware watchdog built in that will power cycle it if the chip is not refreshed within a certain interval.
-
 ## Configuration
 1. Check if you have `/dev/watchdog` by entering:
     ```
@@ -28,14 +27,12 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
     ```
     sudo reboot
     ``` 
-
 ## Testing
 _Optional:_ run a "fork bomb" on your shell:
 ```
 :(){ :|:& };:
 ```
 Running this code will render your Raspberry Pi inaccessible until it’s reset by the watchdog. The Pi should be back up and running after a few minutes. If you notice your Pi is a little slow try rebooting it again with `sudo reboot`.
-
 ## Sources
 * https://raspberrypi.stackexchange.com/questions/99584/rpi-freezes-every-now-and-then-how-to-fix-it-with-a-watchdog
 * https://diode.io/raspberry%20pi/running-forever-with-the-raspberry-pi-hardware-watchdog-20202/

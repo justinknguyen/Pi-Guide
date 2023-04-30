@@ -1,6 +1,5 @@
 # NGINX
 Create your own website hosted on your Pi.
-
 ## Installation
 1. Update and upgrade:
     ```
@@ -19,7 +18,6 @@ Create your own website hosted on your Pi.
     ```
     sudo systemctl start nginx
     ```
-
 ## Configuration
 ### Editing the Website
 1. To start editing the website, go to:
@@ -131,10 +129,8 @@ If you notice a suspicious IP traffic, perform the following to block access fro
     ```
     sudo /etc/init.d/nginx reload
     ```
-    
 ## Testing
 1. Visit `http://[PIIPADDRESS]`
-
 ## Troubleshooting
 If you can't install NGINX, it's likely because you have something installed that is currently using port 80 on the Pi. Follow the below steps to change NGINX's port, however, doing so will render you unable to enable HTTPS on the website.
 1. Edit the default configuration so NGINX listens to a different port (default is 80) to avoid conflicts:
@@ -146,7 +142,6 @@ If you can't install NGINX, it's likely because you have something installed tha
     listen 81 default_server;
     listen [::]:81 default_server;
     ```
-
 ## Sources
 * https://pimylifeup.com/raspberry-pi-nginx/
 * https://stackoverflow.com/questions/10829402/how-to-start-nginx-via-different-portother-than-80

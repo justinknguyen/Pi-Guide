@@ -3,7 +3,6 @@ Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support
 
 **Disclaimer**<br>
 This Pi-Hole guide will not show how to configure with a second Pi. Detailed instructions on how to do that will be here, [Pi Zero 2 W: Pi-Hole, Gravity Sync, and keepalived](https://github.com/justinknguyen/PiGuide/wiki/Raspberry-Pi-Zero-2-W#Pi-Hole-Gravity-Sync-and-keepalived).
-
 ## Installation 
 1. Install Pi-Hole:
 ```
@@ -15,7 +14,6 @@ sudo curl -sSL https://install.pi-hole.net | bash
 ```
 pihole -a -p [NEWPASSWORD]
 ```
-
 ## Configuration 
 ### Router Settings
 Using an Asus router,
@@ -24,7 +22,6 @@ Using an Asus router,
 Under "LAN" and "DHCP Server", enter the IPv4 address you took note of earlier under "DNS Server 1" and disable Router advertisement, then hit "Apply".
 3. For IPv6: <br>
 Under "IPv6", enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
-
 ### Pi-Hole DNS Settings
 Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled. <br><br>
 For "Interface settings", I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
@@ -35,11 +32,9 @@ For "Advanced DNS settings", I enabled the first two check boxes and also enable
   * the format is just your router's IP address.
 * Local domain name (optional): router.asus.com
   * the format is the domain you use to sign into your router's settings.
-
 ### Adding Adlists
 Click on "Group Management" then "Adlists" and add any adlist you want. I recommend adding the links in green here, https://firebog.net/. You can copy and paste multiple links at a time. <br><br>
 Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
-
 ### Adding Whitelists
 1. Install python3:
     ```
@@ -51,7 +46,6 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
     sudo python3 whitelist/scripts/whitelist.py
     ```
 An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
-
 ### Multiple Upstream DNS Servers
 If you wish to use multiple DNS servers but have the second one only as backup incase the primary server is unresponsive, follow the steps below:
 1. Select the two upstream providers you want in Pi-Hole's settings.
@@ -78,12 +72,10 @@ If you wish to use multiple DNS servers but have the second one only as backup i
 - Upon updating, 
   - update fails as it repopulates `01-pihole.conf` again. This happened on my Pi 4, but did not on my Pi Zero 2 W.
   - To fix this, delete the contents again and attempt to update. (Note: successful update may rearrange/repopulate `01-pihole.conf` once again.)
-
 ## Testing
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
-
 ## Troubleshooting
 - If you're getting "Rate Limit" errors in Pi-Hole, perform the following:
   1. Enter:
@@ -100,7 +92,6 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 - If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
 - If you changed your port for Pi-Hole, you will have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link. <br>
 https://github.com/justinknguyen/Pi-Guide/wiki/Raspberry-Pi-Zero-2-W#diyHue
-
 ## Sources
 * https://www.youtube.com/watch?v=FnFtWsZ8IP0&t=851s
 * https://github.com/anudeepND/whitelist

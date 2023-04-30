@@ -1,6 +1,5 @@
 # Rclone
 Rclone is to backup anything to any cloud service.
-
 ## Installation
 1. Update and Upgrade:
     ```
@@ -11,7 +10,6 @@ Rclone is to backup anything to any cloud service.
     ```
     sudo apt install rclone
     ```
-
 ## Configuration
 1. Setup Google Drive as remote:
     ```
@@ -38,6 +36,5 @@ Rclone is to backup anything to any cloud service.
     ```
     0 0 * * * rclone copy [FOLDERDIRECTORY] "gdrive:backups"
     ```
-
 ## Sources
 * https://gist.githubusercontent.com/sissbruecker/c9263e237f5972e25d9d84b71dd89292/raw/031ef6a4b81cc02f20527a69a46a420ac5afcb16/setup-rclone-gdrive-backup.sh

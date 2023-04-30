@@ -1,6 +1,5 @@
 # Unbound 
 Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and also provides privacy by getting rid of the third party, such as Google, Cloudflare, OpenDNS, etc.
-
 ## Installation
 1. Update:
     ```
@@ -14,7 +13,6 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
     ```
     wget https://www.internic.net/domain/named.root -qO- | sudo tee /var/lib/unbound/root.hints
     ```
-
 ## Configuration
 1. Create the unbound config file:
     ```
@@ -103,7 +101,6 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
     ```
     ::1#5335
     ```
-
 ## Testing
 1. Query the following:
     ```
@@ -137,7 +134,6 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
     dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5335
     dig sigok.verteiltesysteme.net @127.0.0.1 -p 5335
     ```
-
 ## Getting IPv6 to Work with Unbound
 IPv6 is tricky to get working with Unbound, with an Asus router at least. If your IPv6 is breaking Pi-Hole and Unbound, then perform the following:
 1. Edit file `resolvconf.conf` and comment out the last line which should read, `unbound_conf=/etc/unbound/unbound.conf.d/resolvconf_resolvers.conf`.
@@ -188,8 +184,7 @@ If the above steps still do not work, the below can be performed on an Asus rout
     sudo service pihole-FTL restart 
     sudo systemctl restart dhcpcd 
     sudo service unbound restart
-    ```
-    
+    ``` 
 ## Sources
 * https://www.youtube.com/watch?v=FnFtWsZ8IP0&t=851s
 * https://docs.pi-hole.net/guides/dns/unbound/

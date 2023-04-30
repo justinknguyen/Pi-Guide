@@ -1,6 +1,5 @@
 # Home Assistant 
 Can connect anything "smart" into one single app for a unified Smart Home. Main benefit is being able to integrate into Apple HomeKit. 
-
 ## Installation
 1. Create a `docker-compose.yml` file by typing:
     ```
@@ -25,10 +24,8 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
     ```
     docker-compose up -d
     ```
-
 ## Testing
 You can now access the WebUI by typing `[PIIPADDRESS]:8123` into your search bar. Follow the second link under Sources to learn how to use Home Assistant.
-
 ## Backing up Home Assistant
 1. Stop the Home Assistant service by logging into Portainer.
 2. Create a .tar file of the Home Assistant folder (mine is located at `/home/pi/homeassistant`):
@@ -46,7 +43,6 @@ To restore from a backup:
     sudo tar -xvf ha-backup.tar
     ```
 2. Extracting the .tar should automatically overwrite the Home Assistant config folder. Now, start Home Assistant back up.
-
 ## Sources
 * https://www.home-assistant.io/installation/raspberrypi/
 * https://www.home-assistant.io/getting-started/onboarding/

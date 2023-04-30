@@ -1,6 +1,5 @@
 # Unattended-Upgrades
 Automatically update and upgrade Raspberry Pi.
-
 ## Installation
 1. Enter:
     ```
@@ -15,6 +14,5 @@ Automatically update and upgrade Raspberry Pi.
     ```
     sudo dpkg-reconfigure --priority=low unattended-upgrades
     ```
-    
 ## Sources
 * https://www.seancarney.ca/2021/02/06/secure-your-raspberry-pi-by-enabling-automatic-software-updates/

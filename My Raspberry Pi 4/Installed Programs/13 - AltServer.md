@@ -2,7 +2,6 @@
 AltServer running on your Raspberry Pi for consistent AltStore refreshing! 
 
 If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
-
 ## Prerequisites
 1. Create a folder on your Pi to store the files we'll be downloading. We'll make one at the default path, which is `/home/pi`:
     ```
@@ -137,7 +136,6 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     sudo systemctl enable --now avahi-daemon.service
     sudo systemctl enable --now usbmuxd
     ```
-
 ## Installation
 1. Head to the AltServer-Linux release page [here](https://github.com/NyaMisty/AltServer-Linux/releases) and download the `AltServer-aarch64` binary.
 2. Next, head to the netmuxd release page [here](https://github.com/jkcoxson/netmuxd/releases) and download the `aarch64-linux-netmuxd` binary.
@@ -151,7 +149,6 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
     docker run -d -v lib_cache:/opt/lib/ --restart=always -p 6969:6969 --name anisette dadoum/anisette-server:latest
     ```
-
 ## Configuration
 Note: you can do this with multiple devices at a time.
 1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable, and enable "Show this iPhone/iPad when on Wi-Fi" in the Finder or in iTunes, then hit `Sync/Apply`.
@@ -209,7 +206,6 @@ Note: you can do this with multiple devices at a time.
     ps aux | grep netmuxd
     ps aux | grep AltServer
     ```
-    
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist

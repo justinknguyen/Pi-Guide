@@ -1,12 +1,10 @@
 # GoAccess
 View NGINX access log in a UI/dashboard
-
 ## Installation
 1. Install GoAccess:
     ```
     sudo apt-get install goaccess
     ```
-
 ## Configuration
 1. Open the config file for GoAccess:
     ```
@@ -20,14 +18,12 @@ View NGINX access log in a UI/dashboard
 3. Under the `Log Format Options` section, enter the following line:
     ```
     log-format %h %^[%d:%t %^] "%m %U" %s %b "%R" "%u"
-    ```
-    
+    ``` 
 ## Usage
 To output to a terminal and generate an interactive report:
 ```
 goaccess /var/log/nginx/access.log
 ```
-
 ## Sources
 * https://hub.docker.com/r/allinurl/goaccess
 * https://github.com/allinurl/goaccess/issues/1635
