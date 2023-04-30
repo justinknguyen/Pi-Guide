@@ -1,0 +1,2 @@
+# Installed Programs
+The following programs should be installed and configured in the order listed. On Windows, PuTTY will be used to SSH into the Pi and install everything. On Mac, use Termius. Again, when you SSH into the Pi, the default username is `pi` and the password is `raspberry`.
