@@ -1,25 +1,24 @@
 # Table of Contents
-* [Getting Started](#Getting-Started) <br>
-  * [Building the Raspberry Pi 4](#Building-the-Raspberry-Pi-4)<br>
-  * [Setting up the Raspberry Pi 4](#Setting-up-the-Raspberry-Pi-4)<br>
-* [Installed Programs](#Installed-Programs)<br>
-  * [Unattended-Upgrades](#Unattended-Upgrades)<br>
-  * [Watchdog](#Watchdog)<br>
-  * [XRDP](#XRDP)<br>
-  * [Docker](#Docker)<br>
-  * [Portainer](#Portainer)<br>
-  * [Home Assistant](#Home-Assistant)<br>
-  * [Rclone (Retired)](#Rclone)<br>
-  * [Grafana (Retired)](#Grafana)<br>
-  * [Pi-Hole](#Pi-Hole)<br>
-  * [Unbound](#Unbound)<br>
-  * [PiVPN](#PiVPN)<br>
-  * [NGINX](#NGINX)<br>
-  * [GoAccess](#GoAccess)<br>
-  * [Netatalk](#Netatalk)<br>
-  * [AltServer](#AltServer)<br>
-
-[Guide for Raspberry Pi Zero 2 W](https://github.com/justinknguyen/PiGuide/wiki/Raspberry-Pi-Zero-2-W)
+* [Getting Started](#Getting-Started)
+  * [Building the Raspberry Pi 4](#Building-the-Raspberry-Pi-4)
+  * [Setting up the Raspberry Pi 4](#Setting-up-the-Raspberry-Pi-4)
+* [Installed Programs](/My%20Raspberry%20Pi%204/Installed%20Programs/)
+  * [Unattended-Upgrades](/My%20Raspberry%20Pi%204/Installed%20Programs/01%20-%20Unattended-Upgrades.md)
+  * [Watchdog](/My%20Raspberry%20Pi%204/Installed%20Programs/02%20-%20Watchdog.md)
+  * [XRDP](/My%20Raspberry%20Pi%204/Installed%20Programs/03%20-%20XRDP.md)
+  * [Docker](/My%20Raspberry%20Pi%204/Installed%20Programs/04%20-%20Docker.md)
+  * [Portainer](/My%20Raspberry%20Pi%204/Installed%20Programs/05%20-%20Portainer.md)
+  * [Home Assistant](/My%20Raspberry%20Pi%204/Installed%20Programs/06%20-%20Home%20Assistant.md)
+  * [Pi-Hole](/My%20Raspberry%20Pi%204/Installed%20Programs/07%20-%20Pi-Hole.md)
+  * [Unbound](/My%20Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md)
+  * [PiVPN](/My%20Raspberry%20Pi%204/Installed%20Programs/09%20-%20PiVPN.md)
+  * [NGINX](/My%20Raspberry%20Pi%204/Installed%20Programs/10%20-%20NGINX.md)
+  * [GoAccess](/My%20Raspberry%20Pi%204/Installed%20Programs/11%20-%20GoAccess.md)
+  * [Netatalk](/My%20Raspberry%20Pi%204/Installed%20Programs/12%20-%20Netatalk.md)
+  * [AltServer](/My%20Raspberry%20Pi%204/Installed%20Programs/13%20-%20AltServer.md)
+* [Uninstalled Programs](/My%20Raspberry%20Pi%204/Uninstalled%20Programs/)
+  * [Rclone](/My%20Raspberry%20Pi%204/Uninstalled%20Programs/01%20-%20Rclone.md)
+  * [Grafana](/My%20Raspberry%20Pi%204/Uninstalled%20Programs/02%20-%20Grafana.md)
 ***
 
 # Getting Started

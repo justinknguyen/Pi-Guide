@@ -1,5 +1,5 @@
 # Uninstalled Programs
-The programs were uninstalled from my Pi
+The programs were uninstalled from my Pi.
 1. [Rclone](/My%20Raspberry%20Pi%204/Uninstalled%20Programs/01%20-%20Rclone.md)
 2. [Grafana](/My%20Raspberry%20Pi%204/Uninstalled%20Programs/02%20-%20Grafana.md)
 
