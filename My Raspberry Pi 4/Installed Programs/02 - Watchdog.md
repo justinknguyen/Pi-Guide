@@ -21,9 +21,9 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
     RuntimeWatchdogSec=10
     ShutdownWatchdogSec=10min
     ```
-What the lines above say is:
-* Refresh the hardware watchdog every 10 seconds. If for some reason the refresh fails (I believe after 3 intervals; i.e. 30s) power cycle the system.
-* On shutdown, if the system takes more than 10 minutes to reboot, power cycle the system.
+    What the lines above say is:
+    * Refresh the hardware watchdog every 10 seconds. If for some reason the refresh fails (I believe after 3 intervals; i.e. 30s) power cycle the system.
+    * On shutdown, if the system takes more than 10 minutes to reboot, power cycle the system.
 3. Reboot:
     ```
     sudo reboot
