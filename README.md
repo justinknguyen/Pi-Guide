@@ -6,5 +6,5 @@ Guides:
 - [Raspberry Pi Zero 2 W](/Raspberry%20Pi%20Zero%202%20W/)
 
 ## Validation
-* Feb 16, 2022: verified steps on Pi 4 and Zero 2 W
-* May 23, 2022: verified steps on Zero 2 W
+- Feb 16, 2022: verified steps on Pi 4 and Zero 2 W
+- May 23, 2022: verified steps on Zero 2 W
