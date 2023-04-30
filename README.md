@@ -8,4 +8,4 @@ Note: the wiki will be converted into separate markdown files inside folders soo
 
 ## Validation
 * Feb 16, 2022: verified steps on Pi 4 and Zero 2 W
-* May 23, 2022: modified and verified steps on Zero 2 W
+* May 23, 2022: verified steps on Zero 2 W
