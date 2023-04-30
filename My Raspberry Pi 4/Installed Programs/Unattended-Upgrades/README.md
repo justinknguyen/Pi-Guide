@@ -16,4 +16,3 @@ Automatically update and upgrade Raspberry Pi.
     ```
 ## Sources
 * https://www.seancarney.ca/2021/02/06/secure-your-raspberry-pi-by-enabling-automatic-software-updates/
-<br>
