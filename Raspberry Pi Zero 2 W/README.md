@@ -1,21 +1,21 @@
 # Table of Contents
-* [Getting Started](#Getting-Started) <br>
-  * [Building the Raspberry Pi Zero 2 W](#Building-the-Raspberry-Pi-Zero-2-W) <br>
-  * [Setting up the Raspberry Pi Zero 2 W](#Setting-up-the-Raspberry-Pi-Zero-2-W) <br>
-* [Installed Programs](#Installed-Programs)<br>
-  * [Unattended-Upgrades](#Unattended-Upgrades)<br>
-  * [Watchdog](#Watchdog)<br>
-  * [Docker](#Docker)<br>
-  * [Portainer](#Portainer)<br>
-  * [Room Assistant (Retired)](#Room-Assistant)<br>
-  * [Mosquitto](#Mosquitto)<br>
-  * [Pi-Hole, Gravity Sync, and keepalived](#Pi-Hole-Gravity-Sync-and-keepalived)<br>
-  * [Hyperion](#Hyperion)<br>
-  * [diyHue](#diyHue)<br>
-
-[Guide for Raspberry Pi 4](https://github.com/justinknguyen/PiGuide/wiki/Raspberry-Pi-4)
+* [Getting Started](#Getting-Started)
+  * [Building the Raspberry Pi Zero 2 W](#Building-the-Raspberry-Pi-Zero-2-W)
+  * [Setting up the Raspberry Pi Zero 2 W](#Setting-up-the-Raspberry-Pi-Zero-2-W) 
+* [Installed Programs](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/)
+  * [Unattended-Upgrades](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/01%20-%20Unattended-Upgrades.md)
+  * [Watchdog](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/02%20-%20Watchdog.md)
+  * [Docker](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/03%20-%20Docker.md)
+  * [Portainer](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/04%20-%20Portainer.md)
+  * [Mosquitto](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/05%20-%20Mosquitto.md)
+  * [Pi-Hole, Gravity Sync, and keepalived](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/06%20-%20Pi-Hole%2C%20Gravity%20Sync%2C%20and%20keepalived.md)
+  * [Hyperion](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/07%20-%20Hyperion)
+  * [diyHue](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md)
+* [Uninstalled Programs](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/)
+  * [Room Assistant](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/01%20-%20Room%20Assistant.md)
 
 ***
+
 # Getting Started
 The following model was purchased from CanaKit: https://www.canakit.com/raspberry-pi-zero-2-w.html
 * Raspberry Pi Zero 2 W Board
