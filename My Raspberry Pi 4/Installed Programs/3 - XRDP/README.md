@@ -1,5 +1,6 @@
 # XRDP 
 Remote desktop. Everything can be done via SSH terminal, but the option to remote desktop in is nice.
+
 ## Prerequisites
 1. Enter:
     ```
@@ -15,6 +16,7 @@ Remote desktop. Everything can be done via SSH terminal, but the option to remot
     ```
     sudo reboot
     ```
+
 ## Installation
 1. Install XRDP:
     ```
@@ -29,9 +31,11 @@ Remote desktop. Everything can be done via SSH terminal, but the option to remot
     sudo adduser pi ssl-cert
     ```
 <ins>Note:</ins> replace "pi" with the name of your login username if you changed it.
-### Testing
+
+## Testing
 Type "rdp" into your Windows search bar and open "Remote Desktop Connection". Once opened, you can enter the IP address of the Pi to login and view the desktop. 
-### Troubleshooting
+
+## Troubleshooting
 If you get a blue screen and cannot connect to the RDP, just create a second user by:
 1. Entering:
     ```
@@ -44,6 +48,7 @@ If you get a blue screen and cannot connect to the RDP, just create a second use
     ```
     sudo adduser <username> ssl-cert
     ```
+    
 ## Sources
 * https://linuxize.com/post/how-to-install-xrdp-on-raspberry-pi/
 * https://stackoverflow.com/questions/70146297/raspberry-pi-remote-desktop-connection-problem-giving-up

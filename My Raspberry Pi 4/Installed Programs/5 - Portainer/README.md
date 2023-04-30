@@ -1,5 +1,6 @@
 # Portainer 
 Provides GUI for docker containers to easily manage.
+
 ## Installation
 1. Update and Upgrade:
     ```
@@ -17,8 +18,10 @@ Provides GUI for docker containers to easily manage.
 A few of the big things we do here is first define the ports we want Portainer to have access to. In our case, this will be port 9000. 
 We assign this docker container the name “portainer” so we can quickly identify it if we ever needed.
 Additionally, we also tell the Docker manager that we want it to restart this Docker if it is ever unintentionally offline.
+
 ## Testing
 You can now access the WebUI by typing `[PIIPADDRESS]:9000` into your search bar. Follow the link under Sources to learn how to use Portainer.
+
 ## Updating
 1. Stop Portainer
     ```
@@ -29,5 +32,6 @@ You can now access the WebUI by typing `[PIIPADDRESS]:9000` into your search bar
     docker rm portainer
     ```
 3. Repeat steps 2-3 under `Installation`.
+
 ## Sources
 * https://pimylifeup.com/raspberry-pi-portainer/
