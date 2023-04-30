@@ -14,5 +14,5 @@ The programs were installed in the order listed.
 12. [Netatalk](/My%20Raspberry%20Pi%204/Installed%20Programs/12%20-%20Netatalk.md)
 13. [AltServer](/My%20Raspberry%20Pi%204/Installed%20Programs/13%20-%20AltServer.md)
 
-On Windows, use PuTTY. On Mac, use Termius. They will be used to SSH into the Pi and install/control everything. <br>
+On Windows, use PuTTY. On Mac, use Termius. They will be used to SSH into the Pi and install/uninstall everything. <br>
 When you SSH into the Pi, the default username is `pi` and the password is `raspberry`.
