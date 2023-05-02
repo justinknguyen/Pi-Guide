@@ -66,6 +66,10 @@ If you want to use multiple DNS servers and have the second server only as backu
        server=2620:fe::fe
        server=2620:fe::9
        ```
+    - Do the same thing in the following file:
+       ```
+       sudo nano /etc/pihole/setupVars.conf 
+       ```
 4. Restart the DNS:
     ```
     pihole restartdns
