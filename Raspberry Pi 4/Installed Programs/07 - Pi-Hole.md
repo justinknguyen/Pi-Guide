@@ -89,7 +89,7 @@ If you want to use multiple DNS servers and have the second server only as backu
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
   - Upon updating, 
-    - Update fails as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
+    - Update might fail as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 ## Testing
