@@ -88,10 +88,10 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
       ```
   This will uncap the Rate Limit, however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, login to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins. 
 
-- If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](#Getting-IPv6-to-Work-with-Unbound).
+- If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
 - If you changed your port for Pi-Hole, you will have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link. <br>
-https://github.com/justinknguyen/Pi-Guide/wiki/Raspberry-Pi-Zero-2-W#diyHue
+https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites
 ## Sources
 * https://www.youtube.com/watch?v=FnFtWsZ8IP0&t=851s
 * https://github.com/anudeepND/whitelist
