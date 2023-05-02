@@ -83,15 +83,15 @@ If you want to use multiple DNS servers and have the second server only as backu
     ```
     pihole restartdns
     ```
-- Having multiple upstream servers might result in odd behaviour if you were to restart the Pi, or update Pi-Hole using `pihole -up`.
+- Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
   - Upon restarting, 
     - Pi-Hole might create a new config file named `01-pihole.conf.save` (appends .save to the end) and DNS will not start. This happened on my Pi 4, but did not on my Pi Zero 2 W.
-    - To fix this, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
-    - You can also try deleting the `.conf.save` file and see if it creates it again.
+    - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+    - Otherwise, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
   - Upon updating, 
     - Update fails as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
-    - To fix this, delete the contents again and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
-    - You can also try deleting the `.conf.save` file and see if it creates it again.
+    - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+    - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 ## Testing
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
 
