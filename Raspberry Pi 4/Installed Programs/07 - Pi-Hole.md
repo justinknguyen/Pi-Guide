@@ -66,11 +66,20 @@ If you want to use multiple DNS servers and have the second server only as backu
        server=2620:fe::fe
        server=2620:fe::9
        ```
-    - Do the same thing in the following file:
+4. Do the same thing in the following file:
+    ```
+    sudo nano /etc/pihole/setupVars.conf 
+    ```
+    - e.g., The first two address are Custom addresses for Unbound, and the bottom four are for Quad9:
        ```
-       sudo nano /etc/pihole/setupVars.conf 
+       PIHOLE_DNS_1=127.0.0.1#5335
+       PIHOLE_DNS_2=::1#5335
+       PIHOLE_DNS_3=9.9.9.9
+       PIHOLE_DNS_4=149.112.112.112
+       PIHOLE_DNS_5=2620:fe::fe
+       PIHOLE_DNS_6=2620:fe::9
        ```
-4. Restart the DNS:
+5. Restart the DNS:
     ```
     pihole restartdns
     ```
