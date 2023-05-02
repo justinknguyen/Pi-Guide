@@ -84,7 +84,7 @@ Go to any site you know with ads and check if they're blocked. Make sure you tur
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
 ## Troubleshooting
-- If you're getting "Rate Limit" errors in Pi-Hole, perform the following:
+- If you're getting "Rate Limit" errors in Pi-Hole, perform the following (note: newer Pi-Hole versions have this setting built-in under the `Settings` window):
   1. Enter:
       ```
       sudo nano /etc/pihole/pihole-FTL.conf
