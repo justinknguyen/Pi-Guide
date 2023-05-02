@@ -58,14 +58,14 @@ If you want to use multiple DNS servers and have the second server only as backu
     sudo nano /etc/dnsmasq.d/01-pihole.conf
     ```
     - e.g., The first two address are Custom addresses for Unbound, and the bottom four are for Quad9:
-     ```
-     server=127.0.0.1#5335
-     server=::1#5335
-     server=9.9.9.9
-     server=149.112.112.112
-     server=2620:fe::fe
-     server=2620:fe::9
-     ```
+       ```
+       server=127.0.0.1#5335
+       server=::1#5335
+       server=9.9.9.9
+       server=149.112.112.112
+       server=2620:fe::fe
+       server=2620:fe::9
+       ```
 4. Restart the DNS:
     ```
     pihole restartdns
