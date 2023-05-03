@@ -5,15 +5,15 @@ Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support
 This Pi-Hole guide will not show how to configure with a second Pi. Detailed instructions on how to do that will be here, [Pi Zero 2 W: Pi-Hole, Gravity Sync, and keepalived](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/06%20-%20Pi-Hole%2C%20Gravity%20Sync%2C%20and%20keepalived.md).
 ## Installation 
 1. Install Pi-Hole:
-```
-sudo curl -sSL https://install.pi-hole.net | bash
-```
+  ```
+  sudo curl -sSL https://install.pi-hole.net | bash
+  ```
 2. Go through the install wizard using default settings (just keep pressing Enter/Yes). 
 3. Once installed, take note of the IPv4 and (if enabled) IPv6 address. This will be used in your router settings.
 4. Change the Pi-Hole login password by entering:
-```
-pihole -a -p [NEWPASSWORD]
-```
+  ```
+  pihole -a -p [NEWPASSWORD]
+  ```
 ## Configuration 
 ### Router Settings
 Using an Asus router,
