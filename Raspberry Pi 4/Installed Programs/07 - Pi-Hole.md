@@ -110,8 +110,7 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
-- If you changed your port for Pi-Hole, you will have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link. <br>
-https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites
+- If you changed your port for Pi-Hole, you will have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
 ## Sources
 * https://www.youtube.com/watch?v=FnFtWsZ8IP0&t=851s
 * https://github.com/anudeepND/whitelist
