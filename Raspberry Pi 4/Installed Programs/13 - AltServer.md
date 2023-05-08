@@ -184,9 +184,12 @@ Note: you can do this with multiple devices at a time.
 6. While `netmuxd` is running, open another terminal tab for your Pi, and install the `AltStore` app to your devices (note: replace `00008110-0123A456B789D012` with your device code from the above step):
     ```
     curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_6_3.ipa > AltStore.ipa # replace 1_6_3 with the most recent version
+    ```
+    ```
     sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
     ```
     - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
+    - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
 7. For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted.
 8. AltStore should now be installed on your device from your Raspberry Pi!
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
@@ -207,6 +210,15 @@ Note: you can do this with multiple devices at a time.
     ps aux | grep netmuxd
     ps aux | grep AltServer
     ```
+## Troubleshooting
+- The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again by first removing the docker container and reinstalling the anisette server. Here's how you can remove it:
+    ```
+    docker stop anisette
+    docker rm anisette
+    docker volume rm lib_cache
+    ```
+    Then you'll have to start from Step 5 of "Installation" and do "Configuration" again. Before doing the Configuration steps again, you should probably search in your device settings for "Clear Trusted Computers" and clear it.
+- 
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist
