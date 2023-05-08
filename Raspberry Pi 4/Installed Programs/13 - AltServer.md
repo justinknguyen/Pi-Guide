@@ -186,6 +186,7 @@ Note: you can do this with multiple devices at a time.
     curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_6_3.ipa > AltStore.ipa # replace 1_6_3 with the most recent version
     sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
     ```
+    - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
 7. For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted.
 8. AltStore should now be installed on your device from your Raspberry Pi!
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
