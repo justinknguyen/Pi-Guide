@@ -190,7 +190,7 @@ Note: you can do this with multiple devices at a time.
     ```
     - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
     - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
-7. For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted.
+7. For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
 8. AltStore should now be installed on your device from your Raspberry Pi!
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
     ```
