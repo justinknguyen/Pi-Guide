@@ -218,7 +218,6 @@ Note: you can do this with multiple devices at a time.
     docker volume rm lib_cache
     ```
     Then you'll have to start from Step 5 of "Installation" and do "Configuration" again. Before doing the Configuration steps again, you should probably search in your device settings for "Clear Trusted Computers" and clear it.
-- 
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist
