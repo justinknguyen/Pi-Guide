@@ -24,6 +24,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
       dub \
       openssl
     ```
+### Installing libplist
 4. Install `libplist` from source by first installing dependencies and build tools:
     ```
     sudo apt-get install \
@@ -49,6 +50,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
     cd ..
     ```
+### Installing libimobiledevice-glue
 8. Next we need to do a similar process and install `libimobiledevice-glue` from source:
     ```
     sudo apt-get install \
@@ -73,6 +75,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
     cd ..
     ```
+### Installing libimobiledevice
 9. Next we need to do a similar process again and install `libimobiledevice` from source:
     ```
     sudo apt-get install \
@@ -105,6 +108,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
     sudo ldconfig
     ```
+### Installing Rust
 11. Time to install `rustup`. Just enter `1` for the default installation when prompted:
     ```
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -121,6 +125,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     rustup toolchain install stable
     rustup default stable
     ```
+### Enable services
 14. Edit the `usbmuxd` service file:
     ```
     sudo nano /lib/systemd/system/usbmuxd.service
@@ -139,8 +144,8 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 ## Installation
 1. Head to the AltServer-Linux release page [here](https://github.com/NyaMisty/AltServer-Linux/releases) and download the `AltServer-aarch64` binary.
 2. Next, head to the netmuxd release page [here](https://github.com/jkcoxson/netmuxd/releases) and download the `aarch64-linux-netmuxd` binary.
-3. Place the two binarys within our `alt-server` folder. You can do this easily if you have Netatalk installed or an alternative method of your choice.
-4. While in our `alt-server` folder inside the terminal, enter the following to make the binarys executable:
+3. Place the two binaries within our `alt-server` folder. You can do this easily if you have Netatalk installed or an alternative method of your choice.
+4. While in our `alt-server` folder inside the terminal, enter the following to make the binaries executable:
     ```
     chmod +x AltServer-aarch64
     chmod +x aarch64-linux-netmuxd
@@ -183,15 +188,17 @@ Note: you can do this with multiple devices at a time.
     - If it's not "Adding device", then your device isn't properly broadcasting itself or paired. Retrace your steps and troubleshoot the problem.
 6. While `netmuxd` is running, open another terminal tab for your Pi, and install the `AltStore` app to your devices (note: replace `00008110-0123A456B789D012` with your device code from the above step):
     ```
-    curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_6_3.ipa > AltStore.ipa # replace 1_6_3 with the most recent version
+    curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_6_3.ipa > AltStore.ipa
     ```
+    - Replace 1_6_3 with the most recent version
+    - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
     ```
     sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
     ```
-    - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
+    - Replace `00008110-0123A456B789D012` with your device code from the above step
     - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
-7. For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
-8. AltStore should now be installed on your device from your Raspberry Pi!
+    - For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
+    - AltStore should now be installed on your device from your Raspberry Pi!
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
     ```
     sudo crontab -e
