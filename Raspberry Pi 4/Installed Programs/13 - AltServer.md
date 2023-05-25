@@ -183,7 +183,7 @@ Note: you can do this with multiple devices at a time.
     ```
     sudo ./aarch64-linux-netmuxd
     ```
-    - You should see an output like this if it's successful:
+    - You should see an output like this if it's successful. Ideally, nothing else should be outputing after "Adding device ...", but if it keeps saying "Adding device..." and "Removing device...", you can ignore it.
         ```
         Starting netmuxd
         Starting mDNS discovery for _apple-mobdev2._tcp.local with mdns
