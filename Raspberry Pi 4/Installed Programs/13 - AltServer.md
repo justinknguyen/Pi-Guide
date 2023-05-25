@@ -230,7 +230,11 @@ Note: you can do this with multiple devices at a time.
     docker rm anisette
     docker volume rm lib_cache
     ```
-    Then you'll have to start from Step 5 of "Installation" and then check if the services are running:
+    Then reinstall the container:
+    ```
+    docker run -d -v lib_cache:/opt/lib/ --restart=always -p 6969:6969 --name anisette dadoum/anisette-server:latest
+    ```
+    Check if the services are running:
     ```
     sudo systemctl status avahi-daemon.service
     sudo systemctl status usbmuxd
