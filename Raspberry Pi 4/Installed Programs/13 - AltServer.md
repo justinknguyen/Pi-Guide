@@ -230,7 +230,17 @@ Note: you can do this with multiple devices at a time.
     docker rm anisette
     docker volume rm lib_cache
     ```
-    Then you'll have to start from Step 5 of "Installation" and do "Configuration" again. Before doing the Configuration steps again, you should probably search in your device settings for "Clear Trusted Computers" and clear it.
+    Then you'll have to start from Step 5 of "Installation" and then check if the services are running:
+    ```
+    sudo systemctl status avahi-daemon.service
+    sudo systemctl status usbmuxd
+    ```
+    If they're not running, enter the following:
+    ```
+    sudo systemctl enable --now avahi-daemon.service
+    sudo systemctl enable --now usbmuxd
+    ```
+    Next, search in your device settings for "Clear Trusted Computers" and tap it to clear it. Finally, do the "Configuration" steps again.
     
 - Unfortunately, updating your device may break your setup and you'll have to do what is outlined in the above bullet point.
 ## Sources
