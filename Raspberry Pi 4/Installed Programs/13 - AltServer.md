@@ -197,19 +197,19 @@ Note: you can do this with multiple devices at a time.
     ```
     - Replace 1_6_3 with the most recent version
     - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
-    ```
-    sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
-    ```
+        ```
+        sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
+        ```
     - Replace `00008110-0123A456B789D012` with your device code from the above step
     - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
     - For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
     - AltStore should now be installed on your device from your Raspberry Pi! The output should be something like this:
-    ```
-    Installation Progress: 1
-    Notify: Installation Succeeded
-        AltStore was successfully installed on unknown.
-    Finished!
-    ```
+        ```
+        Installation Progress: 1
+        Notify: Installation Succeeded
+            AltStore was successfully installed on unknown.
+        Finished!
+        ```
     - If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
 ### Configuring services to run automatically on the Pi
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
