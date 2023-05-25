@@ -170,7 +170,7 @@ Note: you can do this with multiple devices at a time.
         dns-sd -B _apple-mobdev2._tcp local
         ```
 3. Once your device is broadcasting itself, connect your device to your Pi via USB, and tap `Trust` on the device to trust the Pi.
-4. Verify that the device was paired by entering the following command:
+4. Verify that the device was paired by entering the following command. If you are trying to do this on two devices at the same time, just do one at a time (only have one device connected to the Pi at a time):
     ```
     idevicepair validate
     ```
