@@ -165,7 +165,7 @@ Note: you can do this with multiple devices at a time.
         ```
         avahi-browse -a
         ```
-    - You can also run the following on Mac:
+    - You can also run the following on Mac. It will show you the "Instance Name" which can be found under "General > About > Wi-Fi Address":
         ```
         dns-sd -B _apple-mobdev2._tcp local
         ```
