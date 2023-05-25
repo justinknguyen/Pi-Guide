@@ -156,6 +156,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
 ## Configuration
 Note: you can do this with multiple devices at a time.
+### Configuring AltServer and AltStore on your devices
 1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable, and enable "Show this iPhone/iPad when on Wi-Fi" in the Finder or in iTunes, then hit `Sync/Apply`.
 2. Disconnect your device from USB, and make sure your device is broadcasting itself by checking if your Mac/PC can still see the device in Finder or in iTunes. 
     - If you don't see it, you can check if your device is broadcasting itself to your network by entering the following on your Pi:
@@ -203,6 +204,7 @@ Note: you can do this with multiple devices at a time.
     - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
     - For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
     - AltStore should now be installed on your device from your Raspberry Pi!
+### Configuring services to run automatically on the Pi
 9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
     ```
     sudo crontab -e
@@ -229,6 +231,8 @@ Note: you can do this with multiple devices at a time.
     docker volume rm lib_cache
     ```
     Then you'll have to start from Step 5 of "Installation" and do "Configuration" again. Before doing the Configuration steps again, you should probably search in your device settings for "Clear Trusted Computers" and clear it.
+    
+- Unfortunately, updating your device may break your setup and you'll have to start from Step 5 of "Installation" and do "Configuration" again.
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist
