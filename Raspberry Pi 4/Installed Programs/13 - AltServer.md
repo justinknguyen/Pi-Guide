@@ -165,6 +165,10 @@ Note: you can do this with multiple devices at a time.
         ```
         avahi-browse -a
         ```
+    - You can also run the following on Mac:
+        ```
+        dns-sd -B _apple-mobdev2._tcp local
+        ```
 3. Once your device is broadcasting itself, connect your device to your Pi via USB, and tap `Trust` on the device to trust the Pi.
 4. Verify that the device was paired by entering the following command:
     ```
