@@ -47,9 +47,7 @@ If you want to make it so it turns off when it detects rainbow bars, use the fol
     ```
     import the public key again and then you should be able to update and upgrade your Pi:
     ```
-    ```
     wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
-    ```
     ```
 ## Sources
 * https://docs.hyperion-project.org/en/user/Installation.html#raspberry-pi
