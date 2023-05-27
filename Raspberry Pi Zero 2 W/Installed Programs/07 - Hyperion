@@ -8,7 +8,11 @@ Used to sync smart lights to picture on display. Far cheaper alternative to the 
 Total cost: ~$50 <br><br>
 One HDMI cable will go from the input device (e.g., PS5 or PC) to the input port of the HDMI splitter. This is so it can output it’s video feed to both the monitor/tv and the Raspberry Pi simultaneously (that’s why we need two output ports on the splitter). The second HDMI cable will be connected from one of the output ports of the splitter to the monitor/tv. The third HDMI cable will be connected from the other output port of the splitter to the USB Capture Card, and the USB Capture Card will then be connected to the Raspberry Pi.
 ## Installation
-1. First we import the public key from Hyperion:
+1. First install the required dependencies:
+    ```
+    sudo apt-get update && sudo apt-get install wget gpg apt-transport-https lsb-release
+    ```
+1. Next, we import the public key from Hyperion:
     ```
     wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
     ```
@@ -36,6 +40,17 @@ If you want to make it so it turns off when it detects rainbow bars, use the fol
 * Signal Detection VMax - 1
 * Signal Detection HMin - 0.4
 * Signal Detection HMax - 0.45
+## Troubleshooting
+- If you get the following error when trying to update your Pi:
+    ```
+    W: Failed to fetch https://apt.hyperion-project.org/dists/bullseye/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 21710A7427490076
+    ```
+    import the public key again and then you should be able to update and upgrade your Pi:
+    ```
+    ```
+    wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
+    ```
+    ```
 ## Sources
 * https://docs.hyperion-project.org/en/user/Installation.html#raspberry-pi
 * https://www.youtube.com/watch?v=JvcR2td1Cso
