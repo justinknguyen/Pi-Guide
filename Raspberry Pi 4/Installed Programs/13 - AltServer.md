@@ -254,6 +254,7 @@ Note: you can do this with multiple devices at a time.
     Next, search in your device settings for "Clear Trusted Computers" and tap it to clear it. Finally, do the "Configuration" steps again.
     
 - Unfortunately, updating your device may break your setup and you'll have to do what is outlined in the above bullet point.
+- If your device stops refreshing for no reason, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart you device and clear trusted computers on it, and do "Configuration" again.
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist
