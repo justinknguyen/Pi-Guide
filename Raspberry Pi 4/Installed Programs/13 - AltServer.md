@@ -212,20 +212,20 @@ Note: you can do this with multiple devices at a time.
         ```
     - If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
 ### Configuring services to run automatically on the Pi
-9. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
+7. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
     ```
     sudo crontab -e
     ```
-10. Then add the following lines:
+8. Then add the following lines:
     ```
     @reboot sleep 20 && /home/pi/alt-server/aarch64-linux-netmuxd > /home/pi/alt-server/log/netmuxd.log 2>&1
     @reboot sleep 20 && ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 /home/pi/alt-server/AltServer-aarch64 > /home/pi/alt-server/log/altserver.log 2>&1
     ```
-11. In your `alt-server` folder, make a log folder:
+9. In your `alt-server` folder, make a log folder:
     ```
     mkdir log
     ```
-12. Do a `sudo reboot` and make sure `netmuxd` and `AltServer` are running with the following lines:
+10. Do a `sudo reboot` and make sure `netmuxd` and `AltServer` are running with the following lines:
     ```
     ps aux | grep netmuxd
     ps aux | grep AltServer
@@ -251,10 +251,10 @@ Note: you can do this with multiple devices at a time.
     sudo systemctl enable --now avahi-daemon.service
     sudo systemctl enable --now usbmuxd
     ```
-    Next, search in your device settings for "Clear Trusted Computers" and tap it to clear it. Finally, do the "Configuration" steps again.
+    Next, search in your device settings for "Clear Trusted Computers" and tap it to clear it. Finally, do the "Configuration" steps 1-6 again.
     
 - Unfortunately, updating your device may break your setup and you'll have to do what is outlined in the above bullet point.
-- If your device stops refreshing for no reason, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart you device and clear trusted computers on it, and do "Configuration" again.
+- If your device stops refreshing for no reason, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart you device and clear trusted computers on it, and do "Configuration" steps 1-6 again.
 ## Sources
 * https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 * https://github.com/libimobiledevice/libplist
