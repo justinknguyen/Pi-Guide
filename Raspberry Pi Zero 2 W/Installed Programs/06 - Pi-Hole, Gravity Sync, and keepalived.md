@@ -28,7 +28,7 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
 8. Repeat Steps 3-7 on your primary Pi.
 9. On both Pi's, enter:
     ```
-    curl -sSL https://gravity.vmstan.com | bash
+    curl -sSL https://raw.githubusercontent.com/vmstan/gs-install/main/gs-install.sh | bash
     ```
 10. You will receive prompts to enter an IP Address and host name. On the primary Pi, enter the secondary Pi's IP Address and host name (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. On the secondary Pi, enter the primary Pi's IP Address and host name (pi).
 ## Configuration (Gravity Sync)
