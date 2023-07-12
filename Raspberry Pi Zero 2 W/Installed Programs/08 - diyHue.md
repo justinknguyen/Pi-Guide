@@ -7,11 +7,19 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
     sudo nano /etc/lighttpd/lighttpd.conf
     ```
 2. Change the line that says `server.port = 80` to `server.port = 8080`.
-3. Restart the service:
+3. Go to:
+    ```
+    sudo nano /etc/lighttpd/external.conf
+    ```
+4. Enter the following in the file and save it:
+    ```
+    sudo nano /etc/lighttpd/external.conf
+    ```
+5. Restart the service:
     ```
     sudo service lighttpd restart
     ```
-4. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
+6. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
 ## Installation
 1. Enter the below and replace the X's with the Pi's MAC address:
     ```
