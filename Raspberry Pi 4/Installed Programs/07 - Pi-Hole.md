@@ -96,6 +96,14 @@ If you want to use multiple DNS servers and have the second server only as backu
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
+## Updating
+When updating with `pihole -up` there are a couple of things to do if you followed all of my guides.
+1. If you have multiple upstream DNS servers:
+    - Update might fail as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
+    - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+    - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
+2. If you changed your port for Pi-Hole:
+    - You will have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
 ## Troubleshooting
 - If you're getting "Rate Limit" errors in Pi-Hole, perform the following (note: newer Pi-Hole versions have this setting built-in under the `Settings` window):
   1. Enter:
