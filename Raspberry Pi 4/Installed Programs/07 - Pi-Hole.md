@@ -89,7 +89,7 @@ If you want to use multiple DNS servers and have the second server only as backu
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
   - Upon updating, 
-    - Update might fail as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
+    - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 ## Testing
@@ -99,7 +99,7 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 ## Updating
 When updating with `pihole -up` there are a couple of things to do if you followed all of my guides.
 1. If you have multiple upstream DNS servers:
-    - Update might fail as it repopulates `01-pihole.conf` again. This happens when you have a `.conf.save` file.
+    - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 2. If you changed your port for Pi-Hole:
