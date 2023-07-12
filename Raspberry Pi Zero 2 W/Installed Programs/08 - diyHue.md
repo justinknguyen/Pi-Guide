@@ -13,7 +13,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
     ```
 4. Enter the following in the file and save it:
     ```
-    sudo nano /etc/lighttpd/external.conf
+    server.port := 8080
     ```
 5. Restart the service:
     ```
