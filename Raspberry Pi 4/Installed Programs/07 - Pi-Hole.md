@@ -103,7 +103,7 @@ When updating with `pihole -up` there are a couple of things to do if you follow
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 2. If you changed your port for Pi-Hole:
-    - You will have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
+    - You might have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
 ## Troubleshooting
 - If you're getting "Rate Limit" errors in Pi-Hole, perform the following (note: newer Pi-Hole versions have this setting built-in under the `Settings` window):
   1. Enter:
@@ -118,7 +118,7 @@ When updating with `pihole -up` there are a couple of things to do if you follow
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
-- If you changed your port for Pi-Hole, you will have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
+- If you changed your port for Pi-Hole, you might have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
 ## Sources
 * https://www.youtube.com/watch?v=FnFtWsZ8IP0&t=851s
 * https://github.com/anudeepND/whitelist
