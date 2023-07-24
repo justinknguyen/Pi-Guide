@@ -37,7 +37,7 @@ The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W
       * [Portainer](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/04%20-%20Portainer.md)
       * [Mosquitto](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/05%20-%20Mosquitto.md)
       * [Pi-Hole, Gravity Sync, and keepalived](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/06%20-%20Pi-Hole%2C%20Gravity%20Sync%2C%20and%20keepalived.md)
-      * [Hyperion](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/07%20-%20Hyperion)
+      * [Hyperion](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/07%20-%20Hyperion.md)
       * [diyHue](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md)
     * [Uninstalled Programs](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/)
       * [Room Assistant](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/01%20-%20Room%20Assistant.md)
