@@ -39,5 +39,6 @@ The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W
       * [Pi-Hole, Gravity Sync, and keepalived](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/06%20-%20Pi-Hole%2C%20Gravity%20Sync%2C%20and%20keepalived.md)
       * [Hyperion](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/07%20-%20Hyperion.md)
       * [diyHue](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md)
+      * [HyperHDR](/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/09%20-%20HyperHDR.md)
     * [Uninstalled Programs](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/)
       * [Room Assistant](/Raspberry%20Pi%20Zero%202%20W/Uninstalled%20Programs/01%20-%20Room%20Assistant.md)
