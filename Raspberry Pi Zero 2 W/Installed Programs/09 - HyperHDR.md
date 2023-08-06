@@ -18,3 +18,7 @@ sudo apt-get --purge autoremove hyperion
     ```
     sudo apt install ./HyperHDR-19.0.0.0-Linux-aarch64.deb
     ```
+## Testing
+You can open the HyperHDR website by heading to `[PIIPADDRESS]:8090`
+## Sources
+- https://github.com/awawa-dev/HyperHDR/wiki/Installation#Linux
