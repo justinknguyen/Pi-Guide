@@ -142,6 +142,10 @@ If you can't install NGINX, it's likely because you have something installed tha
     listen 81 default_server;
     listen [::]:81 default_server;
     ```
+3. Reboot:
+    ```
+    sudo reboot
+    ```
 ## Sources
 * https://pimylifeup.com/raspberry-pi-nginx/
 * https://stackoverflow.com/questions/10829402/how-to-start-nginx-via-different-portother-than-80
