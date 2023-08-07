@@ -133,6 +133,8 @@ If you notice a suspicious IP traffic, perform the following to block access fro
 1. Visit `http://[PIIPADDRESS]`
 ## Troubleshooting
 If you can't install NGINX, it's likely because you have something installed that is currently using port 80 on the Pi. Follow the below steps to change NGINX's port, however, doing so might render you unable to enable HTTPS on the website.
+
+In your `default` file, when editing the ports, if you have more than one server block, you need to make sure your have the `listen` command in each server block. If you don't have it in one of them, it will default to listening on port 80.
 1. Edit the default configuration so NGINX listens to a different port (default is 80) to avoid conflicts:
     ```
     sudo nano /etc/nginx/sites-enabled/default
