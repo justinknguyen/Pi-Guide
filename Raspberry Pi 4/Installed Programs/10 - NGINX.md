@@ -66,7 +66,7 @@ Create your own website hosted on your Pi.
     sudo /etc/init.d/nginx reload
     ```
 ### Enable HTTPS
-_DISCLAIMER 1_: If you have another app installed that uses port 80, try to see if you can change it's port to something else. If not, then HTTPS will not work as NGINX needs port 80.
+_DISCLAIMER 1_: If you have another app installed that uses port 80, try to see if you can change it's port to something else. If not, then HTTPS will not work as NGINX needs port 80. Please see the Troubleshooting section at the bottom.
 
 _DISCLAIMER 2_: Set up the `Host Record` on your domain provider as so:
 - Record 1 (allows users to reach your website with the address format: https://example.com):
