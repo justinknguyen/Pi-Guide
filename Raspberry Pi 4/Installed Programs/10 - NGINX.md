@@ -144,9 +144,12 @@ In your `default` file, when editing the ports, if you have more than one server
     listen 81 default_server;
     listen [::]:81 default_server;
     ```
-3. Reboot:
+3. Confirm config and reload:
     ```
-    sudo reboot
+    sudo nginx -t
+    ```
+    ```
+    sudo /etc/init.d/nginx reload
     ```
 ## Sources
 * https://pimylifeup.com/raspberry-pi-nginx/
