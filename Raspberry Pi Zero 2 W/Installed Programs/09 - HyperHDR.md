@@ -1,5 +1,5 @@
 # HyperHDR
-Fork of Hyperion, but better.
+Fork of Hyperion, with improvements, notably to HDR colour accuracy and brightness.
 ## Uninstall Hyperion
 We first need to uninstall Hyperion:
 ```
