@@ -66,7 +66,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
     ```
     sudo nano /etc/nginx/nginx.conf
     ```
-2. Inside of http{}, enter the following at the bottom:
+2. Inside of `http{}`, enter the following at the bottom:
     ```
             limit_req_zone $binary_remote_addr zone=global:10m rate=1r/m;
             limit_conn_zone $binary_remote_addr zone=addr:10m;
