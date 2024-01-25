@@ -47,7 +47,7 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
     ```
 An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
 ### Multiple Upstream DNS Servers
-If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below:
+If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md) installed.
 1. Select the two upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
 2. Create a file called `99-custom.conf` by entering the below command. In the file, type in `strict-order` and save.
     ```
