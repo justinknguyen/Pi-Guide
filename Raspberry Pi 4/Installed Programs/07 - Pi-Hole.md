@@ -111,6 +111,9 @@ When updating with `pihole -up` there are a couple of things to do if you follow
 1. If you have multiple upstream DNS servers:
     - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+        ```
+        sudo rm /etc/dnsmasq.d/01-pihole.conf
+        ``` 
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 2. If you changed your port for Pi-Hole:
     - You might have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
