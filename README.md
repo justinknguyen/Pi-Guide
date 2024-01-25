@@ -3,6 +3,7 @@ The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W
 ## Validation
 - Feb 16, 2022: verified steps on Pi 4 and Zero 2 W
 - May 23, 2022: verified steps on Zero 2 W
+- Jan 24, 2024: verified steps on Pi 4
 ## Table of Contents
 - [Raspberry Pi 4](/Raspberry%20Pi%204/)
     * [Getting Started](https://github.com/justinknguyen/Pi-Guide/tree/main/Raspberry%20Pi%204#getting-started)
