@@ -25,18 +25,18 @@ Containerize certain programs for easy removal. Finding guides for docker contai
     ```
     sudo reboot
     ```
-7A. Install Docker-Compose:
+7. Install Docker-Compose:
     ```
     sudo apt-get install docker-compose
     ```
-7B. (Possibly outdated) via Python:
-    1. Install python dependencies:
+8. (Possibly outdated) Install Docker-Compose via Python:
+    - Install python dependencies:
         ```
         sudo apt-get install libffi-dev libssl-dev
         sudo apt install python3-dev
         sudo apt-get install -y python3 python3-pip
         ```
-    1. Once python3 and pip3 are installed, install Docker-Compose:
+    - Once python3 and pip3 are installed, install Docker-Compose:
         ```
         sudo pip3 install docker-compose
         ```
