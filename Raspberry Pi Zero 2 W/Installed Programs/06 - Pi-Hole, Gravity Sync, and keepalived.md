@@ -30,7 +30,8 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
     ```
     curl -sSL https://raw.githubusercontent.com/vmstan/gs-install/main/gs-install.sh | bash
     ```
-10. You will receive prompts to enter an IP Address and host name. On the primary Pi, enter the secondary Pi's IP Address and host name (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. On the secondary Pi, enter the primary Pi's IP Address and host name (pi).
+10. You will receive prompts to enter an IP Address and host username. This is NOT the host name of the Pi, but the username you use to log in. <br>
+On the primary Pi, enter the secondary Pi's IP Address and host username (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. On the secondary Pi, enter the primary Pi's IP Address and host username (pi).
 ## Configuration (Gravity Sync)
 1. Check if there are any differences between the two Pi's in Pi-Hole by entering in the second Pi:
     ```
