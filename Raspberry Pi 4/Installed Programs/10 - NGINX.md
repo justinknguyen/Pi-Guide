@@ -39,24 +39,25 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
     sudo systemctl start nginx
     ```
 ## Configuration
-### Editing the Website
-1. To start editing the website, go to:
+### Hosting the Website
+1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
     ```
-    sudo nano /var/www/html/index.html
+    cd /var/www//html/
     ```
-    - Main Config: 
-        ```
-        sudo nano /etc/nginx/nginx.conf
-        ```
-    - Site Config: 
-        ```
-        sudo nano /etc/nginx/sites-available/default
-        ```
-2. After editing, make sure to run the below to verify the config works.
+2. Then clone your repo into the path:
     ```
-    sudo nginx -t
-    ``` 
-3. Finally, run the below to put the config into action.
+    sudo git clone [your repo.git]
+    ```
+3. Edit the site config so it points to the git folder:
+    ```
+    sudo nano /etc/nginx/sites-available/default
+    ```
+    - Find the line `root /var/www/html/` and append your git folder name to it.
+4. Check the name of the folder where your repo was cloned to:
+    ```
+    ls
+    ```
+6. Reload nginx:
     ```
     sudo /etc/init.d/nginx reload
     ```
@@ -70,11 +71,11 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
             limit_req_zone $binary_remote_addr zone=global:10m rate=1r/m;
             limit_conn_zone $binary_remote_addr zone=addr:10m;
             server {
-            location / {
-                limit_req zone=global burst=10 nodelay;
-                limit_conn addr 1;
-                limit_rate 100k;
-            }
+                location / {
+                    limit_req zone=global burst=10 nodelay;
+                    limit_conn addr 1;
+                    limit_rate 100k;
+                }
             }
     ```
 3. After editing, make sure to run the below to verify the config works.
