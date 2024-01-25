@@ -18,7 +18,7 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
     ```
     sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
     ```
-2. Paste the following in (IMPORTANT: if you have IPv6 for your network change line below to `do-ip6: yes`. Also, if you’re configuring this for a second Pi, you should change the port to `5353` to avoid conflict.):
+2. Paste the following in (IMPORTANT: if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
     ```
     server:
         # If no logfile is specified, syslog is used
