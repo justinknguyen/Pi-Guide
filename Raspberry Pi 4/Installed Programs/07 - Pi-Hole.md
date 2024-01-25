@@ -24,8 +24,8 @@ Under "LAN" and "DHCP Server", enter the IPv4 address you took note of earlier u
 Under "IPv6", enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
 ### Pi-Hole DNS Settings
 Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled. <br><br>
-For "Interface settings", I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
-For "Advanced DNS settings", I enabled the first two check boxes and also enabled conditional forwarding. Conditional forwarding allows me to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
+For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
+For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-limiting to 2000 and 600, and also enabled conditional forwarding. Conditional forwarding allows me to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 * Local network in CIDR notation: 192.168.50.0/24
   * the format is your router's IP address but with a 0 as the last digit, then add /24.
 * IP address of your DHCP server (router): 192.168.50.1
@@ -47,7 +47,7 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
     ```
 An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
 ### Multiple Upstream DNS Servers
-If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below:
+If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md) installed.
 1. Select the two upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
 2. Create a file called `99-custom.conf` by entering the below command. In the file, type in `strict-order` and save.
     ```
@@ -83,14 +83,24 @@ If you want to use multiple DNS servers and have the second server only as backu
     ```
     pihole restartdns
     ```
-- Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
+Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
   - Upon restarting, 
-    - Pi-Hole might create a new config file named `01-pihole.conf.save` (appends .save to the end) and DNS will not start. This happened on my Pi 4, but did not on my Pi Zero 2 W.
+    - Pi-Hole might create a new config file named `01-pihole.conf.save` (appends .save to the end) and DNS will not start. This happened on my Pi 4, but did not on my Pi Zero 2 W. Check if you have it by entering the following:
+        ```
+        cd /etc/dnsmasq.d/
+        ls
+        ``` 
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+        ```
+        sudo rm /etc/dnsmasq.d/01-pihole.conf
+        ``` 
     - Otherwise, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
   - Upon updating, 
     - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
     - To fix this, try deleting the `.conf.save` file and see if it creates it again.
+        ```
+        sudo rm /etc/dnsmasq.d/01-pihole.conf
+        ``` 
     - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 ## Testing
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.

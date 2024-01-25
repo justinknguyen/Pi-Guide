@@ -1,5 +1,25 @@
 # NGINX
 Create your own website hosted on your Pi.
+## Prerequisites
+If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
+1. Go to:
+    ```
+    sudo nano /etc/lighttpd/lighttpd.conf
+    ```
+2. Change the line that says `server.port = 80` to `server.port = 8080`.
+3. Go to:
+    ```
+    sudo nano /etc/lighttpd/external.conf
+    ```
+4. Enter the following in the file and save it:
+    ```
+    server.port := 8080
+    ```
+5. Restart the service:
+    ```
+    sudo service lighttpd restart
+    ```
+6. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
 ## Installation
 1. Update and upgrade:
     ```
@@ -19,24 +39,25 @@ Create your own website hosted on your Pi.
     sudo systemctl start nginx
     ```
 ## Configuration
-### Editing the Website
-1. To start editing the website, go to:
+### Hosting the Website
+1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
     ```
-    sudo nano /var/www/html/index.html
+    cd /var/www//html/
     ```
-    - Main Config: 
-        ```
-        sudo nano /etc/nginx/nginx.conf
-        ```
-    - Site Config: 
-        ```
-        sudo nano /etc/nginx/sites-available/default
-        ```
-2. After editing, make sure to run the below to verify the config works.
+2. Then clone your repo into the path:
     ```
-    sudo nginx -t
-    ``` 
-3. Finally, run the below to put the config into action.
+    sudo git clone [your repo.git]
+    ```
+3. Check the name of the folder where your repo was cloned to:
+    ```
+    ls
+    ```
+4. Edit the site config so it points to the git folder:
+    ```
+    sudo nano /etc/nginx/sites-available/default
+    ```
+    - Find the line `root /var/www/html/` and append your git folder name to it.
+5. Reload nginx:
     ```
     sudo /etc/init.d/nginx reload
     ```
@@ -45,16 +66,16 @@ Create your own website hosted on your Pi.
     ```
     sudo nano /etc/nginx/nginx.conf
     ```
-2. Inside of http{}, enter the following at the bottom:
+2. Inside of `http{}`, enter the following at the bottom:
     ```
             limit_req_zone $binary_remote_addr zone=global:10m rate=1r/m;
             limit_conn_zone $binary_remote_addr zone=addr:10m;
             server {
-            location / {
-                limit_req zone=global burst=10 nodelay;
-                limit_conn addr 1;
-                limit_rate 100k;
-            }
+                location / {
+                    limit_req zone=global burst=10 nodelay;
+                    limit_conn addr 1;
+                    limit_rate 100k;
+                }
             }
     ```
 3. After editing, make sure to run the below to verify the config works.

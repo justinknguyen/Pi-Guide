@@ -30,7 +30,7 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
     ```
     curl -sSL https://raw.githubusercontent.com/vmstan/gs-install/main/gs-install.sh | bash
     ```
-10. You will receive prompts to enter an IP Address and host name. On the primary Pi, enter the secondary Pi's IP Address and host name (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. On the secondary Pi, enter the primary Pi's IP Address and host name (pi).
+10. You will receive prompts to enter an IP Address and host username. This is NOT the host name of the Pi, but the username you use to log in. On the primary Pi, enter the secondary Pi's IP Address and host username (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. On the secondary Pi, enter the primary Pi's IP Address and host username (pi).
 ## Configuration (Gravity Sync)
 1. Check if there are any differences between the two Pi's in Pi-Hole by entering in the second Pi:
     ```
@@ -49,6 +49,11 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
     ```
     gravity-sync auto quad
     ```
+## Troubleshooting (Gravity Sync)
+If you messed up the configuration, enter the following to restart:
+```
+gravity-sync config
+```
 ## Installation (keepalived)
 keepalived is to have a High Availability setup between two Pi's, meaning, one Pi will act as the master server and the other will act as the slave server. When the master server shuts down, internet traffic will be redirected to the slave server until the master server comes back online.
 1. Update:
@@ -272,7 +277,7 @@ Head into your router settings and replace the DNS servers for Pi-Hole with the 
     ```
     sudo systemctl start keepalived.service
     ```
-## Troubleshooting
+## Troubleshooting (keepalived)
 In my case, the virtual IP address does not switch back to the primary Pi after a reboot without restarting keepalived with `sudo systemctl restart keepalived.service`. So, all we have to do is make a crontask to automate this restart when the Pi boots back up.
 1. Enter on both Pi's (try without `sudo` also as files are different between the two for somereason):
     ```

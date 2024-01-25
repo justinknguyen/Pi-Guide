@@ -14,8 +14,8 @@ Provides GUI for docker containers to easily manage.
     ```
     sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
     ```
-A few of the big things we do here is first define the ports we want Portainer to have access to. In our case, this will be port 9000. 
-We assign this docker container the name “portainer” so we can quickly identify it if we ever needed.
+Here, we define the port we want Portainer to have access to, in this case, port 9000. <br>
+We assign this docker container the name “portainer” so we can quickly identify it if we ever needed. <br>
 Additionally, we also tell the Docker manager that we want it to restart this Docker if it is ever unintentionally offline.
 ## Testing
 You can now access the WebUI by typing `[PIIPADDRESS]:9000` into your search bar. Follow the link under Sources to learn how to use Portainer.
