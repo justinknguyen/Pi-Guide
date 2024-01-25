@@ -11,8 +11,6 @@ The programs were installed in the order listed.
 9. [PiVPN](/Raspberry%20Pi%204/Installed%20Programs/09%20-%20PiVPN.md)
 10. [NGINX](/Raspberry%20Pi%204/Installed%20Programs/10%20-%20NGINX.md)
 11. [GoAccess](/Raspberry%20Pi%204/Installed%20Programs/11%20-%20GoAccess.md)
-12. [Netatalk](/Raspberry%20Pi%204/Installed%20Programs/12%20-%20Netatalk.md)
-13. [AltServer](/Raspberry%20Pi%204/Installed%20Programs/13%20-%20AltServer.md)
 
 On Windows, use PuTTY. On Mac, use Termius. They will be used to SSH into the Pi and install/uninstall everything. <br>
 When you SSH into the Pi, the default username is `pi` and the password is `raspberry`.

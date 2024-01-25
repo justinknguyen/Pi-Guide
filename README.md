@@ -20,7 +20,6 @@ The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W
       * [PiVPN](/Raspberry%20Pi%204/Installed%20Programs/09%20-%20PiVPN.md)
       * [NGINX](/Raspberry%20Pi%204/Installed%20Programs/10%20-%20NGINX.md)
       * [GoAccess](/Raspberry%20Pi%204/Installed%20Programs/11%20-%20GoAccess.md)
-      * [Netatalk](/Raspberry%20Pi%204/Installed%20Programs/12%20-%20Netatalk.md)
     * [Uninstalled Programs](/Raspberry%20Pi%204/Uninstalled%20Programs/)
       * [Rclone](/Raspberry%20Pi%204/Uninstalled%20Programs/01%20-%20Rclone.md)
       * [Grafana](/Raspberry%20Pi%204/Uninstalled%20Programs/02%20-%20Grafana.md)
