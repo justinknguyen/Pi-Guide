@@ -19,6 +19,7 @@
 * [Uninstalled Programs](/Raspberry%20Pi%204/Uninstalled%20Programs/)
   * [Rclone](/Raspberry%20Pi%204/Uninstalled%20Programs/01%20-%20Rclone.md)
   * [Grafana](/Raspberry%20Pi%204/Uninstalled%20Programs/02%20-%20Grafana.md)
+  * [AlterServer](/Raspberry%20Pi%204/Uninstalled%20Programs/03%20-%20AltServer.md)
   
 ***
 
