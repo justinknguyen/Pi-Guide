@@ -28,7 +28,7 @@ Remote desktop. Everything can be done via SSH terminal, but the option to remot
     ```
     sudo adduser pi ssl-cert
     ```
-<ins>Note:</ins> replace "pi" with the name of your login username if you changed it.
+    - Replace "pi" with the name of your login username if you changed it.
 ## Testing
 Type "rdp" into your Windows search bar and open "Remote Desktop Connection". Once opened, you can enter the IP address of the Pi to login and view the desktop. 
 ## Troubleshooting
