@@ -50,10 +50,47 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
     gravity-sync auto quad
     ```
 ## Troubleshooting (Gravity Sync)
-If you messed up the configuration, enter the following to restart:
-```
-gravity-sync config
-```
+- If you messed up the configuration, enter the following to restart the config:
+    ```
+    gravity-sync config
+    ```
+- If you need to completely restart, remove Gravity Sync by entering the following:
+    ```
+    gravity-sync purge
+    ```
+- If pushing and pulling is failing, check if the rsync versions are the same between both Pi's:
+    ```
+    rsync --version
+    ```
+    1. If not, it's likely one is on v3.2.3, and in order to update to the latest (v3.2.7 currently), install dependencies:
+       ```
+       sudo apt install gcc g++ gawk autoconf automake python3-cmarkgfm libssl-dev attr libxxhash-dev libattr1-dev liblz4-dev libzstd-dev acl libacl1-dev -y
+       ```
+    1. Download the latest rsync file:
+       ```
+       wget https://download.samba.org/pub/rsync/src/rsync-3.2.7.tar.gz
+       ```
+    1. Extract the file:
+       ```
+       tar -xf rsync-3.2.7.tar.gz
+       ```
+    1. Configure rsync:
+       ```
+       cd rsync-3.2.7
+       ./configure
+       ```
+    1. Prepare rsync install files:
+       ```
+       make
+       ```
+    1. Install rsync:
+       ```
+       sudo make install
+       ```
+    1. Reboot and confirm the rsync version:
+       ```
+       sudo reboot
+       ```
 ## Installation (keepalived)
 keepalived is to have a High Availability setup between two Pi's, meaning, one Pi will act as the master server and the other will act as the slave server. When the master server shuts down, internet traffic will be redirected to the slave server until the master server comes back online.
 1. Update:
@@ -323,3 +360,4 @@ If it happens again, then it’s definitely an IPv6 problem and the reason is be
 * https://github.com/vmstan/gravity-sync
 * https://www.youtube.com/watch?v=hPfk0qd4xEY&t=675s
 * https://www.reddit.com/r/pihole/comments/d5056q/tutorial_v2_how_to_run_2_pihole_servers_in_ha/?sort=new
+* https://linuxhint.com/update-rsync-raspberry-pi/
