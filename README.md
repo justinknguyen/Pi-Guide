@@ -21,10 +21,10 @@ The comprehensive guide for programs installed on my Raspberry Pi 4 and Zero 2 W
       * [NGINX](/Raspberry%20Pi%204/Installed%20Programs/10%20-%20NGINX.md)
       * [GoAccess](/Raspberry%20Pi%204/Installed%20Programs/11%20-%20GoAccess.md)
       * [Netatalk](/Raspberry%20Pi%204/Installed%20Programs/12%20-%20Netatalk.md)
-      * [AltServer](/Raspberry%20Pi%204/Installed%20Programs/13%20-%20AltServer.md)
     * [Uninstalled Programs](/Raspberry%20Pi%204/Uninstalled%20Programs/)
       * [Rclone](/Raspberry%20Pi%204/Uninstalled%20Programs/01%20-%20Rclone.md)
       * [Grafana](/Raspberry%20Pi%204/Uninstalled%20Programs/02%20-%20Grafana.md)
+      * [AltServer](/Raspberry%20Pi%204/Uninstalled%20Programs/03%20-%20AltServer.md)
       <br>
 - [Raspberry Pi Zero 2 W](/Raspberry%20Pi%20Zero%202%20W/)
     * [Getting Started](https://github.com/justinknguyen/Pi-Guide/tree/main/Raspberry%20Pi%20Zero%202%20W#getting-started)
