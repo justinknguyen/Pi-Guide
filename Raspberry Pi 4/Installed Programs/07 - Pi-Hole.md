@@ -24,8 +24,8 @@ Under "LAN" and "DHCP Server", enter the IPv4 address you took note of earlier u
 Under "IPv6", enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
 ### Pi-Hole DNS Settings
 Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled. <br><br>
-For "Interface settings", I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
-For "Advanced DNS settings", I enabled the first two check boxes and also enabled conditional forwarding. Conditional forwarding allows me to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
+For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
+For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-limiting to 2000 and 600, and also enabled conditional forwarding. Conditional forwarding allows me to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 * Local network in CIDR notation: 192.168.50.0/24
   * the format is your router's IP address but with a 0 as the last digit, then add /24.
 * IP address of your DHCP server (router): 192.168.50.1
