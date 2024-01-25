@@ -9,16 +9,18 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
     ```
     version: '3'
     services:
-    homeassistant:
+      homeassistant:
         container_name: homeassistant
         image: "ghcr.io/home-assistant/home-assistant:stable"
         volumes:
-        - /home/pi/homeassistant:/config
-        - /etc/localtime:/etc/localtime:ro
+          - /home/pi/homeassistant:/config
+          - /etc/localtime:/etc/localtime:ro
+          - /run/dbus:/run/dbus:ro
         restart: unless-stopped
         privileged: true
         network_mode: host
     ```
+    - Copying and pasting the above into the YAML file may not work due to formatting. Directly copy and paste it from here https://www.home-assistant.io/installation/raspberrypi/#docker-compose and replace `/PATH_TO_YOUR_CONFIG` with `/home/pi/homeassistant`
 3. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 4. Install Home Assistant:
     ```
