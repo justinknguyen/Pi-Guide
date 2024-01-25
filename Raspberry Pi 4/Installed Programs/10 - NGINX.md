@@ -48,16 +48,16 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
     ```
     sudo git clone [your repo.git]
     ```
-3. Edit the site config so it points to the git folder:
+3. Check the name of the folder where your repo was cloned to:
+    ```
+    ls
+    ```
+4. Edit the site config so it points to the git folder:
     ```
     sudo nano /etc/nginx/sites-available/default
     ```
     - Find the line `root /var/www/html/` and append your git folder name to it.
-4. Check the name of the folder where your repo was cloned to:
-    ```
-    ls
-    ```
-6. Reload nginx:
+5. Reload nginx:
     ```
     sudo /etc/init.d/nginx reload
     ```
