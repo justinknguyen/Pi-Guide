@@ -42,7 +42,15 @@ Installing a 30 Ohm resistor in series between the power pin of the Pi and the c
 <br><br>
 
 ## Setting up the Raspberry Pi 4
-### Option 1: Setup with Monitor (Recommended)
+### Option 1: Setup Headless (Recommended)
+If you want to setup the Pi headless (via SSH terminal instead of a monitor and Pi desktop), in the Raspberry Pi Imager, choose "Raspberry Pi OS Lite (64-bit)". Then in the Advanced options page, enable SSH and Internet.
+
+You could also manually enable SSH and Internet. This website provides a good guide on how to enable SSH and Internet headless https://pimylifeup.com/headless-raspberry-pi-setup/. <br><br>
+You can download the required files for SSH and Internet here:
+* [ssh](https://github.com/justinknguyen/PiGuide/blob/349dbb43f6d59b7d5426713397d484182c751744/ssh) <br>
+* [wpa_supplicant.conf](https://github.com/justinknguyen/PiGuide/blob/349dbb43f6d59b7d5426713397d484182c751744/wpa_supplicant.conf)
+
+### Option 2: Setup with Monitor
 The above YouTube link shows how to setup the Pi 4, however, this assumes you bought from CanaKit. CanaKit pre-installs "Noobs" on the provided MicroSD card; it provides a GUI to install the Raspberry Pi OS without an additional computer. You still require a monitor to setup the Pi. <br><br>
 If you rather use your computer to install Raspberry Pi OS directly, or have your own MicroSD card, download the Raspberry Pi Imager from https://www.raspberrypi.com/software/. In the Imager, choose "Raspberry Pi OS (64-bit)". <br>
 
@@ -56,14 +64,6 @@ In rare cases, connecting to the monitor won't display anything. If so, try [Set
 * hdmi_force_hotplug=1
 * hdmi_drive=2 
 <br><br>
-
-### Option 2: Setup Headless
-If you want to setup the Pi headless (via SSH terminal instead of a monitor and Pi desktop), in the Raspberry Pi Imager, choose "Raspberry Pi OS Lite (64-bit)". Then in the Advanced options page, enable SSH and Internet.
-
-You could also manually enable SSH and Internet. This website provides a good guide on how to enable SSH and Internet headless https://pimylifeup.com/headless-raspberry-pi-setup/. <br><br>
-You can download the required files for SSH and Internet here:
-* [ssh](https://github.com/justinknguyen/PiGuide/blob/349dbb43f6d59b7d5426713397d484182c751744/ssh) <br>
-* [wpa_supplicant.conf](https://github.com/justinknguyen/PiGuide/blob/349dbb43f6d59b7d5426713397d484182c751744/wpa_supplicant.conf) 
 <!-- -->
 **Recommendations**<br>
 It’s best to connect the Pi by ethernet as the WiFi card is a little slow. If you do so, I recommend to disable WiFi on the Pi by following the guides on this website https://pimylifeup.com/raspberry-pi-disable-wifi/.
