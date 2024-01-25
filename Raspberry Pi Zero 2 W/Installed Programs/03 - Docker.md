@@ -27,15 +27,9 @@ Containerize certain programs for easy removal. Finding guides for docker contai
     ```
 7. Install Docker-Compose:
     ```
-    sudo apt-get install libffi-dev libssl-dev
-    sudo apt install python3-dev
-    sudo apt-get install -y python3 python3-pip
+    sudo apt-get install docker-compose
     ```
-8. Once python3 and pip3 are installed, run:
-    ```
-    sudo pip3 install docker-compose
-    ```
-9. Enable the Docker system service to start your containers on boot:
+8. Enable the Docker system service to start your containers on boot:
     ```
     sudo systemctl enable docker
     ```
