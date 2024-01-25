@@ -15,7 +15,7 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
     ```
     sudo nano /etc/systemd/system.conf
     ```
-    Then uncomment and set the following lines to:
+    Then uncomment by removing the `#` and set the following lines to:
     ```
     RuntimeWatchdogSec=10
     RebootWatchdogSec=10min
