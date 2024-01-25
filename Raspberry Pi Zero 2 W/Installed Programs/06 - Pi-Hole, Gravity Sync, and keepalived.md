@@ -49,6 +49,11 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
     ```
     gravity-sync auto quad
     ```
+## Troubleshooting (Gravity Sync)
+If you messed up the configuration, enter the following to restart:
+```
+gravity-sync config
+```
 ## Installation (keepalived)
 keepalived is to have a High Availability setup between two Pi's, meaning, one Pi will act as the master server and the other will act as the slave server. When the master server shuts down, internet traffic will be redirected to the slave server until the master server comes back online.
 1. Update:
@@ -272,7 +277,7 @@ Head into your router settings and replace the DNS servers for Pi-Hole with the 
     ```
     sudo systemctl start keepalived.service
     ```
-## Troubleshooting
+## Troubleshooting (keepalived)
 In my case, the virtual IP address does not switch back to the primary Pi after a reboot without restarting keepalived with `sudo systemctl restart keepalived.service`. So, all we have to do is make a crontask to automate this restart when the Pi boots back up.
 1. Enter on both Pi's (try without `sudo` also as files are different between the two for somereason):
     ```
