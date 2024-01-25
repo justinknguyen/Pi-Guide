@@ -1,5 +1,25 @@
 # NGINX
 Create your own website hosted on your Pi.
+## Prerequisites
+If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
+1. Go to:
+    ```
+    sudo nano /etc/lighttpd/lighttpd.conf
+    ```
+2. Change the line that says `server.port = 80` to `server.port = 8080`.
+3. Go to:
+    ```
+    sudo nano /etc/lighttpd/external.conf
+    ```
+4. Enter the following in the file and save it:
+    ```
+    server.port := 8080
+    ```
+5. Restart the service:
+    ```
+    sudo service lighttpd restart
+    ```
+6. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
 ## Installation
 1. Update and upgrade:
     ```
