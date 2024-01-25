@@ -65,10 +65,6 @@ In rare cases, connecting to the monitor won't display anything. If so, try [Set
 * hdmi_drive=2 
 <br><br>
 <!-- -->
-**Recommendations**<br>
-It’s best to connect the Pi by ethernet as the WiFi card is a little slow. If you do so, I recommend to disable WiFi on the Pi by following the guides on this website https://pimylifeup.com/raspberry-pi-disable-wifi/.
-
-You should also set a static IP address for the Pi in your router settings so it doesn’t change. Having the IP address static is essential to keep all your programs working. <br><br>
 
 ***********
 Once you enable SSH through either of the above methods, download a terminal to SSH into the Pi, such as PuTTY https://www.putty.org/. This is how we’ll manage the Raspberry Pi from now on instead of using the Pi desktop.
