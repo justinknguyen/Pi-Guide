@@ -1,7 +1,12 @@
 # HyperHDR
 Fork of Hyperion, with improvements, notably to HDR colour accuracy and brightness.
-## Uninstall Hyperion
-We first need to uninstall Hyperion:
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Testing](#testing)
+- [Sources](#sources)
+## Prerequisites
+If you have Hyperion installed, uninstall it:
 ```
 sudo apt-get --purge autoremove hyperion
 ```

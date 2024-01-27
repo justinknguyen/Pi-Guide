@@ -1,5 +1,10 @@
 # GoAccess
 View NGINX access log in a UI/dashboard
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Sources](#sources)
 ## Installation
 1. Install GoAccess:
     ```
@@ -19,7 +24,7 @@ View NGINX access log in a UI/dashboard
     ```
     log-format %h %^[%d:%t %^] "%m %U" %s %b "%R" "%u"
     ``` 
-## Usage
+## Testing
 To output to a terminal and generate an interactive report:
 ```
 goaccess /var/log/nginx/access.log

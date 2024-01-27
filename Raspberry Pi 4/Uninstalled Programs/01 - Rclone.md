@@ -1,5 +1,9 @@
 # Rclone
 Rclone is to backup anything to any cloud service.
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Sources](#sources)
 ## Installation
 1. Update and Upgrade:
     ```

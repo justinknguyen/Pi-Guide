@@ -1,5 +1,10 @@
 # Home Assistant 
-Can connect anything "smart" into one single app for a unified Smart Home. Main benefit is being able to integrate into Apple HomeKit. 
+Can connect anything "smart" into one single app for a unified Smart Home. Main benefit is being able to integrate into Apple HomeKit.
+## Table of Contents
+- [Installation](#installation)
+- [Testing](#testing)
+- [Backing Up Home Assistant](#backing-up-home-assistant)
+- [Sources](#sources)
 ## Installation
 1. Create a `docker-compose.yml` file by typing:
     ```
@@ -28,7 +33,7 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
     ```
 ## Testing
 You can now access the WebUI by typing `[PIIPADDRESS]:8123` into your search bar. Follow the second link under Sources to learn how to use Home Assistant.
-## Backing up Home Assistant
+## Backing Up Home Assistant
 1. Stop the Home Assistant service by logging into Portainer.
 2. Create a .tar file of the Home Assistant folder (mine is located at `/home/pi/homeassistant`):
     ```

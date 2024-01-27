@@ -1,5 +1,10 @@
 # Grafana
 Monitor the Pi hardware. Most important information to me are CPU temp/load and storage.
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Sources](#sources)
 ## Installation
 1. Run everything as sudo:
     ```

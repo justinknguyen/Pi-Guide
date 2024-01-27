@@ -1,5 +1,9 @@
 # Watchdog 
 Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware watchdog built in that will power cycle it if the chip is not refreshed within a certain interval.
+## Table of Contents
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Sources](#sources)
 ## Configuration
 1. Check if you have `/dev/watchdog` by entering:
     ```

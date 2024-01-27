@@ -1,5 +1,10 @@
 # diyHue
 Turn the Raspberry Pi into another Hue Bridge for multiple entertainment areas/hue sync instances.
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Sources](#sources)
 ## Prerequisites
 If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
 1. Go to:

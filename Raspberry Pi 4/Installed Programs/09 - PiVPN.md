@@ -1,5 +1,13 @@
 # PiVPN 
 Turn the Pi into a VPN server. When connected to any public network, being able to VPN to the Pi at home provides you with security/privacy and all access to your home network (i.e., essentially connected to your home WiFi network while away from home).
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+    - [Connect From Your Computer](#connect-from-your-computer)
+    - [Connect From Your Phone](#connect-from-your-phone)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Sources](#sources)
 ## Installation
 1. Update and Upgrade:
     ```
@@ -21,13 +29,13 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
     ```
     sudo pivpn add
     ```
-### To connect to the VPN from your Windows computer
+### Connect From Your Computer
 Install WireGuard on your computer from https://www.wireguard.com/install/. Next, enter the following into your SSH terminal. Remember to replace the section below with the profile name you created:
     ```
     sudo nano /home/pi/configs/[PROFILENAME].conf
     ```
 Copy everything in this config file and make the same .conf file on your Windows computer by pasting everything in it. Now open WireGuard and open this .conf that you just created. You can now connect to the VPN.
-### To connect to the VPN from your phone
+### Connect From Your Phone
 Install the WireGuard app. Next, enter the following into your SSH terminal:
 ```
 pivpn -qr PROFILENAME

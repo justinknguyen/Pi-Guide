@@ -4,6 +4,15 @@ Network-wide ad-blocking with recursive DNS and full IPv4/IPv6 support. The Pi 4
 To install and setup Pi-Hole, follow the guide outlined under the `Raspberry Pi 4` folder for Pi-Hole. If you have Unbound on your primary Pi, install and configure Unbound on your second Pi also. One thing you should keep in mind when installing Unbound on the second Pi is the port. In the Unbound config file, change the port to `5353`. <br>
 
 The following guide will show how to setup a second Pi as a slave server and sync between the two Pi's.
+## Table of Contents
+- [Installation (Gravity Sync)](#installation-gravity-sync)
+- [Configuration (Gravity Sync)](#configuration-gravity-sync)
+- [Troubleshooting (Gravity Sync)](#troubleshooting-gravity-sync)
+- [Installation (keepalived)](#installation-keepalived)
+- [Configuration (keepalived)](#configuration-keepalived)
+- [Testing (keepalived)](#testing-keepalived)
+- [Troubleshooting (keepalived)](#troubleshooting-keepalived)
+- [Sources](#sources)
 ## Installation (Gravity Sync)
 This install guide will begin by setting up syncing between the two Pi's. Adding adlists or whitelists in one Pi will automatically add them to the other Pi.
 1. Match your settings in Pi-Hole in your second Pi with your primary Pi.

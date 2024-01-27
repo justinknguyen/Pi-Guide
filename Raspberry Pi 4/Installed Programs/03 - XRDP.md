@@ -1,5 +1,11 @@
 # XRDP 
 Remote desktop. Everything can be done via SSH terminal, but the option to remote desktop in is nice. This assumes you installed the full RPi OS with the desktop environment.
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Sources](#sources)
 ## Prerequisites
 1. Enter:
     ```

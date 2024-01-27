@@ -1,5 +1,16 @@
 # NGINX
 Create your own website hosted on your Pi.
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+    - [Hosting the Website](#hosting-the-website)
+    - [DDoS Protection](#ddos-protection)
+    - [Enable HTTPS](#enable-https)
+    - [Blocking IP's](#blocking-ips)
+- [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
+- [Sources](#sources)
 ## Prerequisites
 If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
 1. Go to:

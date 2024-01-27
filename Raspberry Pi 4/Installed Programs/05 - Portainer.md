@@ -1,5 +1,10 @@
 # Portainer 
 Provides GUI for docker containers to easily manage.
+## Table of Contents
+- [Installation](#installation)
+- [Testing](#testing)
+- [Updating](#updating)
+- [Sources](#sources)
 ## Installation
 1. Update and Upgrade:
     ```

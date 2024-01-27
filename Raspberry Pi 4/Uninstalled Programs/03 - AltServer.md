@@ -2,6 +2,19 @@
 AltServer running on your Raspberry Pi for consistent AltStore refreshing! 
 
 If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
+## Table of Contents
+- [Prerequisites](#prerequisites)
+    - [Installing libplist](#installing-libplist)
+    - [Installing libimobiledevice-glue](#installing-libimobiledevice-glue)
+    - [Installing libimobiledevice](#installing-libimobiledevice)
+    - [Installing Rust](#installing-rust)
+    - [Enable Services](#enable-services)
+- [Installation](#installation)
+- [Configuration](#configuration)
+    - [Configuring AltServer and AltStore on Your Devices](#configuring-altserver-and-altstore-on-your-devices)
+    - [Configuring Services to Run Automatically on the Pi](#configuring-services-to-run-automatically-on-the-pi)
+- [Troubleshooting](#troubleshooting)
+- [Sources](#sources)
 ## Prerequisites
 1. Create a folder on your Pi to store the files we'll be downloading. We'll make one at the default path, which is `/home/pi`:
     ```
@@ -125,7 +138,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     rustup toolchain install stable
     rustup default stable
     ```
-### Enable services
+### Enable Services
 14. Edit the `usbmuxd` service file:
     ```
     sudo nano /lib/systemd/system/usbmuxd.service
@@ -156,7 +169,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     ```
 ## Configuration
 Note: you can do this with multiple devices at a time.
-### Configuring AltServer and AltStore on your devices
+### Configuring AltServer and AltStore on Your Devices
 1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable, and enable "Show this iPhone/iPad when on Wi-Fi" in the Finder or in iTunes, then hit `Sync/Apply`.
 2. Disconnect your device from USB, and make sure your device is broadcasting itself by checking if your Mac/PC can still see the device in Finder or in iTunes. 
     - If you don't see it, you can check if your device is broadcasting itself to your network by entering the following on your Pi:
@@ -211,7 +224,7 @@ Note: you can do this with multiple devices at a time.
         Finished!
         ```
     - If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
-### Configuring services to run automatically on the Pi
+### Configuring Services to Run Automatically on the Pi
 7. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
     ```
     sudo crontab -e

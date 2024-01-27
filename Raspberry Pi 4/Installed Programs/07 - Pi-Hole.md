@@ -3,6 +3,18 @@ Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support
 
 **Disclaimer**<br>
 This Pi-Hole guide will not show how to configure with a second Pi. Detailed instructions on how to do that will be here, [Pi Zero 2 W: Pi-Hole, Gravity Sync, and keepalived](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/06%20-%20Pi-Hole%2C%20Gravity%20Sync%2C%20and%20keepalived.md).
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+    - [Router Settings](#router-settings)
+    - [PiHole DNS Settings](#pi-hole-dns-settings)
+    - [Adding Adlists](#adding-adlists)
+    - [Adding Whitelists](#adding-whitelists)
+    - [Multiple Upstream DNS Servers](#multiple-upstream-dns-servers)
+- [Testing](#testing)
+- [Updating](#updating)
+- [Troubleshooting](#troubleshooting)
+- [Sources](#sources)
 ## Installation 
 1. Install Pi-Hole:
     ```

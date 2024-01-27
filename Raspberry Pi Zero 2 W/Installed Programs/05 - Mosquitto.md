@@ -2,6 +2,11 @@
 MQTT communication. This is how the Pi Zero 2 W can communicate with the Pi 4 and provide Room Assistant data (on Pi Zero 2 W) to Home Assistant (on Pi 4). <br><br>
 **Disclaimer** <br>
 This will NOT be installed on the Pi Zero 2 W, instead it will be installed on the Pi 4. This guide is placed here for convenience with setting up with Room Assistant.
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Sources](#sources)
 ## Installation
 1. SSH into Pi 4 and enter:
     ```

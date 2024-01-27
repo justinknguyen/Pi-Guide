@@ -1,5 +1,11 @@
 # Unbound 
 Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and also provides privacy by getting rid of the third party, such as Google, Cloudflare, OpenDNS, etc.
+## Table of Contents
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Getting IPv6 to Work with Unbound](#getting-ipv6-to-work-with-unbound)
+- [Sources](#sources)
 ## Installation
 1. Update:
     ```
