@@ -1,6 +1,6 @@
 # Pi-Hole
 
-Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support. The Pi 4 acts as the master server, while the Pi Zero 2 W acts as the slave server (i.e., when the master is down, internet traffic will be redirected to the slave).
+Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support.
 
 ## Table of Contents
 
