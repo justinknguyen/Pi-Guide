@@ -2,9 +2,6 @@
 
 Sync Pi-Hole adlists and whitelists between two Raspbery Pi's.
 
-**Disclaimer**<br>
-To install and setup Pi-Hole, follow the guide outlined [here](/06%20-%20Pi-Hole.md). If you have Unbound on your primary Pi, install and configure Unbound on your second Pi also. One thing you should keep in mind when installing Unbound on the second Pi is the port. In the Unbound config file, change the port to `5353`.
-
 ## Table of Contents
 
 - [Installation](#installation)
