@@ -36,7 +36,7 @@ You may want to disable Pi-Hole temporarily before proceeding.
    addresses:
        - <bluetooth-mac-of-device-to-track>
    ```
-4. To save the file, press `Ctrl+X` then `Y` then `Enter`. You can now follow the steps outlined under [How to Setup Room Assistant (on Pi Zero 2 W) with Home Assistant (on Pi 4)](#How-to-Setup-Room-Assistant-on-Pi-Zero-2-W-with-Home-Assistant-on-Pi-4).
+4. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 5. Create the docker-compose file with:
    ```
    nano ~/room-assistant/docker-compose.yml
@@ -81,7 +81,7 @@ You may want to disable Pi-Hole temporarily before proceeding.
 
 These steps will show you how to setup Room Assistant (on one Pi) with Home Assistant (on another Pi).
 
-Head to [Mosquitto](/05%20-%20Mosquitto.md) and complete the steps. After completing, login to the WebUI of Home Assistant and head over to Configuration>Devices & Services. Next, add the "MQTT" integration and set the following fields to:
+Head to [Mosquitto](https://github.com/justinknguyen/Pi-Guide/blob/main/Pi-Guide/Optional%20Packages/05%20-%20Mosquitto.md) and complete the steps. After completing, login to the WebUI of Home Assistant and head over to Configuration>Devices & Services. Next, add the "MQTT" integration and set the following fields to:
 
 - Broker: [PIIPADDRESS]
   - IP address of Pi 4.
