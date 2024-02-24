@@ -2,7 +2,7 @@
 
 Network-wide ad-blocking with recursive DNS and full IPv4/IPv6 support. The Pi 4 acts as the master server, while the Pi Zero 2 W acts as the slave server (i.e., when the master is down, internet traffic will be redirected to the slave). <br><br>
 **Disclaimer**<br>
-To install and setup Pi-Hole, follow the guide outlined [here](/06%20-%20Pi-Hole.md). If you have Unbound on your primary Pi, install and configure Unbound on your second Pi also. One thing you should keep in mind when installing Unbound on the second Pi is the port. In the Unbound config file, change the port to `5353`. <br>
+To install and setup Pi-Hole, follow the guide outlined [here](https://github.com/justinknguyen/Pi-Guide/blob/main/Pi-Guide/Essential%20Packages/06%20-%20Pi-Hole.md). If you have Unbound on your primary Pi, install and configure Unbound on your second Pi also. One thing you should keep in mind when installing Unbound on the second Pi is the port. In the Unbound config file, change the port to `5353`. <br>
 
 The following guide will show how to setup a second Pi as a slave server and sync between the two Pi's.
 
