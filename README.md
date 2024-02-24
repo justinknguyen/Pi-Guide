@@ -2,9 +2,9 @@
 
 This is a guide and collection of packages I've installed on my Raspberry Pi's.
 
-## Getting Started
-
 [Table of Contents](#table-of-contents)
+
+## Getting Started
 
 ### Setting up the Raspberry Pi
 
