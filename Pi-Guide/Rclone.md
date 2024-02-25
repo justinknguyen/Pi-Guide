@@ -41,7 +41,7 @@ Backup anything to any cloud service.
     ```
 12. _Optional:_ Automate backups everyday at midnight:
     ```
-    crontab -e
+    sudo crontab -e
     ```
 13. Add the following line:
     ```
