@@ -43,8 +43,10 @@ Using an Asus router,
 
 ### 2. Pi-Hole DNS Settings
 
-Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled. <br><br>
-For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
+Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled.
+
+For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins".
+
 For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-limiting to 2000 and 600, and also enabled conditional forwarding. Conditional forwarding allows me to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 
 - Local network in CIDR notation: 192.168.50.0/24
@@ -56,7 +58,8 @@ For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-l
 
 ### 3. Adding Adlists
 
-Click on "Group Management" then "Adlists" and add any adlist you want. I recommend adding the links in green here, https://firebog.net/. You can copy and paste multiple links at a time. <br><br>
+Click on "Group Management" then "Adlists" and add any adlist you want. I recommend https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt from https://github.com/hagezi/dns-blocklists. You can copy and paste multiple links at a time.
+
 Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
 
 ### 4. Adding Whitelists
@@ -66,8 +69,10 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
    sudo apt install python3
    ```
 2. Install whitelist:
-   `   git clone https://github.com/anudeepND/whitelist.git
-sudo python3 whitelist/scripts/whitelist.py`
+   ```
+   git clone https://github.com/anudeepND/whitelist.git
+   sudo python3 whitelist/scripts/whitelist.py
+   ```
    An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
 
 ### 5. Multiple Upstream DNS Servers (Optional)
@@ -106,7 +111,9 @@ If you want to use multiple DNS servers and have the second server only as backu
      PIHOLE_DNS_6=2620:fe::9
      ```
 5. Restart the DNS:
-   `   pihole restartdns`
+   ```
+   pihole restartdns
+   ```
    Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
 
 - Upon restarting,
