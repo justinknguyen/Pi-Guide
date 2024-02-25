@@ -16,7 +16,7 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
 
 ## Installation
 
-1. Create a `docker-compose.yml` file by typing:
+1. Create a `docker-compose.yml` file by entering:
    ```
    sudo nano docker-compose.yml
    ```
@@ -44,7 +44,7 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
 
 ## Testing
 
-You can now access the WebUI by typing `[PIIPADDRESS]:8123` into your search bar. Follow the second link under Sources to learn how to use Home Assistant.
+You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your search bar. Follow the second link under Sources to learn how to use Home Assistant.
 
 ## Backing Up Home Assistant
 
