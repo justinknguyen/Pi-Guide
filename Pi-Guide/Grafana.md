@@ -4,10 +4,15 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Sources](#sources)
+
+## Prerequisites
+
+[Docker](/Pi-Guide/Docker.md)
 
 ## Installation
 

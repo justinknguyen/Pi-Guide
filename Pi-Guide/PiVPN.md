@@ -27,7 +27,7 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
    ```
    sudo curl -L https://install.pivpn.io | bash
    ```
-4. Go through the install wizard and make sure you select WireGuard. If you have Pi-Hole, make sure you select Yes when it asks to use Pi-Hole's DNS server for the VPN.
+4. Go through the install wizard and make sure you select WireGuard. If you have Pi-Hole, make sure you select "Yes" when it asks to use Pi-Hole's DNS server for the VPN.
 
 ## Configuration
 
@@ -40,8 +40,8 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
 ### Connect From Your Computer
 
 Install WireGuard on your computer from https://www.wireguard.com/install/. Next, enter the following into your SSH terminal. Remember to replace the section below with the profile name you created:
-`    sudo nano /home/pi/configs/[PROFILENAME].conf
-   `
+`   sudo nano /home/pi/configs/[PROFILENAME].conf
+  `
 Copy everything in this config file and make the same .conf file on your Windows computer by pasting everything in it. Now open WireGuard and open this .conf that you just created. You can now connect to the VPN.
 
 ### Connect From Your Phone

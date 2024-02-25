@@ -1,6 +1,6 @@
 # Pi-Hole
 
-Network-wide ad-blocking with recursive DNS (Unbound) and full IPv4/IPv6 support.
+Network-wide ad-blocking.
 
 ## Table of Contents
 
@@ -66,9 +66,8 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
    sudo apt install python3
    ```
 2. Install whitelist:
-   `    git clone https://github.com/anudeepND/whitelist.git
-    sudo python3 whitelist/scripts/whitelist.py
-   `
+   `   git clone https://github.com/anudeepND/whitelist.git
+ sudo python3 whitelist/scripts/whitelist.py`
    An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
 
 ### Multiple Upstream DNS Servers
@@ -107,8 +106,7 @@ If you want to use multiple DNS servers and have the second server only as backu
      PIHOLE_DNS_6=2620:fe::9
      ```
 5. Restart the DNS:
-   `    pihole restartdns
-   `
+   `   pihole restartdns`
    Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
 
 - Upon restarting,
@@ -159,8 +157,7 @@ When updating with `pihole -up` there are a couple of things to do if you follow
      sudo nano /etc/pihole/pihole-FTL.conf
      ```
   2. Type the following line in:
-     `    RATE_LIMIT=0/0
-   `
+     `   RATE_LIMIT=0/0`
      This will uncap the Rate Limit, however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, login to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md#getting-ipv6-to-work-with-unbound).

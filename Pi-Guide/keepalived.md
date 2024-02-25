@@ -4,11 +4,18 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
+
+## Prerequisites
+
+- [Pi-Hole](/Pi-Guide/Pi-Hole.md)
+- [Unbound](/Pi-Guide/Unbound.md) (recommended)
+- [Gravity Sync](/Pi-Guide/Gravity%20Sync.md) (recommended)
 
 ## Installation
 

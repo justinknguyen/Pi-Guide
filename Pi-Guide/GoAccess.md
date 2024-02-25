@@ -4,10 +4,15 @@ View NGINX access log in a UI/dashboard
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Sources](#sources)
+
+## Prerequisites
+
+[NGINX](/Pi-Guide/NGINX.md)
 
 ## Installation
 

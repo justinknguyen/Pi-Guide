@@ -39,13 +39,13 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
 
 ## Testing
 
-_Optional:_ run a "fork bomb" on your shell:
+Run a "fork bomb" on your shell:
 
 ```
 :(){ :|:& };:
 ```
 
-Running this code will render your Raspberry Pi inaccessible until it’s reset by the watchdog. The Pi should be back up and running after a few minutes. If you notice your Pi is a little slow try rebooting it again with `sudo reboot`.
+Running this code will render your Raspberry Pi inaccessible until it’s reset by the watchdog. The Pi should be back up and running after a few minutes.
 
 ## Sources
 

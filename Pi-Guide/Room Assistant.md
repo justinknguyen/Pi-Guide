@@ -4,10 +4,16 @@ Using BluetoothLowEnergy (BLE) to detect the distance away from the Pi using a B
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
+
+## Prerequisites
+
+- [Docker](/Pi-Guide/Docker.md)
+- [Home Assistant](/Pi-Guide/Home%20Assistant.md)
 
 ## Installation
 

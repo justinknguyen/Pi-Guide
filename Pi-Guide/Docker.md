@@ -1,6 +1,6 @@
 # Docker
 
-Containerize certain programs for easy removal. Finding guides for docker container programs are harder than finding guides to normally install programs. The benefit for docker is being able to quickly and easily remove the entire program, which is much harder than normally installed programs. Installing docker containers can also be easier as there is a less chance of it conflicting with other programs.
+Containerize packages for easy removal. The benefit of Docker is being able to quickly and easily remove the entire package, which is much harder than normally installed packages. There is also a less chance of packages conflicting with each other.
 
 ## Table of Contents
 

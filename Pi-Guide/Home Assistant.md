@@ -4,10 +4,15 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Testing](#testing)
 - [Backing Up Home Assistant](#backing-up-home-assistant)
 - [Sources](#sources)
+
+## Prerequisites
+
+[Docker](/Pi-Guide/Docker.md)
 
 ## Installation
 

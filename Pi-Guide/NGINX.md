@@ -183,7 +183,7 @@ If you notice a suspicious IP traffic, perform the following to block access fro
 
 ## Testing
 
-1. Visit `http://[PIIPADDRESS]`
+Visit `http://[PIIPADDRESS]`
 
 ## Troubleshooting
 

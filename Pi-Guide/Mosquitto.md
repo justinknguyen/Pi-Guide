@@ -1,15 +1,19 @@
 # Mosquitto
 
-MQTT communication. This is how a one Pi can communicate with another Pi to provide Room Assistant (on one Pi) data to Home Assistant (on another Pi). <br><br>
-**Disclaimer** <br>
-This will NOT be installed on the Pi Zero 2 W, instead it will be installed on the Pi 4. This guide is placed here for convenience with setting up with Room Assistant.
+MQTT communication. This is how a one Pi can communicate with another Pi to provide Room Assistant (on one Pi) data to Home Assistant (on another Pi). Mosquitto will be installed on the Pi with Home Assistant.
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Sources](#sources)
+
+## Prerequisites
+
+- [Home Assistant](/Pi-Guide/Home%20Assistant.md)
+- [Room Assistant](/Pi-Guide/Room%20Assistant.md)
 
 ## Installation
 

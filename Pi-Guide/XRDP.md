@@ -1,6 +1,6 @@
 # XRDP
 
-Remote desktop. Everything can be done via SSH terminal, but the option to remote desktop in is nice. This assumes you installed the full RPi OS with the desktop environment.
+Remotely access your Raspberry Pi's desktop environment from another device.
 
 ## Table of Contents
 
@@ -12,17 +12,18 @@ Remote desktop. Everything can be done via SSH terminal, but the option to remot
 
 ## Prerequisites
 
+1. Installed a Raspberry Pi OS version with a desktop environment.
 1. Enter:
    ```
    sudo raspi-config
    ```
-2. Go to (1) System Options -> S5 Boot/Auto Login -> select "B3 Desktop GUI - requiring user to login".
-3. Exit back to the terminal and run the following commands:
+1. Go to (1) System Options -> S5 Boot/Auto Login -> select "B3 Desktop GUI - requiring user to login".
+1. Exit back to the terminal and run the following commands:
    ```
    sudo apt update
    sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
    ```
-4. Reboot:
+1. Reboot:
    ```
    sudo reboot
    ```

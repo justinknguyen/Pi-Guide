@@ -1,6 +1,6 @@
 # AltServer
 
-AltServer running on your Raspberry Pi for consistent AltStore refreshing!
+AltServer running on your Raspberry Pi!
 
 If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 

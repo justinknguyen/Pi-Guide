@@ -1,6 +1,6 @@
 # Rclone
 
-Rclone is to backup anything to any cloud service.
+Backup anything to any cloud service.
 
 ## Table of Contents
 

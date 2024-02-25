@@ -4,11 +4,16 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Getting IPv6 to Work with Unbound](#getting-ipv6-to-work-with-unbound)
 - [Sources](#sources)
+
+## Prerequisites
+
+[Pi-Hole](/Pi-Guide/Pi-Hole.md)
 
 ## Installation
 
@@ -181,11 +186,10 @@ If the above steps still do not work, the below can be performed on an Asus rout
    ```
 2. Paste the following in. Make sure you enter your IPv6 address within the square brackets below. You can get rid of
    `,[IPv6 address of second Pi]` if you don't have a second Pi.
-   `    #!/bin/sh
-    CONFIG=$1
-    source /usr/sbin/helper.sh
-    pc_replace "dhcp-option=lan,option6:23,[::]" "dhcp-option=lan,option6:23,[IPv6 address of first Pi],[IPv6 address of second Pi]" $CONFIG
-   `
+   `   #!/bin/sh
+ CONFIG=$1
+ source /usr/sbin/helper.sh
+ pc_replace "dhcp-option=lan,option6:23,[::]" "dhcp-option=lan,option6:23,[IPv6 address of first Pi],[IPv6 address of second Pi]" $CONFIG`
 3. Enter:
    ```
    chmod 755 /jffs/scripts/dnsmasq.postconf

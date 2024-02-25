@@ -4,10 +4,16 @@ Sync Pi-Hole adlists and whitelists between two Raspbery Pi's.
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
+
+## Prerequisites
+
+- [Pi-Hole](/Pi-Guide/Pi-Hole.md)
+- [Unbound](/Pi-Guide/Unbound.md) (recommended)
 
 ## Installation
 

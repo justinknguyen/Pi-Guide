@@ -4,13 +4,13 @@ Used to sync smart lights to picture on display. Far cheaper alternative to the 
 
 ## Table of Contents
 
-- [Parts List](#parts-list)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
-## Parts List
+## Prerequisites
 
 - [USB 2.0 1080p 30Hz Capture Card](https://www.amazon.ca/gp/product/B08F6ZD2RK/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 - [HDMI Splitter, 1-in-2-out, 4k 60Hz Simultaneous Output](https://a.co/d/fNABOwW)
