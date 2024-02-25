@@ -34,7 +34,7 @@ Remotely access your Raspberry Pi's desktop environment from another device.
    ```
    sudo apt install xrdp
    ```
-2. When the installation process is complete, the XRDP service will automatically start. You can verify that XRDP is running by typing:
+2. When the installation process is complete, the XRDP service will automatically start. You can verify that XRDP is running by entering:
    ```
    systemctl show -p SubState --value xrdp
    ```
