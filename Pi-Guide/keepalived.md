@@ -243,7 +243,7 @@ Head into your router settings and replace the DNS servers for Pi-Hole with the 
    ```
    ping [VIRTUALIPADDRESS]
    ```
-4. In our case, there is a noticeable time difference between the ping from Pi 4 and Pi Zero 2 W. This is because the Pi 4 is connected by ethernet, whereas the Pi Zero 2 W is not. This makes it easy to see the switching between the two Pi's in real time. If you can't tell the difference between the two Pi's by this method, you can manually check the logs of each by entering `sudo systemctl status keepalived.service`. Start by pinging our virtual IP address constantly by entering:
+4. In our case, there is a noticeable time difference between the ping times. This is because one Pi is connected by ethernet, whereas the other is not. This makes it easy to see the switching between the two Pi's in real time. If you can't tell the difference between the two Pi's by this method, you can manually check the logs of each by entering `sudo systemctl status keepalived.service`. Start by pinging our virtual IP address constantly by entering:
    ```
    ping [VIRTUALIPADDRESS] -t
    ```
@@ -297,7 +297,7 @@ sudo service unbound restart
 sudo systemctl restart keepalived.service`
    **Important Note** <br>
    I sometimes experience a problem where the second Pi gets queries even if the keepalived service is stopped. Try removing the IPv6 vrrp block from the keepalived config file, then test for any more queries. If you see no more queries, then add it back and see if it happens again. <br><br>
-   If it happens again, then it could be an IPv6 issue. The reason is because of a file in your router when setting up Unbound [here](https://github.com/justinknguyen/PiGuide/wiki/Raspberry-Pi-4#getting-ipv6-to-work-with-unbound). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the IPv6 vrrp address when we setup keepalived. You should also disable router advertisement for IPv6 in router settings, if you have it on, then re-enable it after applying the IPv6 vrrp in the router file and see if everything is ok.
+   If it happens again, then it could be an IPv6 issue. The reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the IPv6 vrrp address when we setup keepalived. You should also disable router advertisement for IPv6 in router settings, if you have it on, then re-enable it after applying the IPv6 vrrp in the router file and see if everything is ok.
 
 ### Sources
 

@@ -60,14 +60,17 @@ Once, Hyperion is installed on the pi, you can access the Hyperion website using
 
 ## Troubleshooting
 
-- If you get the following error when trying to update your Pi:
-  ```
-  W: Failed to fetch https://apt.hyperion-project.org/dists/bullseye/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 21710A7427490076
-  ```
-  import the public key again and then you should be able to update and upgrade your Pi:
-  ```
-  wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
-  ```
+If you get the following error when trying to update your Pi:
+
+```
+W: Failed to fetch https://apt.hyperion-project.org/dists/bullseye/InRelease  The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 21710A7427490076
+```
+
+import the public key again and then you should be able to update and upgrade your Pi:
+
+```
+wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
+```
 
 ## Sources
 

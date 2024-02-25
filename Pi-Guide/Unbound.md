@@ -153,7 +153,7 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
    ;; MSG SIZE  rcvd: 56
    ```
 
-3. You can test DNSSEC validation using the commands below. The first command should give a status report of `SERVFAIL` and no IP address. The second should give `NOERROR` plus an IP address.
+3. You can test DNSSEC validation using the commands below. The first command should give a status report of `SERVFAIL`, and the second should give `NOERROR`.
    ```
    dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5335
    dig sigok.verteiltesysteme.net @127.0.0.1 -p 5335
@@ -186,10 +186,12 @@ If the above steps still do not work, the below can be performed on an Asus rout
    ```
 2. Paste the following in. Make sure you enter your IPv6 address within the square brackets below. You can get rid of
    `,[IPv6 address of second Pi]` if you don't have a second Pi.
-   `   #!/bin/sh
- CONFIG=$1
- source /usr/sbin/helper.sh
- pc_replace "dhcp-option=lan,option6:23,[::]" "dhcp-option=lan,option6:23,[IPv6 address of first Pi],[IPv6 address of second Pi]" $CONFIG`
+   ```
+   #!/bin/sh
+   CONFIG=$1
+   source /usr/sbin/helper.sh
+   pc_replace "dhcp-option=lan,option6:23,[::]" "dhcp-option=lan,option6:23,[IPv6 address of first Pi],[IPv6 address of second Pi]" $CONFIG
+   ```
 3. Enter:
    ```
    chmod 755 /jffs/scripts/dnsmasq.postconf

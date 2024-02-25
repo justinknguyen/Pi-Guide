@@ -109,7 +109,7 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
      sudo reboot
      ```
 
-### Sources
+## Sources
 
 - https://www.youtube.com/watch?v=IFVYe3riDRA
 - https://github.com/vmstan/gravity-sync

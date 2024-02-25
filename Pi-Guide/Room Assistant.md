@@ -87,7 +87,7 @@ You may want to disable Pi-Hole temporarily before proceeding.
 
 These steps will show you how to setup Room Assistant (on one Pi) with Home Assistant (on another Pi).
 
-Head to [Mosquitto](https://github.com/justinknguyen/Pi-Guide/blob/main/Pi-Guide/Optional%20Packages/05%20-%20Mosquitto.md) and complete the steps. After completing, login to the WebUI of Home Assistant and head over to Configuration>Devices & Services. Next, add the "MQTT" integration and set the following fields to:
+Head to [Mosquitto](/Pi-Guide/Mosquitto.md) and complete the steps. After completing, login to the WebUI of Home Assistant and head over to Configuration>Devices & Services. Next, add the "MQTT" integration and set the following fields to:
 
 - Broker: [PIIPADDRESS]
   - IP address of Pi 4.

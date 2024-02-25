@@ -6,11 +6,11 @@ Network-wide ad-blocking.
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Router Settings](#router-settings)
-  - [PiHole DNS Settings](#pi-hole-dns-settings)
-  - [Adding Adlists](#adding-adlists)
-  - [Adding Whitelists](#adding-whitelists)
-  - [Multiple Upstream DNS Servers](#multiple-upstream-dns-servers)
+  - [1. Router Settings](#1-router-settings)
+  - [2. PiHole DNS Settings](#2-pi-hole-dns-settings)
+  - [3. Adding Adlists](#3-adding-adlists)
+  - [4. Adding Whitelists](#4-adding-whitelists)
+  - [5. Multiple Upstream DNS Servers (Optional)](#5-multiple-upstream-dns-servers-optional)
 - [Testing](#testing)
 - [Updating](#updating)
 - [Troubleshooting](#troubleshooting)
@@ -31,7 +31,7 @@ Network-wide ad-blocking.
 
 ## Configuration
 
-### Router Settings
+### 1. Router Settings
 
 Using an Asus router,
 
@@ -41,7 +41,7 @@ Using an Asus router,
 3. For IPv6: <br>
    Under "IPv6", enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
 
-### Pi-Hole DNS Settings
+### 2. Pi-Hole DNS Settings
 
 Login to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled. <br><br>
 For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins". <br><br>
@@ -54,12 +54,12 @@ For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-l
 - Local domain name (optional): router.asus.com
   - the format is the domain you use to sign into your router's settings.
 
-### Adding Adlists
+### 3. Adding Adlists
 
 Click on "Group Management" then "Adlists" and add any adlist you want. I recommend adding the links in green here, https://firebog.net/. You can copy and paste multiple links at a time. <br><br>
 Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
 
-### Adding Whitelists
+### 4. Adding Whitelists
 
 1. Install python3:
    ```
@@ -67,12 +67,12 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
    ```
 2. Install whitelist:
    `   git clone https://github.com/anudeepND/whitelist.git
- sudo python3 whitelist/scripts/whitelist.py`
+sudo python3 whitelist/scripts/whitelist.py`
    An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
 
-### Multiple Upstream DNS Servers
+### 5. Multiple Upstream DNS Servers (Optional)
 
-If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md) installed.
+If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md), [Gravity Sync](/Pi-Guide/Gravity%20Sync.md), and [keepalived](/Pi-Guide/keepalived.md) installed.
 
 1. Select the two upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
 2. Create a file called `99-custom.conf` by entering the below command. In the file, type in `strict-order` and save.
@@ -146,7 +146,7 @@ When updating with `pihole -up` there are a couple of things to do if you follow
      ```
    - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 2. If you changed your port for Pi-Hole:
-   - You might have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
+   - You might have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](/Pi-Guide/diyHue.md#prerequisites)
 
 ## Troubleshooting
 
@@ -160,9 +160,9 @@ When updating with `pihole -up` there are a couple of things to do if you follow
      `   RATE_LIMIT=0/0`
      This will uncap the Rate Limit, however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, login to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
 
-- If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%204/Installed%20Programs/08%20-%20Unbound.md#getting-ipv6-to-work-with-unbound).
+- If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
-- If you changed your port for Pi-Hole, you might have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](https://github.com/justinknguyen/Pi-Guide/blob/main/Raspberry%20Pi%20Zero%202%20W/Installed%20Programs/08%20-%20diyHue.md#prerequisites)
+- If you changed your port for Pi-Hole, you might have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](/Pi-Guide/diyHue.md#prerequisites)
 
 ## Sources
 
