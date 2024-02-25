@@ -7,15 +7,15 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-  - [Installing libplist](#installing-libplist)
-  - [Installing libimobiledevice-glue](#installing-libimobiledevice-glue)
-  - [Installing libimobiledevice](#installing-libimobiledevice)
-  - [Installing Rust](#installing-rust)
-  - [Enable Services](#enable-services)
+  - [1. Installing libplist](#1-installing-libplist)
+  - [2. Installing libimobiledevice-glue](#2-installing-libimobiledevice-glue)
+  - [3. Installing libimobiledevice](#3-installing-libimobiledevice)
+  - [4. Installing Rust](#4-installing-rust)
+  - [5. Enable Services](#5-enable-services)
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Configuring AltServer and AltStore on Your Devices](#configuring-altserver-and-altstore-on-your-devices)
-  - [Configuring Services to Run Automatically on the Pi](#configuring-services-to-run-automatically-on-the-pi)
+  - [1. Configuring AltServer and AltStore on Your Devices](#1-configuring-altserver-and-altstore-on-your-devices)
+  - [2. Configuring Services to Run Automatically on the Pi](#2-configuring-services-to-run-automatically-on-the-pi)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
@@ -43,7 +43,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
      openssl
    ```
 
-### Installing libplist
+### 1. Installing libplist
 
 4. Install `libplist` from source by first installing dependencies and build tools:
    ```
@@ -71,7 +71,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    cd ..
    ```
 
-### Installing libimobiledevice-glue
+### 2. Installing libimobiledevice-glue
 
 8. Next we need to do a similar process and install `libimobiledevice-glue` from source:
    ```
@@ -98,7 +98,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    cd ..
    ```
 
-### Installing libimobiledevice
+### 3. Installing libimobiledevice
 
 9. Next we need to do a similar process again and install `libimobiledevice` from source:
    ```
@@ -133,7 +133,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     sudo ldconfig
     ```
 
-### Installing Rust
+### 4. Installing Rust
 
 11. Time to install `rustup`. Just enter `1` for the default installation when prompted:
     ```
@@ -152,7 +152,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
     rustup default stable
     ```
 
-### Enable Services
+### 5. Enable Services
 
 14. Edit the `usbmuxd` service file:
     ```
@@ -189,7 +189,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 
 Note: you can do this with multiple devices at a time.
 
-### Configuring AltServer and AltStore on Your Devices
+### 1. Configuring AltServer and AltStore on Your Devices
 
 1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable, and enable "Show this iPhone/iPad when on Wi-Fi" in the Finder or in iTunes, then hit `Sync/Apply`.
 2. Disconnect your device from USB, and make sure your device is broadcasting itself by checking if your Mac/PC can still see the device in Finder or in iTunes.
@@ -246,7 +246,7 @@ Note: you can do this with multiple devices at a time.
      ```
    - If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
 
-### Configuring Services to Run Automatically on the Pi
+### 2. Configuring Services to Run Automatically on the Pi
 
 7. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
    ```

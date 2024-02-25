@@ -7,10 +7,10 @@ Create your own website hosted on your Pi.
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Hosting the Website](#hosting-the-website)
-  - [DDoS Protection](#ddos-protection)
-  - [Enable HTTPS](#enable-https)
-  - [Blocking IP's](#blocking-ips)
+  - [1. Hosting the Website](#1-hosting-the-website)
+  - [2. DDoS Protection](#2-ddos-protection)
+  - [3. Enable HTTPS](#3-enable-https)
+  - [4. Blocking IP's](#4-blocking-ips)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
@@ -60,7 +60,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
 
 ## Configuration
 
-### Hosting the Website
+### 1. Hosting the Website
 
 1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
    ```
@@ -84,7 +84,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
    sudo /etc/init.d/nginx reload
    ```
 
-### DDoS Protection
+### 2. DDoS Protection
 
 1. Edit the main config:
    ```
@@ -111,7 +111,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
    sudo /etc/init.d/nginx reload
    ```
 
-### Enable HTTPS
+### 3. Enable HTTPS
 
 _DISCLAIMER 1_: If you have another app installed that uses port 80, try to see if you can change it's port to something else. If not, then HTTPS will not work as NGINX needs port 80. Please see the Troubleshooting section at the bottom.
 
@@ -159,7 +159,7 @@ _DISCLAIMER 2_: Set up the `Host Record` on your domain provider as so:
    0 12 * * * /usr/bin/certbot renew --quiet
    ```
 
-### Blocking IP's
+### 4. Blocking IP's
 
 If you notice a suspicious IP traffic, perform the following to block access from that IP.
 
