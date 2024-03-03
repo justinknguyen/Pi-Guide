@@ -163,8 +163,8 @@ When updating with `pihole -up` there are a couple of things to check if you hav
      ```
      sudo nano /etc/pihole/pihole-FTL.conf
      ```
-  2. Type the following line in:
-     `   RATE_LIMIT=0/0`
+  2. Type the following line in: `RATE_LIMIT=0/0`
+     
      This will uncap the Rate Limit, however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, login to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
