@@ -291,10 +291,12 @@ sudo nano /etc/pihole/pihole-FTL.conf
    vrrp_startup_delay 5.5
    ```
 4. Finally, restart services:
-   `   sudo service pihole-FTL restart 
-sudo systemctl restart dhcpcd 
-sudo service unbound restart
-sudo systemctl restart keepalived.service`
+   ```
+   sudo service pihole-FTL restart 
+   sudo systemctl restart dhcpcd 
+   sudo service unbound restart
+   sudo systemctl restart keepalived.service
+   ```
    **Important Note** <br>
    I sometimes experience a problem where the second Pi gets queries even if the keepalived service is stopped. Try removing the IPv6 vrrp block from the keepalived config file, then test for any more queries. If you see no more queries, then add it back and see if it happens again. <br><br>
    If it happens again, then it could be an IPv6 issue. The reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the IPv6 vrrp address when we setup keepalived. You should also disable router advertisement for IPv6 in router settings, if you have it on, then re-enable it after applying the IPv6 vrrp in the router file and see if everything is ok.
