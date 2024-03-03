@@ -143,7 +143,7 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 
 ## Updating
 
-When updating with `pihole -up` there are a couple of things to do if you followed all of my guides.
+When updating with `pihole -up` there are a couple of things to check if you have multiple upstream DNS servers or you changed your Pi-Hole port.
 
 1. If you have multiple upstream DNS servers:
    - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
