@@ -40,16 +40,17 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 7. Copy and paste the following in then replace `PIIPADDRESS`:
    ```
    global:
-   scrape_interval: 5s
-   external_labels:
+     scrape_interval: 5s
+     external_labels:
        monitor: 'node'
    scrape_configs:
-   - job_name: 'prometheus'
+     - job_name: 'prometheus'
        static_configs:
-       - targets: ['PIIPADDRESS:9090'] ## IP Address of the localhost. Match the port to your container port
-   - job_name: 'node-exporter'
+         - targets: ['<IP_ADDRESS>:9090'] # Replace <IP_ADDRESS> with your actual IP address
+   
+     - job_name: 'node-exporter'
        static_configs:
-       - targets: ['PIIPADDRESS:9100'] ## IP Address of the localhost
+         - targets: ['<IP_ADDRESS>:9100'] # Replace <IP_ADDRESS> with your actual IP address
    ```
 8. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 9. Install Prometheus:
