@@ -68,7 +68,7 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 2. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
 3. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074).
 4. Copy the ID (in this case, 11074).
-5. Go back to Grafana, hover over the "+" icon on the left, and click "Import".
+5. Go back to Grafana, click on the "+" icon on the top-right, and click "Import dashboard".
 6. Paste in the ID and click "Load".
 7. Under "VictoriaMetrics", select "Prometheus" and then import.
 8. <ins>IMPORTANT:</ins> login to Portainer and click on your "Local" environment then "Containers". You should see node exporter, prometheus, and grafana installed. Click on each one and scroll down until you see "RESTART POLICIES" then set each to "Always". They will now start on their own whenever the Pi is rebooted.
