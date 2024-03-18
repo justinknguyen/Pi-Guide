@@ -11,7 +11,7 @@ Network-attached Storage (NAS) so you can access a shared storage on your local 
 
 ## Configuration
 
-If you have an external ssd, your Pi may have trouble booting due to static on the USB 3 port. Either plug it into the USB 2 port or put a USB hub between the ssd and the Pi.
+If you have an external ssd, your Pi may have trouble booting due to static on the USB 3.0 port. Either plug it into a USB 2.0 port or put a USB hub between the ssd and the Pi.
 
 1. If you have an external drive, you can find it by entering:
    ```
