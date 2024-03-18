@@ -41,7 +41,7 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
      ```
      and then enter the following within the `fstab` file instead:
      ```
-     UUID=your-uuid-here /mnt/sda1 ext4 defaults,noatime,nofail 0 2
+     UUID=your-uuid-here /mnt/sda1 ext4 defaults,auto,users,rw,nofail 0 0
      ```
 1. Reload daemon:
    ```
