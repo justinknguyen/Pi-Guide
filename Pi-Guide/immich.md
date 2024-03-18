@@ -22,7 +22,11 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    ```
    sudo mkdir /mnt/sda1/shared/immich-app
    ```
-1. cd to your folder:
+1. Create a folder to store your photos and videos:
+   ```
+   sudo mkdir /mnt/sda1/shared/photos-and-videos
+   ```
+1. cd to to the immich folder:
    ```
    cd /mnt/sda1/shared/immich-app
    ```
@@ -39,10 +43,14 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    sudo wget https://github.com/immich-app/immich/releases/latest/download/hwaccel.transcoding.yml
    sudo wget https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
    ```
-1. If you want to set the upload location, open the .env file:
+1. Set the upload location by opening the .env file:
    ```
    sudo nano .env
    ```
+   - change the upload location to:
+     ```
+     /mnt/sda1/shared/photos-and-videos
+     ```
 1. Start the containers:
    ```
    docker compose up -d
