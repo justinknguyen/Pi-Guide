@@ -57,6 +57,8 @@ Listed in recommended install order.
 
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md)
 - [Watchdog](/Pi-Guide/Watchdog.md)
+- [NAS](/Pi-Guide/NAS.md)
+- [raspiBackup](/Pi-Guide/raspiBackup.md)
 - [XRDP](/Pi-Guide/XRDP.md)
 - [Rclone](/Pi-Guide/Rclone.md)
 - [Docker](/Pi-Guide/Docker.md)
