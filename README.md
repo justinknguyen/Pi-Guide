@@ -57,8 +57,6 @@ Listed in recommended install order.
 
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md)
 - [Watchdog](/Pi-Guide/Watchdog.md)
-- [NAS](/Pi-Guide/NAS.md)
-- [raspiBackup](/Pi-Guide/raspiBackup.md)
 - [XRDP](/Pi-Guide/XRDP.md)
 - [Rclone](/Pi-Guide/Rclone.md)
 - [Docker](/Pi-Guide/Docker.md)
@@ -77,3 +75,6 @@ Listed in recommended install order.
 - [diyHue](/Pi-Guide/diyHue.md)
 - [Hyperion](/Pi-Guide/Hyperion.md) or [HyperHDR](/Pi-Guide/HyperHDR.md)
 - [AltServer](/Pi-Guide/AltServer.md)
+- [NAS](/Pi-Guide/NAS.md)
+  - [immich](/Pi-Guide/immich.md)
+- [raspiBackup](/Pi-Guide/raspiBackup.md)
