@@ -16,6 +16,7 @@ Network-attached Storage (NAS) so you can access a shared storage on your local 
    lsblk
    ```
    - `sda` indicates your external drive, and `mmcblk0` is your micro SD
+   - Note: if you have an external ssd, your Pi may have trouble booting due to static on the USB 3 port. Either plug it into the USB 2 port or put a USB hub between the two
 1. Partition your drive:
    ```
    sudo fdisk /dev/sda
@@ -31,16 +32,28 @@ Network-attached Storage (NAS) so you can access a shared storage on your local 
    - If formatting fails, reboot with `sudo reboot` and try again
 1. Within the file `sudo nano /etc/fstab` enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
    ```
-   /dev/sda1 /mnt/sda1/ ext4 defaults,noatime 0 1
+   /dev/sda1 /mnt/sda1 ext4 defaults,noatime 0 1
    ```
-1. Reboot:
+   - If your Pi is not mounting on boot, enter the following command to obtain it's UUID:
+     ```
+     sudo blkid
+     ```
+     and then enter the following within the `fstab` file instead:
+     ```
+     UUID=your-uuid-here /mnt/sda1 ext4 defaults,noatime,nofail 0 2
+     ```
+1. Reload daemon:
    ```
-   sudo reboot
+   systemctl daemon-reload
    ```
 1. Mount your drive:
    ```
    sudo mount /dev/sda1
    ```
+   - Use the following to mount if you used the UUID instead:
+     ```
+     sudo mount -a
+     ```
    - You can check if it was successfully mounted by entering `lsblk`
    - If it says it can't mount the drive, it could be a false flag. Try rebooting and then check if the drive was mounted with `lsblk`. If it still doesn't say it was mounted, try entering the command again
 1. Create a shared folder:
