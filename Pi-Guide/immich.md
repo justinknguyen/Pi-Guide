@@ -26,7 +26,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    ```
    sudo mkdir /mnt/sda1/shared/photos-and-videos
    ```
-1. cd to to the immich folder:
+1. cd to the immich folder:
    ```
    cd /mnt/sda1/shared/immich-app
    ```
