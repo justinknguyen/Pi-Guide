@@ -37,7 +37,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    sudo wget https://github.com/immich-app/immich/releases/latest/download/hwaccel.transcoding.yml
    sudo wget https://github.com/immich-app/immich/releases/latest/download/hwaccel.ml.yml
    ```
-1. Opening the .env file:
+1. Open the .env file:
    ```
    sudo nano .env
    ```
