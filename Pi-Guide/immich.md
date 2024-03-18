@@ -45,7 +45,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
      ```
      /mnt/sda1/shared/photos-and-videos
      ```
-   - At the bottom of the file, add the line:
+   - at the bottom of the file, add the line:
      ```
      NODE_OPTIONS=--max-old-space-size=8192
      ```
