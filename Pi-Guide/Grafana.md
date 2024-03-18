@@ -66,7 +66,7 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 
 1. Login to Grafana by typing `[PIIPADDRESS]:3000` into your search bar. The default username and password is `admin`. Click on "Add your first data source" then select "Prometheus".
 2. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
-3. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074).
+3. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074 or https://grafana.com/grafana/dashboards/1860-node-exporter-full/).
 4. Copy the ID (in this case, 11074).
 5. Go back to Grafana, click on the "+" icon on the top-right, and click "Import dashboard".
 6. Paste in the ID and click "Load".
