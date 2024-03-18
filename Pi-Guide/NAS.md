@@ -30,7 +30,7 @@ Network-attached Storage (NAS) so you can access a shared storage on your local 
    sudo mkfs.ext4 /dev/sda1
    ```
    - If formatting fails, reboot with `sudo reboot` and try again
-1. Within the file `sudo nano /etc/fstab` enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
+1. To mount your drive on boot, within the file `sudo nano /etc/fstab` enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
    ```
    /dev/sda1 /mnt/sda1 ext4 defaults,noatime 0 1
    ```
