@@ -90,6 +90,21 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    sudo smbpasswd -a pi
    ```
 
+## Docker Containers Depending on NAS
+
+If you have docker containers that depend on your NAS, you will need to delay the startup of your docker service until your Pi mounts that external drive.
+
+1. Create an override file:
+   ```
+   sudo systemctl edit docker.service
+   ```
+1. After the first two commented lines, enter the following:
+   ```
+   [Unit]
+   RequiresMountsFor=/mnt/sda1
+   ```
+   - replace the path accordingly
+
 ## Testing
 
 The following steps uses your Pi's hostname. If it doesn't work, try using the Pi's IP Address instead.
