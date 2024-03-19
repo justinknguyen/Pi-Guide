@@ -2,6 +2,8 @@
 
 This is a guide and collection of packages I've installed on my Raspberry Pi's.
 
+I am not responsible for anything happening to your Raspberry Pi. All guides are based on pre-existing guides on the internet.
+
 [Table of Contents](#table-of-contents)
 
 ## Getting Started
