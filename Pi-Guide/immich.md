@@ -49,6 +49,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
      ```
      NODE_OPTIONS=--max-old-space-size=8192
      ```
+1. If you're using a NAS for immich, please see the following section [Docker Containers Depending on NAS](/Pi-Guide/NAS.md#docker-containers-depending-on-nas)
 1. Start the containers:
    ```
    docker compose up -d
