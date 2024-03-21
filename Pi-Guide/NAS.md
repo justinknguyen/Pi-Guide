@@ -6,7 +6,7 @@ Network-attached Storage (NAS) so you can access a shared storage on your local 
 
 - [Configuration](#configuration)
 - [Installation](#installation)
-- [Docker Containers Depending on NAS](#docker-containers-depending-on-nas)
+- [Docker Containers Depending on External Drive](#docker-containers-depending-on-external-drive)
 - [Testing](#testing)
 - [Sources](#sources)
 
@@ -91,9 +91,9 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    sudo smbpasswd -a pi
    ```
 
-## Docker Containers Depending on NAS
+## Docker Containers Depending on External Drive
 
-If you have docker containers that depend on your NAS, you will need to delay the startup of your docker service until your Pi mounts that external drive.
+If you have docker containers that depend on your external drive, you will need to delay the startup of your docker service until your Pi mounts that external drive.
 
 1. Create an override file:
    ```

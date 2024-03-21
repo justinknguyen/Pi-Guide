@@ -78,5 +78,5 @@ Listed in recommended install order.
 - [Hyperion](/Pi-Guide/Hyperion.md) or [HyperHDR](/Pi-Guide/HyperHDR.md)
 - [AltServer](/Pi-Guide/AltServer.md)
 - [NAS](/Pi-Guide/NAS.md)
-  - [immich](/Pi-Guide/immich.md)
+- [immich](/Pi-Guide/immich.md)
 - [raspiBackup](/Pi-Guide/raspiBackup.md)

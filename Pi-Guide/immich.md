@@ -14,21 +14,20 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 
 - [Docker](/Pi-Guide/Docker.md)
 - [Portainer](/Pi-Guide/Portainer.md) (recommended)
-- [NAS](/Pi-Guide/NAS.md) (recommended)
 
 ## Installation
 
-1. First create a folder for immich. For example, I have an external ssd that I have mounted on `/mnt/sda1` and a `shared` folder within it that is exposed to my network (see [NAS](/Pi-Guide/NAS.md)):
+1. First create a folder for immich. For example, I have an external ssd that I have mounted on `/mnt/sda1`:
    ```
-   sudo mkdir /mnt/sda1/shared/immich-app
+   sudo mkdir /mnt/sda1/immich-app
    ```
 1. Create a folder to store your photos and videos:
    ```
-   sudo mkdir /mnt/sda1/shared/photos-and-videos
+   sudo mkdir /mnt/sda1/photos-and-videos
    ```
 1. cd to the immich folder:
    ```
-   cd /mnt/sda1/shared/immich-app
+   cd /mnt/sda1/immich-app
    ```
 1. Get the docker, .env, and hwaccel files:
    ```
@@ -43,13 +42,13 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    ```
    - change the upload location to:
      ```
-     /mnt/sda1/shared/photos-and-videos
+     /mnt/sda1/photos-and-videos
      ```
    - at the bottom of the file, add the line:
      ```
      NODE_OPTIONS=--max-old-space-size=8192
      ```
-1. If you're using a NAS for immich, please see the following section [Docker Containers Depending on NAS](/Pi-Guide/NAS.md#docker-containers-depending-on-nas)
+1. If you're using an external drive for immich, please see the following section [Docker Containers Depending on External Drive](/Pi-Guide/NAS.md#docker-containers-depending-on-external-drive)
 1. Start the containers:
    ```
    docker compose up -d
