@@ -151,9 +151,9 @@ _DISCLAIMER 2_: Set up the `Host Record` on your domain provider as so:
    ```
    sudo certbot --nginx -d example.com -d www.example.com
    ```
-5. Create crontab to schedule renewable of certificates (do `sudo crontab -e` in addition to below):
+5. Create a cron task to schedule renewal of certificates:
    ```
-   crontab -e
+   sudo crontab -e
    ```
    ```
    0 12 * * * /usr/bin/certbot renew --quiet
