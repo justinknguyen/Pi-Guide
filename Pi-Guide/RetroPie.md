@@ -129,6 +129,8 @@ I have an external ssd connected to my Raspberry Pi that I will use to demonstra
 
 ## Connecting an Xbox One Controller With Bluetooth
 
+Before beginning, update your Xbox controller with an Xbox or with the "Xbox Accessories" Windows Store app.
+
 1. Run the following command:
    ```
    echo 'options bluetooth disable_ertm=Y' | sudo tee -a /etc/modprobe.d/bluetooth.conf
