@@ -79,4 +79,5 @@ Listed in recommended install order.
 - [AltServer](/Pi-Guide/AltServer.md)
 - [NAS](/Pi-Guide/NAS.md)
 - [immich](/Pi-Guide/immich.md)
+- [RetroPie](/Pi-Guide/RetroPie.md)
 - [raspiBackup](/Pi-Guide/raspiBackup.md)
