@@ -95,7 +95,7 @@ emulationstation
 
 ## Running ROMs From a USB Drive
 
-I have an external ssd connected to my Raspberry Pi that I will use to demonstrate here. Please see [NAS](/Pi-Guide/NAS.md) on how I connected my external ssd and mounted it. It will also make these steps make more sense.
+I have an external ssd connected to my Raspberry Pi that I will use to demonstrate here. Please see [NAS](/Pi-Guide/NAS.md) on how I connected my external ssd and mounted it.
 
 1. Enter:
    ```
@@ -114,7 +114,7 @@ I have an external ssd connected to my Raspberry Pi that I will use to demonstra
    ```
    sudo blkid
    ```
-   opening the fstab file
+   open the fstab file
    ```
    sudo nano /etc/fstab
    ```
