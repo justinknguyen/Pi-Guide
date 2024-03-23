@@ -17,7 +17,7 @@ Turn your Raspberry Pi into a retro-gaming machine!
 The Raspberry Pi will need to be connected to a screen somehow.
 
 - microHDMI to HDMI cable
-- Monitor or TV
+- Monitor or TV (with built-in speakers or connected speakers_
 
 ## Configuration
 
