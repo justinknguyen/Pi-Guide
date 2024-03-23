@@ -32,7 +32,11 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    sudo mkfs.ext4 /dev/sda1
    ```
    - If formatting fails, reboot with `sudo reboot` and try again
-1. To mount your drive on boot, within the file `sudo nano /etc/fstab` enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
+1. To mount your drive on boot, open the file:
+   ```
+   sudo nano /etc/fstab
+   ```
+   enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
    ```
    /dev/sda1 /mnt/sda1 ext4 defaults,noatime 0 1
    ```
@@ -73,7 +77,11 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    ```
    sudo apt install samba samba-common-bin
    ```
-1. Within the file `sudo nano /etc/samba/smb.conf` enter the following lines at the bottom of the file and save with `Ctrl+X` then `Y`:
+1. Open the file
+   ```
+   sudo nano /etc/samba/smb.conf
+   ```
+   enter the following lines at the bottom of the file and save with `Ctrl+X` then `Y`:
    ```
    [shared]
    path=/mnt/sda1/shared
