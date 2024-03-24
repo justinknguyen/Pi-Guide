@@ -75,6 +75,14 @@ This install guide will begin by setting up syncing between the two Pi's. Adding
   ```
   gravity-sync purge
   ```
+- If you are getting the error "sh: 1: cannot create .ssh/authorized_keys: Permission denied" after entering the remote Pi's username and password, you will need to enter the following on the remote Pi:
+  ```
+  chmod 700 .ssh
+  sudo chmod 640 .ssh/authorized_keys
+  sudo chown pi .ssh
+  sudo chown pi .ssh/authorized_keys
+  ```
+  - replace "pi" with the Pi's username.
 - If pushing and pulling is failing, check if the rsync versions are the same between both Pi's:
   ```
   rsync --version
