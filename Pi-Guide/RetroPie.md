@@ -52,6 +52,10 @@ The Raspberry Pi will need to be connected to a screen somehow.
      sudo raspi-config
      ```
      then select `5 Localisation Options` and then `L1 Locale`. After selecting your locale, it will ask to set the default locale for the system environment, choose what you selected.
+1. Reboot:
+   ```
+   sudo reboot
+   ```
 1. After changing your locale and then checking with `locale` again, LANGUAGE and LC_ALL will likely be empty, so set it manually:
    ```
    sudo update-locale LANGUAGE="en_CA:en"
