@@ -12,17 +12,12 @@ Remotely access your Raspberry Pi's desktop environment from another device.
 
 ## Prerequisites
 
-1. Installed a Raspberry Pi OS version with a desktop environment.
-   - if you want to install the desktop environment, just enter the following command:
-     ```
-     sudo apt install xserver-xorg raspberrypi-ui-mods
-     ```
 1. Enter:
    ```
    sudo raspi-config
    ```
 1. Go to (1) System Options -> S5 Boot/Auto Login -> select "B3 Desktop GUI - requiring user to login".
-1. Exit back to the terminal and run the following commands:
+1. Exit back to the terminal and run the following commands to install the desktop environment:
    ```
    sudo apt update
    sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
