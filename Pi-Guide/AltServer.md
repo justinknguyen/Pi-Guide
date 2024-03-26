@@ -1,6 +1,6 @@
 # AltServer
 
-AltServer running on your Raspberry Pi! This is to refresh Altstore and sideloaded apps on your iPhone or iPad.
+AltServer running on your Raspberry Pi! This is to refresh AltStore and sideloaded apps on your iPhone or iPad.
 
 If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 
