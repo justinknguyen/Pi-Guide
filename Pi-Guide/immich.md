@@ -7,7 +7,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Testing](#testing)
+- [Updating](#updating)
 - [Sources](#sources)
 
 ## Prerequisites
@@ -63,6 +63,17 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 1. Click on Getting Started and create your account and login
 
 You're done! You can download the immich app from the app store and start backing up your photos and videos automatically.
+
+## Updating
+
+1. cd to the immich folder:
+   ```
+   cd /mnt/sda1/immich-app
+   ```
+3. Pull and update:
+   ```
+   docker compose pull && docker compose up -d
+   ```
 
 ## Sources
 
