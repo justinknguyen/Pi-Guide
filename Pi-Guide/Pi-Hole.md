@@ -56,6 +56,8 @@ For `Advanced DNS settings`, I enabled the first two check boxes, set the rate-l
 - Local domain name (optional): router.asus.com
   - the format is the domain you use to sign into your router's settings.
 
+Optionally, you can also set Local DNS names under "DNS Records" in the side-menu. I recommend adding a domain name for your Raspberry Pi and your router, so you don't always have to enter the IP Address in the search bar.
+
 ### 3. Adding Adlists
 
 Click on "Group Management" then "Adlists" and add any adlist you want. I recommend https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt from https://github.com/hagezi/dns-blocklists. You can copy and paste multiple links at a time.
