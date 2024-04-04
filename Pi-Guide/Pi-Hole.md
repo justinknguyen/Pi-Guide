@@ -78,7 +78,7 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
 
 ### 5. Multiple Upstream DNS Servers (Optional)
 
-If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md), [Gravity Sync](/Pi-Guide/Gravity%20Sync.md), and [keepalived](/Pi-Guide/keepalived.md) installed.
+If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md) installed.
 
 1. Select the two upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
 2. Create a file called `99-custom.conf` by entering the below command. In the file, type in `strict-order` and save.
