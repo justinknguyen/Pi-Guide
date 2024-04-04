@@ -12,7 +12,6 @@ Network-wide ad-blocking.
   - [4. Adding Whitelists](#4-adding-whitelists)
   - [5. Multiple Upstream DNS Servers (Optional)](#5-multiple-upstream-dns-servers-optional)
 - [Testing](#testing)
-- [Updating](#updating)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
@@ -88,19 +87,6 @@ If you want to use multiple DNS servers and have the second server only as backu
    ```
 3. Ensure that the primary DNS server you want to use is listed first in the following file:
    ```
-   sudo nano /etc/dnsmasq.d/01-pihole.conf
-   ```
-   - e.g., The first two address are Custom addresses for Unbound, and the bottom four are for Quad9:
-     ```
-     server=127.0.0.1#5335
-     server=::1#5335
-     server=9.9.9.9
-     server=149.112.112.112
-     server=2620:fe::fe
-     server=2620:fe::9
-     ```
-4. Do the same thing in the following file:
-   ```
    sudo nano /etc/pihole/setupVars.conf
    ```
    - e.g., The first two address are Custom addresses for Unbound, and the bottom four are for Quad9:
@@ -112,50 +98,16 @@ If you want to use multiple DNS servers and have the second server only as backu
      PIHOLE_DNS_5=2620:fe::fe
      PIHOLE_DNS_6=2620:fe::9
      ```
-5. Restart the DNS:
+4. Restart the DNS:
    ```
    pihole restartdns
    ```
-   Having multiple upstream servers might result in odd behaviour if you were to restart the Pi or update Pi-Hole using `pihole -up`.
-
-- Upon restarting,
-  - Pi-Hole might create a new config file named `01-pihole.conf.save` (appends .save to the end) and DNS will not start. This happened on my Pi 4, but did not on my Pi Zero 2 W. Check if you have it by entering the following:
-    ```
-    cd /etc/dnsmasq.d/
-    ls
-    ```
-  - To fix this, try deleting the `.conf.save` file and see if it creates it again.
-    ```
-    sudo rm /etc/dnsmasq.d/01-pihole.conf
-    ```
-  - Otherwise, delete everything within the original `01-pihole.conf` file and it will work from now on. Restarting the Pi should no longer create more config files.
-- Upon updating,
-  - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
-  - To fix this, try deleting the `.conf.save` file and see if it creates it again.
-    ```
-    sudo rm /etc/dnsmasq.d/01-pihole.conf
-    ```
-  - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
 
 ## Testing
 
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
-
-## Updating
-
-When updating with `pihole -up` there are a couple of things to check if you have multiple upstream DNS servers or you changed your Pi-Hole port.
-
-1. If you have multiple upstream DNS servers:
-   - If you have a `01-pihole.conf.save` file, update might fail because it repopulates `01-pihole.conf` again.
-   - To fix this, try deleting the `.conf.save` file and see if it creates it again.
-     ```
-     sudo rm /etc/dnsmasq.d/01-pihole.conf
-     ```
-   - Otherwise, delete everything within the original `01-pihole.conf` file and attempt to update (note: successful update may rearrange/repopulate `01-pihole.conf` once again).
-2. If you changed your port for Pi-Hole:
-   - You might have to change it again by following the steps outlined at the top in the following link: [diyHue - Prerequisites](/Pi-Guide/diyHue.md#prerequisites)
 
 ## Troubleshooting
 
@@ -170,7 +122,7 @@ When updating with `pihole -up` there are a couple of things to check if you hav
      This will uncap the Rate Limit, however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, login to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
-- If your ad-blocking does not work in the future, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
+- If your ad-blocking does not work, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins".
 - If you changed your port for Pi-Hole, you might have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](/Pi-Guide/diyHue.md#prerequisites)
 
 ## Sources
