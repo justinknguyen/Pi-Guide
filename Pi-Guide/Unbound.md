@@ -32,11 +32,42 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 
 ## Configuration
 
-1. Create the unbound config file:
+1. In your Pi-Hole web settings, go to `Settings > DNS` then scroll down to `Advanced DNS settings` and turn off "Use DNSSEC"
+1. Set `cache-size=0` in the following file:
+   ```
+   sudo nano /etc/dnsmasq.d/01-pihole.conf
+   ```
+1. Add the following to `sudo nano /etc/unbound/unbound.conf`:
+   ```
+   server:
+       # These options should be added to the existing server configuration,
+       # overwriting existing values if they're there.
+
+       # This refreshes expiring cache entries if they have been accessed with
+       # less than 10% of their TTL remaining
+       prefetch: yes
+
+       # This attempts to reduce latency by serving the outdated record before
+       # updating it instead of the other way around. Alternative is to increase
+       # cache-min-ttl to e.g. 3600.
+       cache-min-ttl: 0
+       serve-expired: yes
+       # I had best success leaving this next entry unset.
+       # serve-expired-ttl: 3600 # 0 or not set means unlimited (I think)
+
+       # Use about 2x more for rrset cache, total memory use is about 2-2.5x
+       # total cache size. Current setting is way overkill for a small network.
+       # Judging from my used cache size you can get away with 8/16 and still
+       # have lots of room, but I've got the ram and I'm not using it on anything else.
+       # Default is 4m/4m
+       msg-cache-size: 128m
+       rrset-cache-size: 256m
+   ```
+1. Create the unbound config file for Pi-Hole:
    ```
    sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
    ```
-2. Paste the following in (IMPORTANT: if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
+1. Paste the following in (IMPORTANT: if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
 
    ```
    server:
@@ -106,18 +137,17 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
        private-address: fd00::/8
        private-address: fe80::/10
    ```
-
-3. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-4. Restart Unbound:
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
+1. Restart Unbound:
    ```
    sudo service unbound restart
    ```
-5. Go to the WebUI for Pi-Hole and head to "Settings" then "DNS", and uncheck whatever is checked under "Upstream DNS Servers".
-6. Under "Custom 1 (IPv4)" enter:
+1. Go to the WebUI for Pi-Hole and head to "Settings" then "DNS", and uncheck whatever is checked under "Upstream DNS Servers".
+1. Under "Custom 1 (IPv4)" enter:
    ```
    127.0.0.1#5335
    ```
-7. If you have IPv6, under "Custom 3 (IPv6)" enter:
+1. If you have IPv6, under "Custom 3 (IPv6)" enter:
    ```
    ::1#5335
    ```
@@ -222,3 +252,4 @@ If the above steps still do not work, the below can be performed on an Asus rout
 - https://docs.pi-hole.net/guides/dns/unbound/
 - https://www.snbforums.com/threads/asuswrt-merlin-serving-ipv6-router-ip-instead-of-ipv6-dns-server-ip-f-w-384-19.67225/
 - https://discourse.pi-hole.net/t/the-client-pi-hole-triggers-a-warning-in-dnsmasq-core-that-the-maximum-number-of-concurrent-dns-requests-has-been-reached/52475/3
+- https://www.reddit.com/r/pihole/comments/d9j1z6/unbound_as_recursive_dns_server_slow_performance/?share_id=U6aobkq-7q_O9nuWmA6Am&utm_content=2&utm_medium=ios_app&utm_name=ioscss&utm_source=share&utm_term=1
