@@ -103,6 +103,8 @@ If you want to use multiple DNS servers and have the second server only as backu
    pihole restartdns
    ```
 
+Pi-Hole has a feature that uses the fastest DNS resolver, so it's possible that it doesn't follow the order you set.
+
 ## Testing
 
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
