@@ -64,7 +64,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
 
 1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
    ```
-   cd /var/www//html/
+   cd /var/www/html/
    ```
 2. Then clone your repo into the path:
    ```
