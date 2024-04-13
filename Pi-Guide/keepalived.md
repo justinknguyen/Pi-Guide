@@ -66,7 +66,7 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
     ```
 10. Copy and paste the following in (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
 
-    ````
+    ```
     global_defs {
     router_id pihole-dns-01
     script_user root
@@ -102,10 +102,8 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
                 chk_ftl
             }
         }
-        ```
-    Explanation of the options:
-    ````
-
+    ```
+Explanation of the options:
 - router_id: should be an unique name, for instance your Pi-hole hostname
 - state: describes which server is the Master/Active and which is the Backup/Standby server.
 - interface: change this according to your network interface (e.g. eth0, ens3 etc)
