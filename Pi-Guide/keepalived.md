@@ -68,40 +68,41 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
 
     ```
     global_defs {
-    router_id pihole-dns-01
-    script_user root
-    enable_script_security
+        router_id pihole-dns-01
+        script_user root
+        enable_script_security
     }
-        vrrp_script chk_ftl {
-            script "/etc/scripts/chk_ftl"
-            interval 1
-            weight -10
+    
+    vrrp_script chk_ftl {
+        script "/etc/scripts/chk_ftl"
+        interval 1
+        weight -10
+    }
+
+    vrrp_instance PIHOLE {
+        state MASTER
+        interface eth0
+        virtual_router_id 55
+        priority 150
+        advert_int 1
+        unicast_src_ip [PRIMARYPIIPADDRESS]
+        unicast_peer {
+            [SECONDARYPIIPADDRESS]
         }
 
-        vrrp_instance PIHOLE {
-            state MASTER
-            interface eth0
-            virtual_router_id 55
-            priority 150
-            advert_int 1
-            unicast_src_ip [PRIMARYPIIPADDRESS]
-            unicast_peer {
-                [SECONDARYPIIPADDRESS]
-            }
-
-            authentication {
-                auth_type PASS
-                auth_pass xxXXxxXX
-            }
-
-            virtual_ipaddress {
-                [LANIPv4PREFIX].20/24
-            }
-
-            track_script {
-                chk_ftl
-            }
+        authentication {
+            auth_type PASS
+            auth_pass xxXXxxXX
         }
+
+        virtual_ipaddress {
+            [LANIPv4PREFIX].20/24
+        }
+
+        track_script {
+            chk_ftl
+        }
+    }
     ```
 Explanation of the options:
 - router_id: should be an unique name, for instance your Pi-hole hostname
