@@ -292,7 +292,7 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
 
 If you have a problem where the second Pi gets queries even if the keepalived service is stopped:
 - Try removing the IPv6 vrrp block from the keepalived config file in both Pi's, then test if you get more queries. If you see no more queries, then add it back and see if it happens again.
-- If it happens again, then it could be an IPv6 issue.
+- If it happens again, then it could be an IPv6 issue
     - one reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md#this-may-help). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the virtual IPv6 address when we setup keepalived.
     - try disabling and re-enabling router advertisement for IPv6 in router settings.
 
