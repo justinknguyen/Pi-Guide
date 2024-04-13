@@ -60,7 +60,7 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
     ```
     sudo chmod 755 /etc/scripts/chk_ftl
     ```
-9.  Now we will add the keepalived configuration on the primary Pi-hole machine, the Master/Active server. Change the settings according to your setup.
+9.  Now we will add the keepalived configuration on the primary Pi-Hole machine, the master/active server. Change the settings according to your setup.
     ```
     sudo nano /etc/keepalived/keepalived.conf
     ```
