@@ -226,7 +226,39 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
 
 ## Configuration
 
-Head into your router settings and replace the DNS servers for Pi-Hole with the virtual IP address you configured with keepalived.
+1. Head into your router settings and replace the DNS servers for Pi-Hole with the virtual IP address you configured with keepalived.
+1. Set a crontask to restart the keepalived service after a reboot. Enter on both Pi's:
+   ```
+   sudo crontab -e
+   ```
+1. Copy and paste the following in at the bottom:
+   ```
+   @reboot sleep 60 && sudo systemctl restart keepalived.service
+   ```
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
+1. On both Pi's, set a delay for when Pi-Hole starts up after a reboot by going into:
+   ```
+   sudo nano /etc/pihole/pihole-FTL.conf
+   ```
+1. Then copy and paste the following in:
+   ```
+   DELAY_STARTUP=5
+   ```
+1. On both Pi's, add another delay inside the keepalived config file:
+   ```
+   sudo nano /etc/keepalived/keepalived.conf
+   ```
+1. Then copy and paste the following in under `enable_script_security` at the top:
+   ```
+   vrrp_startup_delay 5.5
+   ```
+1. Finally, restart services:
+   ```
+   sudo service pihole-FTL restart 
+   sudo systemctl restart dhcpcd 
+   sudo service unbound restart
+   sudo systemctl restart keepalived.service
+   ```
 
 ## Testing
 
@@ -258,48 +290,9 @@ Head into your router settings and replace the DNS servers for Pi-Hole with the 
 
 ## Troubleshooting
 
-In my case, the virtual IP address does not switch back to the primary Pi after a reboot without restarting keepalived with `sudo systemctl restart keepalived.service`. So, all we have to do is make a crontask to automate this restart when the Pi boots back up.
+I sometimes experience a problem where the second Pi gets queries even if the keepalived service is stopped. Try removing the IPv6 vrrp block from the keepalived config file, then test for any more queries. If you see no more queries, then add it back and see if it happens again.
 
-1. Enter on both Pi's (try without `sudo` also as files are different between the two for somereason):
-   ```
-   sudo crontab -e
-   ```
-2. Copy and paste the following in at the bottom:
-   ```
-   @reboot sleep 60 && sudo systemctl restart keepalived.service
-   ```
-3. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-   <!-- -->
-   <br>
-
-Unsure if this is needed, but I've also set a delay for when Pi-Hole starts up after a reboot by going into:
-
-```
-sudo nano /etc/pihole/pihole-FTL.conf
-```
-
-1. Then copy and paste the following in:
-   ```
-   DELAY_STARTUP=5
-   ```
-2. Another delay was added inside the keepalived config file:
-   ```
-   sudo nano /etc/keepalived/keepalived.conf
-   ```
-3. Then copy and paste the following in under `enable_script_security` at the top:
-   ```
-   vrrp_startup_delay 5.5
-   ```
-4. Finally, restart services:
-   ```
-   sudo service pihole-FTL restart 
-   sudo systemctl restart dhcpcd 
-   sudo service unbound restart
-   sudo systemctl restart keepalived.service
-   ```
-   **Important Note** <br>
-   I sometimes experience a problem where the second Pi gets queries even if the keepalived service is stopped. Try removing the IPv6 vrrp block from the keepalived config file, then test for any more queries. If you see no more queries, then add it back and see if it happens again. <br><br>
-   If it happens again, then it could be an IPv6 issue. The reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the IPv6 vrrp address when we setup keepalived. You should also disable router advertisement for IPv6 in router settings, if you have it on, then re-enable it after applying the IPv6 vrrp in the router file and see if everything is ok.
+If it happens again, then it could be an IPv6 issue. The reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md). The fix would be to keep the file, but instead of the IP addresses of the Pi's, enter the IPv6 vrrp address when we setup keepalived. You should also disable router advertisement for IPv6 in router settings, if you have it on, then re-enable it after applying the IPv6 vrrp in the router file and see if everything is ok.
 
 ### Sources
 
