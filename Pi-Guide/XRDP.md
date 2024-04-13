@@ -16,7 +16,7 @@ Remotely access your Raspberry Pi's desktop environment from another device.
    ```
    sudo raspi-config
    ```
-1. Go to (1) System Options -> S5 Boot/Auto Login -> select "B3 Desktop GUI - requiring user to login".
+1. Go to (1) System Options -> S5 Boot/Auto Login -> select "B4 Desktop Autologin".
 1. Exit back to the terminal and run the following commands to install the desktop environment:
    ```
    sudo apt update
