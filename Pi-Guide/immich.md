@@ -14,6 +14,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 
 - [Docker](/Pi-Guide/Docker.md)
 - [Portainer](/Pi-Guide/Portainer.md) (recommended)
+- [NAS](/Pi-Guide/NAS.md) (recommended)
 
 ## Installation
 
@@ -70,7 +71,7 @@ You're done! You can download the immich app from the app store and start backin
    ```
    cd /mnt/sda1/immich-app
    ```
-3. Pull and update:
+1. Pull and update:
    ```
    docker compose pull && docker compose up -d
    ```
