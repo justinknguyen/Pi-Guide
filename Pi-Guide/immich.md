@@ -14,19 +14,23 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 
 - [Docker](/Pi-Guide/Docker.md)
 - [Portainer](/Pi-Guide/Portainer.md) (recommended)
-- [NAS](/Pi-Guide/NAS.md) (recommended)
+- [NAS](/Pi-Guide/NAS.md) (recommended if you have an external drive)
 
 ## Installation
 
-1. First create a folder for immich. For example, I have an external ssd that I have mounted on `/mnt/sda1`:
+1. First create a folder for immich. For example, I have an external ssd that I have mounted on `/mnt/sda1` (follow [NAS](/Pi-Guide/NAS.md) to mount a drive):
    ```
    sudo mkdir /mnt/sda1/immich-app
    ```
-1. Create a folder to store your photos and videos:
+   - you can view where your drive is mounted to by entering:
+     ```
+     lsblk
+     ```
+1. Create a folder to store your photos and videos. I'm creating a folder called `photos-and-videos` on my external ssd:
    ```
    sudo mkdir /mnt/sda1/photos-and-videos
    ```
-1. cd to the immich folder:
+1. cd to the immich folder you created in Step 1:
    ```
    cd /mnt/sda1/immich-app
    ```
