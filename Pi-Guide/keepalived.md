@@ -40,14 +40,14 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
     sudo mkdir /etc/scripts
     sudo nano /etc/scripts/chk_ftl
     ```
-6.  Copy and paste the following in:
+6.  Copy and paste the following in (thanks to @Racerx323 for the updated script):
 
     ```
-    #!/bin/sh
-
-    STATUS=$(ps ax | grep -v grep | grep pihole-FTL)
-
-    if [ "$STATUS" != "" ]
+    #!/bin/bash
+    STATUS=$(systemctl show -p ActiveState pihole-FTL | cut -d'=' -f2)
+    STATUS1=$(systemctl show -p ActiveState unbound | cut -d'=' -f2)
+    
+    if [ "$STATUS" = "active" ] && [ "$STATUS1" = "active" ]
     then
         exit 0
     else
