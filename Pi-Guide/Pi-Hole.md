@@ -37,7 +37,7 @@ Using an Asus router,
 1. For IPv4: <br>
    Under "LAN" and "DHCP Server", enter the IPv4 address you took note of earlier under "DNS Server 1" then hit "Apply".
 2. For IPv6: <br>
-   Under "IPv6", enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
+   Under "IPv6", uncheck "Connect to DNS Server automatically" and enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
 
 ### 2. Pi-Hole DNS Settings
 
