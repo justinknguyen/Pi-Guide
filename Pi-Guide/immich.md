@@ -8,6 +8,7 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Updating](#updating)
+- [Backup and Restore](#backup-and-restore)
 - [Sources](#sources)
 
 ## Prerequisites
@@ -80,8 +81,43 @@ You're done! You can download the immich app from the app store and start backin
    docker compose pull && docker compose up -d
    ```
 
+## Backup and Restore
+
+1. Add the following to your `docker-compose.yml` file to automate database backups:
+   ```
+   services:
+     ...
+     backup:
+       container_name: immich_db_dumper
+       image: prodrigestivill/postgres-backup-local:14
+       restart: always
+       env_file:
+         - .env
+       environment:
+         POSTGRES_HOST: database
+         POSTGRES_CLUSTER: 'TRUE'
+         POSTGRES_USER: ${DB_USERNAME}
+         POSTGRES_PASSWORD: ${DB_PASSWORD}
+         POSTGRES_DB: ${DB_DATABASE_NAME}
+         SCHEDULE: "@daily"
+         POSTGRES_EXTRA_OPTS: '--clean --if-exists'
+         BACKUP_DIR: /db_dumps
+       volumes:
+         - ./db_dumps:/db_dumps
+       depends_on:
+         - database
+   ```
+1. You can restore the backup with this command:
+   ```
+   # Be sure to check the username if you changed it from default
+   gunzip < db_dumps/last/immich-latest.sql.gz \
+   | sed "s/SELECT pg_catalog.set_config('search_path', '', false);/SELECT pg_catalog.set_config('search_path', 'public, pg_catalog', true);/g" \
+   | docker exec -i immich_postgres psql --username=postgres
+   ```
+
 ## Sources
 
 - https://immich.app/docs/install/docker-compose
 - https://immich.app/docs/overview/quick-start
 - https://github.com/immich-app/immich/issues/4530
+- https://immich.app/docs/administration/backup-and-restore/
