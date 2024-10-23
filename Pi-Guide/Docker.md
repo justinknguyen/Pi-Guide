@@ -54,7 +54,7 @@ docker run hello-world
 
 ## Troubleshooting
 
-If you're unable to access sites that were installed with Docker, then Docker got corrupted somehow. Run the following commands which removes and reinstalls docker:
+If you're unable to access sites that were installed with Docker, then Docker got corrupted somehow. Run the following commands which removes and reinstalls Docker:
 ```
 sudo apt-get purge docker-ce docker-ce-cli containerd.io
 sudo rm -fr /var/lib/containerd/
