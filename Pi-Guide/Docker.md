@@ -64,3 +64,4 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 ## Sources
 
 - https://dev.to/elalemanyo/how-to-install-docker-and-docker-compose-on-raspberry-pi-1mo
+- https://github.com/docker/for-linux/issues/1178
