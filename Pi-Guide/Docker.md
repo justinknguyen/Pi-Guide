@@ -6,6 +6,7 @@ Containerize packages for easy removal. The benefit of Docker is being able to q
 
 - [Installation](#installation)
 - [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
 ## Installation
@@ -49,6 +50,15 @@ Test by running the Hello World container:
 
 ```
 docker run hello-world
+```
+
+## Troubleshooting
+
+If you're unable to access sites that were installed with Docker, then Docker got corrupted somehow. Run the following commands which removes and reinstalls docker:
+```
+sudo apt-get purge docker-ce docker-ce-cli containerd.io
+sudo rm -fr /var/lib/containerd/
+sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
 ## Sources
