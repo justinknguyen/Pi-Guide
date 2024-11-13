@@ -132,7 +132,7 @@ The following steps uses your Pi's hostname. If it doesn't work, try using the P
   ```
   smb://<hostname>
   ```
-  - Select Registered User, then enter your Pi's username and the Samba password you set earlier when prompted.
+  - Select Registered User, then enter your Pi's username and the Samba password you set earlier when prompted
 
 ## Sources
 
