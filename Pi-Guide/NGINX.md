@@ -113,7 +113,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
 
 ### 3. Enable HTTPS
 
-First, forward port 80 on your router. If you have another package installed that uses port 80, try to change it's port number. If not, then HTTPS will not work as NGINX needs port 80. Please see the Troubleshooting section at the bottom.
+First, forward port 80 on your router. If you have another package installed that uses port 80, you will need to change it's port number or see the [Troubleshooting](#troubleshooting).
 
 Set up the `Host Record` on your domain provider as so:
 
