@@ -17,7 +17,7 @@ Create your own website hosted on your Pi.
 
 ## Prerequisites
 
-If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
+If you have Pi-Hole installed, you will need to change the port as this will now need to use the default port (80).
 
 1. Go to:
    ```
