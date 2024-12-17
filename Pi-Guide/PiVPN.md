@@ -62,10 +62,10 @@ Once activating the VPN, you should have internet access. If you are on a public
 I recommend setting up a dynamicDNS for your router so your public IP address doesn't change.
 
 ## Troubleshooting
-
-If you are able to connect to WiFi but unable to access devices on the LAN, you need to disable "Block untunneled traffic" within Wireguard client settings if you are on Windows.
-
-If on your phone, you need to manually edit the "Allowed IPs" to `0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1`. This broke the WiFi connection later on, so I changed it back to `0.0.0.0/0, ::/0` and it worked again, including accessing devices on LAN. If it still does not work, you might want to try enabling “Exlude private IPs” within Wireguard app settings.
+- No internet access:
+  - run `pivpn -d` and you may see a prompt saying "[ERR] Iptables MASQUERADE rule is not set, attempt fix now? [Y/n]", enter y.
+- Able to connect to WiFi but unable to access devices on the LAN:
+  - disable "Block untunneled traffic" within Wireguard client settings if you are on Windows.
 
 ## Sources
 
