@@ -158,7 +158,7 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
    ```
    dig pi-hole.net @127.0.0.1 -p 5335
    ```
-2. You should see something similar below (look for `status: NOERROR`). If you have IPv6 enabled, it's likely this will fail and you'll get `SERVFAIL`. The solution to fix that is provided in the next section.
+2. You should see something similar below (look for `status: NOERROR`). If you have IPv6 enabled, it might fail and you'll get `SERVFAIL`. The solution to fix that is provided in the next section.
 
    ```
    pi@pi4:~ $ dig pi-hole.net @127.0.0.1 -p 5335
