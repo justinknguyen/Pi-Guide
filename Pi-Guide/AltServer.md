@@ -133,33 +133,33 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 ### 4. Installing libimobiledevice
 
 10. Next we need to do a similar process again and install `libimobiledevice` from source:
-   ```
-   sudo apt-get install \
-       build-essential \
-       pkg-config \
-       checkinstall \
-       git \
-       autoconf \
-       automake \
-       libtool-bin \
-       libplist-dev \
-       libusbmuxd-dev \
-       libimobiledevice-glue-dev \
-       libssl-dev \
-       usbmuxd
-   ```
-   ```
-   git clone https://github.com/libimobiledevice/libimobiledevice.git
-   cd libimobiledevice
-   ```
-   ```
-   ./autogen.sh
-   make
-   sudo make install
-   ```
-   ```
-   cd ..
-   ```
+    ```
+    sudo apt-get install \
+        build-essential \
+        pkg-config \
+        checkinstall \
+        git \
+        autoconf \
+        automake \
+        libtool-bin \
+        libplist-dev \
+        libusbmuxd-dev \
+        libimobiledevice-glue-dev \
+        libssl-dev \
+        usbmuxd
+    ```
+    ```
+    git clone https://github.com/libimobiledevice/libimobiledevice.git
+    cd libimobiledevice
+    ```
+    ```
+    ./autogen.sh
+    make
+    sudo make install
+    ```
+    ```
+    cd ..
+    ```
 11. Run the command to update the links and cache:
     ```
     sudo ldconfig
