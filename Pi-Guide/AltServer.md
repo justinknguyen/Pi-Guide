@@ -9,9 +9,10 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 - [Prerequisites](#prerequisites)
   - [1. Installing libplist](#1-installing-libplist)
   - [2. Installing libimobiledevice-glue](#2-installing-libimobiledevice-glue)
-  - [3. Installing libimobiledevice](#3-installing-libimobiledevice)
-  - [4. Installing Rust](#4-installing-rust)
-  - [5. Enable Services](#5-enable-services)
+  - [3. Installing libtatsu](#3-installing-libtatsu)
+  - [4. Installing libimobiledevice](#4-installing-libimobiledevice)
+  - [5. Installing Rust](#5-installing-rust)
+  - [6. Enable Services](#6-enable-services)
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [1. Configuring AltServer and AltStore on Your Devices](#1-configuring-altserver-and-altstore-on-your-devices)
@@ -98,9 +99,40 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    cd ..
    ```
 
-### 3. Installing libimobiledevice
+### 3. Installing libtatsu
 
-9. Next we need to do a similar process again and install `libimobiledevice` from source:
+9. Next we need to do a similar process again and install `libtatsu` from source:
+   ```
+   sudo apt install -y \
+	   build-essential \
+	   pkg-config \
+	   checkinstall \
+	   git \
+	   autoconf \
+	   automake \
+	   libtool-bin \
+	   libplist-dev \
+      libcurl4-openssl-dev
+   ```
+   ```
+   export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+   ```
+   ```
+   git clone https://github.com/libimobiledevice/libtatsu
+   cd libtatsu
+   ```
+   ```
+   ./autogen.sh
+   make
+   sudo make install
+   ```
+   ```
+   cd ..
+   ```
+
+### 4. Installing libimobiledevice
+
+10. Next we need to do a similar process again and install `libimobiledevice` from source:
    ```
    sudo apt-get install \
        build-essential \
@@ -128,43 +160,43 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    ```
    cd ..
    ```
-10. Run the command to update the links and cache:
+11. Run the command to update the links and cache:
     ```
     sudo ldconfig
     ```
 
-### 4. Installing Rust
+### 5. Installing Rust
 
-11. Time to install `rustup`. Just enter `1` for the default installation when prompted:
+12. Time to install `rustup`. Just enter `1` for the default installation when prompted:
     ```
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     ```
-12. Reboot your Pi and then cd back to your `alt-server` folder:
+13. Reboot your Pi and then cd back to your `alt-server` folder:
     ```
     sudo reboot
     ```
     ```
     cd alt-server
     ```
-13. Setup the toolchain:
+14. Setup the toolchain:
     ```
     rustup toolchain install stable
     rustup default stable
     ```
 
-### 5. Enable Services
+### 6. Enable Services
 
-14. Edit the `usbmuxd` service file:
+15. Edit the `usbmuxd` service file:
     ```
     sudo nano /lib/systemd/system/usbmuxd.service
     ```
-15. Enter the following at the end of the service file so it can be enabled with systemctl:
+16. Enter the following at the end of the service file so it can be enabled with systemctl:
     ```
     # Taken from https://bugs.archlinux.org/task/31056
     [Install]
     WantedBy=multi-user.target
     ```
-16. Enable the services:
+17. Enable the services:
     ```
     sudo systemctl enable --now avahi-daemon.service
     sudo systemctl enable --now usbmuxd
@@ -182,7 +214,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    ```
 5. Have `Docker` installed on your Pi. If you don't have it installed, follow my guide for it. Run the following command to create the Docker container:
    ```
-   docker run -d -v lib_cache:/opt/lib/ --restart=always -p 6969:6969 --name anisette dadoum/anisette-server:latest
+   docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
    ```
 
 ## Configuration
@@ -271,13 +303,13 @@ Note: you can do this with multiple devices at a time.
 
 - The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again by first removing the docker container and reinstalling the anisette server. Here's how you can remove it:
   ```
-  docker stop anisette
-  docker rm anisette
+  docker stop anisette-v3
+  docker rm anisette-v3
   docker volume rm lib_cache
   ```
   Then reinstall the container:
   ```
-  docker run -d -v lib_cache:/opt/lib/ --restart=always -p 6969:6969 --name anisette dadoum/anisette-server:latest
+ docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
   ```
   Check if the services are running:
   ```
