@@ -1,6 +1,6 @@
 # NGINX
 
-Create your own website hosted on your Pi.
+Host your website on your Pi.
 
 ## Table of Contents
 
