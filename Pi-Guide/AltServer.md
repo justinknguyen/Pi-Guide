@@ -309,7 +309,7 @@ Note: you can do this with multiple devices at a time.
   ```
   Then reinstall the container:
   ```
- docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
+  docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
   ```
   Check if the services are running:
   ```
