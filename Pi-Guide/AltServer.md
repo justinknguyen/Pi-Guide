@@ -307,7 +307,7 @@ Note: you can do this with multiple devices at a time.
 
 ## Troubleshooting
 
-- Check your `alt-server/log` folder to find troubleshoot your issue.
+- Check your `alt-server/log` folder to find and troubleshoot your issue.
 - Unfortunately, updating your device may break your setup. It could also just break on it's own. If your device stops refreshing, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart your device and clear trusted computers on it, then do "Configuration" steps 1-6 again and reboot the Pi.
 - The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again by first removing the docker container and reinstalling the anisette server. Here's how you can remove it:
   ```
