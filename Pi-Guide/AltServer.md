@@ -267,11 +267,11 @@ Note: you can do this with multiple devices at a time.
      ```
    - If it's not "Adding device", then your device isn't properly broadcasting itself or paired. Retrace your steps and troubleshoot the problem.
 6. While `netmuxd` is running, open another terminal tab for your Pi
-   - download the latest `AltStore.ipa`. As of Apr. 26, 2025, the latest version is 2.2, so replace `2_2` in the below command if there is a more recent version [here](https://faq.altstore.io/release-notes/altstore):
+   - Download the latest `AltStore.ipa`. As of Apr. 26, 2025, the latest version is 2.2, so replace `2_2` in the below command if there is a more recent version [here](https://faq.altstore.io/release-notes/altstore):
      ```
      curl -L https://cdn.altstore.io/file/altstore/apps/altstore/2_2.ipa > AltStore.ipa
      ```
-   - install the ipa file onto your device. Make sure to replace `00008110-0123A456B789D012` with your device's id from Step 5, and include your Apple credentials in the command
+   - Install the ipa file onto your device. Make sure to replace `00008110-0123A456B789D012` with your device's id from Step 5, and include your Apple credentials in the command
      ```
      sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
      ```
