@@ -67,7 +67,7 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    make
    sudo make install
    ```
-7. You should currently by in the `libplist` folder, so after finishing, go back to the `alt-server` folder:
+7. You should currently be in the `libplist` folder, so after finishing, go back to the `alt-server` folder:
    ```
    cd ..
    ```
