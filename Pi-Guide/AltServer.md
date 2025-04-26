@@ -292,7 +292,7 @@ Note: you can do this with multiple devices at a time.
    ```
    sudo crontab -e
    ```
-8. Then add the following lines. Replace the paths to your environment as appropriate:
+8. Then add the following lines. Replace the paths as appropriate to match your environment:
    ```
    @reboot sleep 20 && /home/pi/alt-server/aarch64-linux-netmuxd > /home/pi/alt-server/log/netmuxd.log 2>&1
    @reboot sleep 20 && ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 /home/pi/alt-server/AltServer-aarch64 > /home/pi/alt-server/log/altserver.log 2>&1
