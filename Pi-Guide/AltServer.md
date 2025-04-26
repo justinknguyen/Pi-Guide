@@ -266,18 +266,15 @@ Note: you can do this with multiple devices at a time.
      Adding device 00008110-0123A456B789D012 # or similar, this should appear after a few seconds
      ```
    - If it's not "Adding device", then your device isn't properly broadcasting itself or paired. Retrace your steps and troubleshoot the problem.
-6. While `netmuxd` is running, open another terminal tab for your Pi, and install the `AltStore` app to your devices (note: replace `00008110-0123A456B789D012` with your device code from the above step):
-   ```
-   curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_6_3.ipa > AltStore.ipa
-   ```
-   - Replace 1_6_3 with the most recent version
-   - You can find the latest AltStore version here https://faq.altstore.io/release-notes/altstore
+6. While `netmuxd` is running, open another terminal tab for your Pi
+   - download the latest `AltStore.ipa`. As of Apr. 26, 2025, the latest version is 2.2, so replace `2_2` in the below command if there is a more recent version [here](https://faq.altstore.io/release-notes/altstore):
+     ```
+     curl -L https://cdn.altstore.io/file/altstore/apps/altstore/2_2.ipa > AltStore.ipa
+     ```
+   - install the ipa file onto your device. Make sure to replace `00008110-0123A456B789D012` with your device's id from Step 5, and include your Apple credentials in the command
      ```
      sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
      ```
-   - Replace `00008110-0123A456B789D012` with your device code from the above step
-   - If your Apple ID password ends with !! or !?, the command might not run. Change the ending of your password to letters.
-   - For the first time, you'll likely need to enter a 2FA code. Enter it in the terminal when prompted. After verifying, the Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices.
    - AltStore should now be installed on your device from your Raspberry Pi! The output should be something like this:
      ```
      Installation Progress: 1
