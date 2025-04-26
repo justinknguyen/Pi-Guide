@@ -204,15 +204,24 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 
 ## Installation
 
-1. Head to the AltServer-Linux release page [here](https://github.com/NyaMisty/AltServer-Linux/releases) and download the `AltServer-aarch64` binary.
-2. Next, head to the netmuxd release page [here](https://github.com/jkcoxson/netmuxd/releases) and download the `aarch64-linux-netmuxd` binary.
-3. Place the two binaries within our `alt-server` folder. You can do this easily if you have Netatalk installed or an alternative method of your choice.
-4. While in our `alt-server` folder inside the terminal, enter the following to make the binaries executable:
+1. cd to the `alt-server` folder
+   ```
+   cd alt-server
+   ```
+1. Install the latest AltServer-Linux `AltServer-aarch64` binary from [here](https://github.com/NyaMisty/AltServer-Linux/releases)
+   ```
+   wget https://github.com/NyaMisty/AltServer-Linux/releases/download/v0.0.5/AltServer-aarch64
+   ```
+2. Install the latest netmuxd `aarch64-linux-netmuxd` binary from [here](https://github.com/jkcoxson/netmuxd/releases)
+   ```
+   wget https://github.com/jkcoxson/netmuxd/releases/download/v0.1.4/aarch64-linux-netmuxd
+   ```
+3. While in our `alt-server` folder inside the terminal, enter the following to make the binaries executable:
    ```
    chmod +x AltServer-aarch64
    chmod +x aarch64-linux-netmuxd
    ```
-5. Have `Docker` installed on your Pi. If you don't have it installed, follow my guide for it. Run the following command to create the Docker container:
+4. Have `Docker` installed on your Pi. If you don't have it installed, follow my guide for it. Run the following command to create the Docker container:
    ```
    docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
    ```
