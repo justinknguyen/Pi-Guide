@@ -208,11 +208,11 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
    ```
    cd alt-server
    ```
-1. Install the latest AltServer-Linux `AltServer-aarch64` binary from [here](https://github.com/NyaMisty/AltServer-Linux/releases)
+1. Install the latest AltServer-Linux `AltServer-aarch64` (for Raspberry Pi's) binary from [here](https://github.com/NyaMisty/AltServer-Linux/releases)
    ```
    wget https://github.com/NyaMisty/AltServer-Linux/releases/download/v0.0.5/AltServer-aarch64
    ```
-2. Install the latest netmuxd `aarch64-linux-netmuxd` binary from [here](https://github.com/jkcoxson/netmuxd/releases)
+2. Install the latest netmuxd `aarch64-linux-netmuxd` (for Raspberry Pi's) binary from [here](https://github.com/jkcoxson/netmuxd/releases)
    ```
    wget https://github.com/jkcoxson/netmuxd/releases/download/v0.1.4/aarch64-linux-netmuxd
    ```
