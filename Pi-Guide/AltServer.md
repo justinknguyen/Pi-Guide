@@ -22,6 +22,8 @@ If you have any trouble, read the tutorial that this guide is based on. It provi
 
 ## Prerequisites
 
+[Docker](/Pi-Guide/Docker.md)
+
 1. Create a folder on your Pi to store the files we'll be downloading. We'll make one at the default path, which is `/home/pi`:
    ```
    mkdir alt-server
