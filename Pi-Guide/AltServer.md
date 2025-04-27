@@ -4,7 +4,7 @@ AltServer running on your Raspberry Pi! This is to refresh AltStore and sideload
 
 If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 
-If you still can't get this to work, I would recommend using SideStore instead. Otherwise, you can try the dockerized version of AltServer for Linux: https://github.com/dreth/Altserver-docker or this simple GUI solution: https://github.com/vyvir/althea
+If you still can't get this to work, I would recommend using SideStore instead. Otherwise, you can try the dockerized version of AltServer for Linux: https://github.com/dreth/Altserver-docker or this simple GUI solution (no WiFi refresh): https://github.com/vyvir/althea
 
 ## Table of Contents
 
