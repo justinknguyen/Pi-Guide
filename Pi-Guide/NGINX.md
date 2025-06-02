@@ -2,6 +2,8 @@
 
 Host your website on your Pi.
 
+A much simpler alternative than setting nginx configs manually is [NGINX Proxy Manager](https://nginxproxymanager.com/)
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -78,9 +80,10 @@ If you have Pi-Hole installed, you will need to change the port as this will now
    ```
    sudo nano /etc/nginx/sites-available/default
    ```
-   - Find the line `root /var/www/html/` and append your git folder name to it.
-5. Reload nginx:
+   - Find the line `root /var/www/html/` and append your git folder name to it, for example `root /var/www/html/my-website`.
+5. Verify and reload nginx:
    ```
+   sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```
 
@@ -102,12 +105,9 @@ If you have Pi-Hole installed, you will need to change the port as this will now
                }
            }
    ```
-3. After editing, make sure to run the below to verify the config works.
+3. Verify and reload nginx:
    ```
    sudo nginx -t
-   ```
-4. Finally, run the below to put the config into action.
-   ```
    sudo /etc/init.d/nginx reload
    ```
 
