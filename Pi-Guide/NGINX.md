@@ -135,8 +135,6 @@ Set up the `Host Record` on your domain provider as so:
    ```
    ```
    sudo nginx -t
-   ```
-   ```
    sudo /etc/init.d/nginx reload
    ```
 2. Install certbot:
@@ -176,8 +174,6 @@ If you notice a suspicious IP traffic, perform the following to block access fro
 3. Confirm config and reload:
    ```
    sudo nginx -t
-   ```
-   ```
    sudo /etc/init.d/nginx reload
    ```
 
@@ -203,8 +199,6 @@ In your `default` file, when editing the ports, if you have more than one server
 3. Confirm config and reload:
    ```
    sudo nginx -t
-   ```
-   ```
    sudo /etc/init.d/nginx reload
    ```
 
