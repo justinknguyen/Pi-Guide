@@ -26,11 +26,11 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
    ```
    Then uncomment by removing the `#` and set the following lines to:
    ```
-   RuntimeWatchdogSec=10
+   RuntimeWatchdogSec=15s
    RebootWatchdogSec=10min
    ```
-   What the lines above say is:
-   - `RuntimeWatchdogSec`: refresh the hardware watchdog every 10 seconds. If for some reason the refresh fails (I believe after 3 intervals; i.e. 30s) power cycle the system.
+   What the lines above mean:
+   - `RuntimeWatchdogSec`: refresh the hardware watchdog every 15 seconds. If for some reason the refresh fails after 3 intervals, power cycle the system.
    - `RebootWatchdogSec`: on reboot, if the system takes more than 10 minutes, power cycle the system.
 3. Reboot:
    ```
