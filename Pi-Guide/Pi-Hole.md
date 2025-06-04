@@ -25,7 +25,7 @@ Network-wide ad-blocking.
 3. Once installed, take note of the IPv4 and (if enabled) IPv6 address. This will be used in your router settings.
 4. Change the Pi-Hole login password by entering:
    ```
-   pihole -a -p [NEWPASSWORD]
+   sudo pihole setpassword [NEWPASSWORD]
    ```
 
 ## Configuration
