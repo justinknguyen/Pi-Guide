@@ -54,7 +54,9 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    ```
 1. Mount your drive:
    ```
-   sudo mount /dev/sda1
+   sudo mkdir -p /mnt/sda1
+   sudo mount /dev/sda1 /mnt/sda1
+   lsblk
    ```
    - Use the following to mount if you used the UUID instead:
      ```
