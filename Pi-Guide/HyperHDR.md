@@ -20,20 +20,14 @@ sudo apt-get --purge autoremove hyperion
 
 ## Installation
 
-1. cd to the tmp directory:
-   ```
-   cd /tmp
-   ```
-2. Download HyperHDR to the directory (use the latest version, current is v20.0.0.0)
-   ```
-   wget https://github.com/awawa-dev/HyperHDR/releases/download/v20.0.0.0/HyperHDR-20.0.0.0-Linux-aarch64.deb
-   ```
-   - if you are on the Raspberry Pi 32-bit OS, replace `aarch64` with `armv6l`
-   - if you are using a generic Linux machine, replace `aarch64` with `x86_64`
-3. Install HyperHDR:
-   ```
-   sudo apt install ./HyperHDR-20.0.0.0-Linux-aarch64.deb
-   ```
+```
+type -p curl >/dev/null || sudo apt install curl -y
+curl -fsSL https://awawa-dev.github.io/hyperhdr.public.apt.gpg.key | sudo dd of=/usr/share/keyrings/hyperhdr.public.apt.gpg.key \
+&& sudo chmod go+r /usr/share/keyrings/hyperhdr.public.apt.gpg.key \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hyperhdr.public.apt.gpg.key] https://awawa-dev.github.io $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hyperhdr.list > /dev/null \
+&& sudo apt update \
+&& sudo apt install hyperhdr -y
+```
 
 ## Testing
 
