@@ -19,27 +19,23 @@ Containerize packages for easy removal. The benefit of Docker is being able to q
    ```
    curl -sSL https://get.docker.com | sh
    ```
-3. Add a Non-Root User to the Docker Group:
-   ```
-   sudo usermod -aG docker pi
-   ```
-4. Then add permissions to the current user:
+3. Add permissions for the current user:
    ```
    sudo usermod -aG docker ${USER}
    ```
-5. Check it running with:
+4. Check it running with:
    ```
    groups ${USER}
    ```
-6. Reboot:
+5. Reboot:
    ```
    sudo reboot
    ```
-7. Install Docker-Compose:
+6. Install Docker-Compose:
    ```
    sudo apt-get install docker-compose
    ```
-8. Enable the Docker system service to start your containers on boot:
+7. Enable the Docker system service to start your containers on boot:
    ```
    sudo systemctl enable docker
    ```
