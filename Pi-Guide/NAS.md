@@ -50,7 +50,7 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
      ```
 1. Reload daemon:
    ```
-   systemctl daemon-reload
+   sudo systemctl daemon-reload
    ```
 1. Mount your drive:
    ```
