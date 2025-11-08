@@ -81,3 +81,4 @@ Listed in recommended install order.
 - [immich](/Pi-Guide/immich.md)
 - [RetroPie](/Pi-Guide/RetroPie.md)
 - [raspiBackup](/Pi-Guide/raspiBackup.md)
+- [Wealthsimple to Actual Budget Sync](/Pi-Guide/Wealthsimple-to-ActualBudget-Sync.md)
