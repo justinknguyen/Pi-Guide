@@ -261,57 +261,78 @@ def load_or_login_ws():
 
 def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[Dict]:
     """
-    Fetch accounts and their activities (transactions).
-    Returns a list of normalized transactions dicts with keys:
-      - date (datetime.date)
-      - amount (decimal.Decimal)  (negative for outflow, positive for inflow)
-      - payee (str)
-      - notes (str)
-      - account_name (str)
-      - canonical_id (str) unique id from Wealthsimple for deduping
+    Fetch activities (transactions) only for ALLOWED_ACCOUNTS.
+    Returns a list of normalized transaction dicts.
     """
     accounts = ws.get_accounts()
     result = []
+
     for acc in accounts:
+        acc_name = acc.get("description") or acc.get("number") or f"WS-{acc['id']}"
+
+        # Only process allowed accounts
+        if acc_name not in ALLOWED_ACCOUNTS:
+            log.info("Skipping account not in allowed list: %s", acc_name)
+            continue
+
         acc_id = acc["id"]
-        acc_name = acc.get("description") or acc.get("number") or f"WS-{acc_id}"
         log.info("Fetching activities for account: %s", acc_name)
+
         acts = ws.get_activities(acc_id) or []
-        # ws returns activities sorted OCCURRED_AT_DESC (newest first)
-        for act in reversed(acts):  # oldest -> newest
+        for act in reversed(acts):  # oldest → newest
             try:
                 occurred = act.get("occurredAt")
                 if not occurred:
                     continue
-                # parse occurredAt into date
-                dt = dateparser.parse(occurred)
-                d = dt.date()
+                d = dateparser.parse(occurred).date()
                 if import_after and d < import_after:
                     continue
-                amount_raw = act.get("amount")
-                # amount may be string or numeric; convert safely to Decimal
-                amount = decimal.Decimal(str(amount_raw))
-                # Determine sign: ws sometimes provides amountSign
+
+                amount = decimal.Decimal(str(act.get("amount")))
                 if act.get("amountSign") == "negative" and amount > 0:
                     amount = -abs(amount)
                 elif act.get("amountSign") == "positive" and amount < 0:
                     amount = abs(amount)
-                # Build payee/notes
+
                 payee = act.get("description") or act.get("type") or "Wealthsimple"
+                if acc_name.lower() == "cash":
+                    if act.get("type") == "DEPOSIT":
+                        if act.get("aftOriginatorName"):
+                            payee = f"Payroll: {act['aftOriginatorName']}"
+                        elif "direct deposit" in (act.get("description") or "").lower():
+                            payee = act["description"]
+                        else:
+                            payee = act.get("description", "Cash Deposit")
+                    elif act.get("type") == "WITHDRAWAL":
+                        if act.get("eTransferName"):
+                            payee = f"E-Transfer: {act['eTransferName']}"
+                        elif act.get("eTransferEmail"):
+                            payee = f"E-Transfer: {act['eTransferEmail']}"
+                        else:
+                            payee = act.get("description", "Cash Withdrawal")
+                    elif act.get("type") == "SPEND":
+                        if act.get("spendMerchant"):
+                            payee = act["spendMerchant"]
+                        else:
+                            payee = act.get("description", "Card Spend")
+
                 notes = f"WS type={act.get('type')} subtype={act.get('subType')} id={act.get('canonicalId')}"
                 tx = {
                     "date": d,
                     "amount": amount,
-                    "payee": payee,
+                    "payee": payee.strip(),
                     "notes": notes,
                     "account_name": acc_name,
                     "canonical_id": act.get("canonicalId") or act.get("id") or f"ws-{acc_id}-{occurred}",
                 }
                 result.append(tx)
+
             except Exception as e:
                 log.exception("Failed to process activity: %s", e)
-    log.info("Fetched %d activities from Wealthsimple.", len(result))
+
+    log.info("Fetched %d activities from allowed Wealthsimple accounts.", len(result))
     return result
+
 
 
 def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_password: str, budget_file_name: str):
@@ -377,14 +398,13 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
         log.info("Committed %d transactions to Actual.", len(added_transactions))
 
 
-
 def main():
     # Parse IMPORT_AFTER if set
     import_after_date = None
     if IMPORT_AFTER:
         import_after_date = datetime.strptime(IMPORT_AFTER, "%Y-%m-%d").date()
 
-    # Wealthsimple login & fetch
+    # Wealthsimple login & fetch (only from allowed accounts)
     ws = load_or_login_ws()
     txs = fetch_wealthsimple_activities(ws, import_after=import_after_date)
 
@@ -392,24 +412,8 @@ def main():
         log.info("No transactions to import.")
         return
 
-    # Filter to include only specific accounts
-    before_count = len(txs)
-    txs = [t for t in txs if t["account_name"] in ALLOWED_ACCOUNTS]
-    log.info(
-        "Filtered transactions from %d → %d (accounts: %s)",
-        before_count,
-        len(txs),
-        ", ".join(ALLOWED_ACCOUNTS),
-    )
-
-    if not txs:
-        log.info("No transactions found for the specified accounts. Exiting.")
-        return
-
     # Confirm Actual config / password
-    actual_password = ACTUAL_PASSWORD
-    if not actual_password:
-        actual_password = getpass.getpass(f"Password for Actual at {ACTUAL_BASE_URL}: ")
+    actual_password = ACTUAL_PASSWORD or getpass.getpass(f"Password for Actual at {ACTUAL_BASE_URL}: ")
 
     # Import into Actual
     import_into_actual(txs, ACTUAL_BASE_URL, actual_password, BUDGET_FILE_NAME)
