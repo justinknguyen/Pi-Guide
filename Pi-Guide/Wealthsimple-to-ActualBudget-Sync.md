@@ -384,7 +384,7 @@ def main():
     if IMPORT_AFTER:
         import_after_date = datetime.strptime(IMPORT_AFTER, "%Y-%m-%d").date()
 
-    # Step 1: Wealthsimple login & fetch
+    # Wealthsimple login & fetch
     ws = load_or_login_ws()
     txs = fetch_wealthsimple_activities(ws, import_after=import_after_date)
 
@@ -392,7 +392,7 @@ def main():
         log.info("No transactions to import.")
         return
 
-    # ✅ Step 1.5: Filter to include only specific accounts
+    # Filter to include only specific accounts
     before_count = len(txs)
     txs = [t for t in txs if t["account_name"] in ALLOWED_ACCOUNTS]
     log.info(
@@ -406,12 +406,12 @@ def main():
         log.info("No transactions found for the specified accounts. Exiting.")
         return
 
-    # Step 2: Confirm Actual config / password
+    # Confirm Actual config / password
     actual_password = ACTUAL_PASSWORD
     if not actual_password:
         actual_password = getpass.getpass(f"Password for Actual at {ACTUAL_BASE_URL}: ")
 
-    # Step 3: Import into Actual
+    # Import into Actual
     import_into_actual(txs, ACTUAL_BASE_URL, actual_password, BUDGET_FILE_NAME)
     log.info("Done.")
 
