@@ -334,7 +334,6 @@ def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[
     return result
 
 
-
 def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_password: str, budget_file_name: str):
     """
     Use actualpy to import the list of transactions into Actual.
