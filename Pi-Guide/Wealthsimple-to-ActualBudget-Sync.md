@@ -393,6 +393,7 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
                 print(f"Added/modified transaction: {tx['date']} {tx['payee']} {tx['amount']}")
 
         # Commit all changes
+        actual.run_rules()
         actual.commit()
         log.info("Committed %d transactions to Actual.", len(added_transactions))
 
