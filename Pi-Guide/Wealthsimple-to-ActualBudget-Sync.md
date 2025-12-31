@@ -173,7 +173,7 @@ import sys
 import decimal
 import getpass
 import logging
-from datetime import datetime, date
+from datetime import date, timedelta
 from dateutil import parser as dateparser
 from typing import List, Dict
 
@@ -470,10 +470,10 @@ def import_into_actual(
 
 
 def main():
-    # Parse IMPORT_AFTER if set
-    import_after_date = None
-    if IMPORT_AFTER:
-        import_after_date = datetime.strptime(IMPORT_AFTER, "%Y-%m-%d").date()
+    LOOKBACK_DAYS = 60
+
+    import_after_date = date.today() - timedelta(days=LOOKBACK_DAYS)
+    log.info("Importing Wealthsimple transactions from %s onward", import_after_date)
 
     # Wealthsimple login & fetch (only from allowed accounts)
     ws = load_or_login_ws()
