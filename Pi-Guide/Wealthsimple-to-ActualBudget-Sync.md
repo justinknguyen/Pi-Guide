@@ -54,7 +54,6 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    export ACTUAL_BASE_URL="http://localhost:5006"
    export ACTUAL_PASSWORD="your_actual_password"
    export ACTUAL_BUDGET_FILE="Wealthsimple Import"
-   export IMPORT_AFTER="2025-01-01"
    ```
 2. Apply changes:
    ```
