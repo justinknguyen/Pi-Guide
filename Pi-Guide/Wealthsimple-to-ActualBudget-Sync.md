@@ -178,7 +178,12 @@ from dateutil import parser as dateparser
 from typing import List, Dict
 
 # Wealthsimple client
-from ws_api import WealthsimpleAPI, OTPRequiredException, LoginFailedException, WSAPISession
+from ws_api import (
+    WealthsimpleAPI,
+    OTPRequiredException,
+    LoginFailedException,
+    WSAPISession,
+)
 
 # Actual (actualpy)
 from actual import Actual
@@ -192,12 +197,17 @@ KEYRING_SERVICE = "ws_to_actual"
 WS_KEYRING_SESSION_KEY = f"{KEYRING_SERVICE}.ws.session"
 # You can set these environment variables instead of editing here:
 ACTUAL_BASE_URL = os.environ.get("ACTUAL_BASE_URL", "http://localhost:5006")
-ACTUAL_PASSWORD = os.environ.get("ACTUAL_PASSWORD", None)  # recommended to be set in env
+ACTUAL_PASSWORD = os.environ.get(
+    "ACTUAL_PASSWORD", None
+)  # recommended to be set in env
 BUDGET_FILE_NAME = os.environ.get("ACTUAL_BUDGET_FILE", "Wealthsimple Import")
 # Optional: only import transactions after this date (YYYY-MM-DD) to avoid importing the whole history
 IMPORT_AFTER = os.environ.get("IMPORT_AFTER", None)  # e.g. "2025-01-01" or None
 # Optional: restrict which accounts to import
-ALLOWED_ACCOUNTS = {"Cash", "Credit card"}  # can also override via environment if desired
+ALLOWED_ACCOUNTS = {
+    "Cash",
+    "Credit card",
+}  # can also override via environment if desired
 # -----------------------------
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -220,13 +230,19 @@ def load_or_login_ws():
         try:
             sess = WSAPISession.from_json(session_json)
             log.info("Found existing Wealthsimple session in keyring.")
-            ws = WealthsimpleAPI.from_token(sess, lambda s, u: keyring.set_password(KEYRING_SERVICE, "session", s), username)
+            ws = WealthsimpleAPI.from_token(
+                sess,
+                lambda s, u: keyring.set_password(KEYRING_SERVICE, "session", s),
+                username,
+            )
             return ws
         except Exception as e:
             log.warning("Saved WS session invalid or expired: %s", e)
 
     # No valid session: interactive login
-    print("Wealthsimple login required. (This will be saved to your OS keyring securely.)")
+    print(
+        "Wealthsimple login required. (This will be saved to your OS keyring securely.)"
+    )
     username = input("Wealthsimple username (email): ").strip()
     password = getpass.getpass("Wealthsimple password: ")
     otp_answer = None
@@ -238,7 +254,9 @@ def load_or_login_ws():
 
     while True:
         try:
-            WealthsimpleAPI.login(username, password, otp_answer, persist_session_fct=persist_session)
+            WealthsimpleAPI.login(
+                username, password, otp_answer, persist_session_fct=persist_session
+            )
             # After login the keyring was filled by persist_session
             stored = keyring.get_password(KEYRING_SERVICE, "session")
             if not stored:
@@ -257,6 +275,32 @@ def load_or_login_ws():
         except Exception as e:
             log.exception("Unexpected error during Wealthsimple login: %s", e)
             raise
+
+
+def is_pending_activity(act: Dict) -> bool:
+    """
+    Return True if the Wealthsimple activity represents a pending transaction.
+    Handles multiple possible WS fields defensively.
+    """
+    # Explicit boolean flags
+    if act.get("isPending") is True:
+        return True
+    if act.get("pending") is True:
+        return True
+
+    # Status/state fields
+    status = (act.get("status") or act.get("state") or "").upper()
+    if status == "PENDING":
+        return True
+
+    # Some transactions are pending if they have no settlement date
+    # but DO have an occurredAt date
+    if act.get("occurredAt") and not act.get("settledAt"):
+        # Many WS pending card transactions look like this
+        if status in ("", "AUTHORIZED"):
+            return True
+
+    return False
 
 
 def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[Dict]:
@@ -281,6 +325,15 @@ def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[
         acts = ws.get_activities(acc_id) or []
         for act in reversed(acts):  # oldest → newest
             try:
+                # Skip pending transactions
+                if is_pending_activity(act):
+                    log.info(
+                        "Skipping pending transaction: %s (%s)",
+                        act.get("description"),
+                        act.get("canonicalId") or act.get("id"),
+                    )
+                    continue
+
                 occurred = act.get("occurredAt")
                 if not occurred:
                     continue
@@ -323,7 +376,9 @@ def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[
                     "payee": payee.strip(),
                     "notes": notes,
                     "account_name": acc_name,
-                    "canonical_id": act.get("canonicalId") or act.get("id") or f"ws-{acc_id}-{occurred}",
+                    "canonical_id": act.get("canonicalId")
+                    or act.get("id")
+                    or f"ws-{acc_id}-{occurred}",
                 }
                 result.append(tx)
 
@@ -334,7 +389,12 @@ def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[
     return result
 
 
-def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_password: str, budget_file_name: str):
+def import_into_actual(
+    transactions: List[Dict],
+    actual_base_url: str,
+    actual_password: str,
+    budget_file_name: str,
+):
     """
     Use actualpy to import the list of transactions into Actual.
     Transactions must include date, account_name, payee, notes, amount.
@@ -344,7 +404,9 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
     import time
 
     if not actual_password:
-        raise RuntimeError("Actual password is required (set ACTUAL_PASSWORD env or provide it interactively).")
+        raise RuntimeError(
+            "Actual password is required (set ACTUAL_PASSWORD env or provide it interactively)."
+        )
 
     # Ensure all amounts are Decimal
     for t in transactions:
@@ -353,9 +415,14 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
 
     # Try to open the specified budget file; create it if missing
     try:
-        actual = Actual(base_url=actual_base_url, password=actual_password, file=budget_file_name)
+        actual = Actual(
+            base_url=actual_base_url, password=actual_password, file=budget_file_name
+        )
     except UnknownFileId:
-        log.info("Budget file '%s' not found on Actual server. Creating a new one...", budget_file_name)
+        log.info(
+            "Budget file '%s' not found on Actual server. Creating a new one...",
+            budget_file_name,
+        )
         temp_actual = Actual(base_url=actual_base_url, password=actual_password)
         temp_actual.create_budget(budget_file_name)
         temp_actual.upload_budget()
@@ -364,7 +431,9 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
         time.sleep(2)
 
         # Now reopen with the new file
-        actual = Actual(base_url=actual_base_url, password=actual_password, file=budget_file_name)
+        actual = Actual(
+            base_url=actual_base_url, password=actual_password, file=budget_file_name
+        )
 
     with actual:
         try:
@@ -390,7 +459,9 @@ def import_into_actual(transactions: List[Dict], actual_base_url: str, actual_pa
             )
             added_transactions.append(t)
             if t.changed():
-                print(f"Added/modified transaction: {tx['date']} {tx['payee']} {tx['amount']}")
+                print(
+                    f"Added/modified transaction: {tx['date']} {tx['payee']} {tx['amount']}"
+                )
 
         # Commit all changes
         actual.run_rules()
@@ -413,11 +484,14 @@ def main():
         return
 
     # Confirm Actual config / password
-    actual_password = ACTUAL_PASSWORD or getpass.getpass(f"Password for Actual at {ACTUAL_BASE_URL}: ")
+    actual_password = ACTUAL_PASSWORD or getpass.getpass(
+        f"Password for Actual at {ACTUAL_BASE_URL}: "
+    )
 
     # Import into Actual
     import_into_actual(txs, ACTUAL_BASE_URL, actual_password, BUDGET_FILE_NAME)
     log.info("Done.")
+
 
 if __name__ == "__main__":
     try:
