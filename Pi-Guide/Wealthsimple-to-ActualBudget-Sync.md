@@ -462,10 +462,13 @@ def import_into_actual(
                     f"Added/modified transaction: {tx['date']} {tx['payee']} {tx['amount']}"
                 )
 
-        # Commit all changes
-        actual.run_rules()
-        actual.commit()
-        log.info("Committed %d transactions to Actual.", len(added_transactions))
+        # Run rules only if something new was added
+        if added_transactions:
+            actual.run_rules(transactions=added_transactions)
+            actual.commit()
+            log.info("Rules applied and %d transactions committed.", len(added_transactions))
+        else:
+            log.info("No new transactions; nothing to import.")
 
 
 def main():
