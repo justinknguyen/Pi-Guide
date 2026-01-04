@@ -276,11 +276,32 @@ def load_or_login_ws():
             raise
 
 
+def is_interest_activity(act: Dict) -> bool:
+    """
+    Detect Wealthsimple interest / yield postings.
+    """
+    # WS sometimes provides explicit types
+    activity_type = (act.get("type") or act.get("activityType") or "").upper()
+    if activity_type == "INTEREST":
+        return True
+
+    # Description-based fallback
+    desc = (act.get("description") or "").lower()
+    if "interest" in desc:
+        return True
+
+    return False
+
+
 def is_pending_activity(act: Dict) -> bool:
     """
     Return True if the Wealthsimple activity represents a pending transaction.
     Handles multiple possible WS fields defensively.
     """
+    # Interest is NEVER pending
+    if is_interest_activity(act):
+        return False
+
     # Explicit boolean flags
     if act.get("isPending") is True:
         return True
@@ -298,6 +319,43 @@ def is_pending_activity(act: Dict) -> bool:
         # Many WS pending card transactions look like this
         if status in ("", "AUTHORIZED"):
             return True
+
+    return False
+
+def is_reversed_activity(act: Dict) -> bool:
+    """
+    Return True if the Wealthsimple activity represents a reversed,
+    cancelled, or voided transaction.
+    """
+    # Explicit boolean flags
+    if act.get("isReversal") is True:
+        return True
+    if act.get("isReversed") is True:
+        return True
+    if act.get("reversal") is True:
+        return True
+
+    # Linked reversal references
+    if act.get("reversedTransactionId"):
+        return True
+    if act.get("originalTransactionId"):
+        return True
+
+    # Status / state based detection
+    status = (act.get("status") or act.get("state") or "").upper()
+    if status in {
+        "REVERSED",
+        "CANCELLED",
+        "VOIDED",
+        "FAILED",
+        "DECLINED",
+    }:
+        return True
+
+    # Description-based fallback (last resort)
+    desc = (act.get("description") or "").lower()
+    if any(word in desc for word in ("reversal", "reversed", "void", "cancelled")):
+        return True
 
     return False
 
@@ -328,6 +386,15 @@ def fetch_wealthsimple_activities(ws, import_after: date | None = None) -> List[
                 if is_pending_activity(act):
                     log.info(
                         "Skipping pending transaction: %s (%s)",
+                        act.get("description"),
+                        act.get("canonicalId") or act.get("id"),
+                    )
+                    continue
+
+                # Skip reversed / cancelled transactions
+                if is_reversed_activity(act):
+                    log.info(
+                        "Skipping reversed transaction: %s (%s)",
                         act.get("description"),
                         act.get("canonicalId") or act.get("id"),
                     )
