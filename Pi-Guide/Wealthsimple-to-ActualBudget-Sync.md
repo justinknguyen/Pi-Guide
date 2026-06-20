@@ -34,7 +34,7 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    ```
 4. Install required dependencies:
    ```
-   pip install ws-api actualpy keyring python-dateutil
+   pip install ws-api actualpy keyring python-dateutil pyotp
    ```
 5. Create the `ws_to_actual.py` script in your home directory (see [Python Script](#python-script) section below for the full code):
    ```
@@ -54,6 +54,9 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    export ACTUAL_BASE_URL="http://localhost:5006"
    export ACTUAL_PASSWORD="your_actual_password"
    export ACTUAL_BUDGET_FILE="Wealthsimple Import"
+   export WS_USERNAME='your_ws_email'
+   export WS_PASSWORD='your_ws_pass'
+   export WS_TOTP_SECRET='your_ws_totp_secret'
    ```
 2. Apply changes:
    ```
@@ -64,8 +67,8 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    source ~/actual_env/bin/activate
    python ~/ws_to_actual.py
    ```
-   - You'll be prompted for your Wealthsimple login and OTP (stored securely in your system keyring)
-   - The first run may also ask for your Actual password if not set in the environment
+   - You'll be prompted for your Wealthsimple login and OTP (stored securely in your system keyring) if not set in the environment
+   - The first run may ask for your Actual password if not set in the environment
 4. (Optional) Limit imported accounts by editing the filter list in your script:
    ```
    ALLOWED_ACCOUNTS = ["Cash", "Credit card"]
@@ -158,7 +161,7 @@ ws_to_actual.py
 Fetch Wealthsimple activities and import into Actual (via actualpy).
 
 Dependencies:
-  pip install ws-api actualpy keyring python-dateutil
+  pip install ws-api actualpy keyring python-dateutil pyotp
 
 Notes:
  - This uses the unofficial ws-api Python library to access Wealthsimple.
@@ -172,6 +175,7 @@ import sys
 import decimal
 import getpass
 import logging
+import pyotp
 from datetime import date, timedelta
 from dateutil import parser as dateparser
 from typing import List, Dict
@@ -242,8 +246,17 @@ def load_or_login_ws():
     print(
         "Wealthsimple login required. (This will be saved to your OS keyring securely.)"
     )
-    username = input("Wealthsimple username (email): ").strip()
-    password = getpass.getpass("Wealthsimple password: ")
+    username = os.getenv("WS_USERNAME")
+    password = os.getenv("WS_PASSWORD")
+    secret = os.getenv("WS_TOTP_SECRET")
+
+    # Optional fallback if env vars aren't set
+    if not username:
+        username = input("Wealthsimple username (email): ").strip()
+
+    if not password:
+        password = getpass.getpass("Wealthsimple password: ")
+
     otp_answer = None
 
     # persist function: save session JSON to keyring
@@ -253,10 +266,15 @@ def load_or_login_ws():
 
     while True:
         try:
+            if secret:
+                otp_answer = pyotp.TOTP(secret).now()
+
             WealthsimpleAPI.login(
-                username, password, otp_answer, persist_session_fct=persist_session
+                username,
+                password,
+                otp_answer,
+                persist_session,
             )
-            # After login the keyring was filled by persist_session
             stored = keyring.get_password(KEYRING_SERVICE, "session")
             if not stored:
                 raise RuntimeError("Session wasn't saved to keyring")
@@ -265,9 +283,12 @@ def load_or_login_ws():
             log.info("Logged in to Wealthsimple and saved session.")
             return ws
         except OTPRequiredException:
-            otp_answer = input("2FA/TOTP code (check your app/email): ").strip()
+            if not secret:
+                otp_answer = input("2FA/TOTP code: ").strip()
         except LoginFailedException:
-            print("Login failed. Try again.")
+            log.error("Login failed.")
+            if os.getenv("WS_USERNAME") and os.getenv("WS_PASSWORD"):
+                raise
             username = input("Wealthsimple username (email): ").strip()
             password = getpass.getpass("Wealthsimple password: ")
             otp_answer = None
