@@ -253,7 +253,6 @@ def load_or_login_ws():
     # Optional fallback if env vars aren't set
     if not username:
         username = input("Wealthsimple username (email): ").strip()
-
     if not password:
         password = getpass.getpass("Wealthsimple password: ")
 
