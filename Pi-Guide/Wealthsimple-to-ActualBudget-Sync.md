@@ -104,9 +104,10 @@ INFO Done.
    ```
    crontab -e
    ```
-2. Add a job to run every 12 hours:
+2. Add a job to run every 12 hours and saves a log for the day:
    ```
-   0 */12 * * * bash -c 'source /home/pi/.bashrc && /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py >> /home/pi/ws_to_actual.log 2>&1'
+   0 */12 * * * /bin/bash -c 'source /home/pi/.bashrc && /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1'
+   10 */12 * * * /bin/bash -c 'find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete'
    ```
    - (Optional) Test it every minute first:
      ```
