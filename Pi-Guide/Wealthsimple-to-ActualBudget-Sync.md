@@ -120,7 +120,7 @@ INFO Done.
 3. Add jobs to run every 12 hours and rotate logs:
    ```
    0 */12 * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1
-   10 23 * * * find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
+   10 0 * * * find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
    ```
    - (Optional) Test it every minute first:
      ```
