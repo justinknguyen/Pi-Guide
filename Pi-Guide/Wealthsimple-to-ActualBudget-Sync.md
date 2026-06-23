@@ -100,25 +100,38 @@ INFO Done.
 
 ## Automation
 
-1. Open your crontab:
+1. Create a small wrapper script so cron uses the same shell environment as your interactive login:
+   ```bash
+   cat > /home/pi/run_ws_to_actual.sh <<'EOF'
+   #!/bin/bash
+   set -e
+   source /home/pi/.bashrc
+   source /home/pi/actual_env/bin/activate
+   /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py
+   EOF
+   chmod +x /home/pi/run_ws_to_actual.sh
+   ```
+   - If `~/.bashrc` contains a non-interactive early return such as `[[ $- != *i* ]] && return`, move the exports above that check or use a dedicated env file.
+
+2. Open your crontab:
    ```
    crontab -e
    ```
-2. Add a job to run every 12 hours and saves a log for the day:
+3. Add jobs to run every 12 hours and rotate logs:
    ```
-   0 */12 * * * /bin/bash -c 'source /home/pi/.bashrc && /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1'
-   10 */12 * * * /bin/bash -c 'find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete'
+   0 */12 * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1
+   10 23 * * * find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
    ```
    - (Optional) Test it every minute first:
      ```
-     * * * * * bash -c 'source /home/pi/.bashrc && /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py >> /home/pi/ws_to_actual.log 2>&1'
+     * * * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual.log 2>&1
      ```
-3. Check if it ran successfully:
+4. Check if it ran successfully:
+   ```bash
+   tail -n 20 /home/pi/ws_to_actual.log
    ```
-   tail -n 20 ~/ws_to_actual.log
-   ```
-4. View system cron logs if needed:
-   ```
+5. View system cron logs if needed:
+   ```bash
    grep CRON /var/log/syslog | tail -n 20
    ```
 
@@ -133,9 +146,17 @@ sudo apt install python3-pip -y
 
 **Actual password prompt appearing in cron:**
 
-Ensure it's exported in your `~/.bashrc` and that cron sources it as shown above.
+Ensure `ACTUAL_PASSWORD` is exported in your `~/.bashrc` and that cron sources it as shown above.
 
 **Wealthsimple login issues:**
+
+Ensure the following are set for non-interactive cron runs:
+
+```
+export WS_USERNAME='your_ws_email'
+export WS_PASSWORD='your_ws_pass'
+export WS_TOTP_SECRET='your_ws_totp_secret'
+```
 
 Clear saved session:
 ```
@@ -226,9 +247,14 @@ def load_or_login_ws():
     # Optionally set a custom user-agent (ws-api example uses this)
     WealthsimpleAPI.set_user_agent("Mozilla/5.0 (RaspberryPi) ws-to-actual/1.0")
 
-    # Try to load session JSON from keyring
-    session_json = keyring.get_password(KEYRING_SERVICE, "session")
+    # Try to load session JSON from keyring.
+    # Accept old session records saved under the legacy ``session`` key too.
+    session_json = (
+        keyring.get_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY)
+        or keyring.get_password(KEYRING_SERVICE, "session")
+    )
     username = None
+    interactive = sys.stdin.isatty()
 
     if session_json:
         try:
@@ -236,7 +262,7 @@ def load_or_login_ws():
             log.info("Found existing Wealthsimple session in keyring.")
             ws = WealthsimpleAPI.from_token(
                 sess,
-                lambda s, u: keyring.set_password(KEYRING_SERVICE, "session", s),
+                lambda s, u: keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, s),
                 username,
             )
             return ws
@@ -252,22 +278,39 @@ def load_or_login_ws():
     secret = os.getenv("WS_TOTP_SECRET")
 
     # Optional fallback if env vars aren't set
-    if not username:
-        username = input("Wealthsimple username (email): ").strip()
-    if not password:
-        password = getpass.getpass("Wealthsimple password: ")
+    if not username or not password:
+        if not interactive:
+            raise RuntimeError(
+                "Wealthsimple credentials are required when running from cron. "
+                "Set WS_USERNAME and WS_PASSWORD in the environment."
+            )
+        if not username:
+            username = input("Wealthsimple username (email): ").strip()
+        if not password:
+            password = getpass.getpass("Wealthsimple password: ")
+
+    if not secret and not interactive:
+        raise RuntimeError(
+            "Wealthsimple TOTP secret is required when running from cron. "
+            "Set WS_TOTP_SECRET in the environment."
+        )
 
     otp_answer = None
 
     # persist function: save session JSON to keyring
     def persist_session(sess_obj, uname):
         # sess_obj here is a JSON string (ws-api usage)
+        keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, sess_obj)
         keyring.set_password(KEYRING_SERVICE, "session", sess_obj)
 
     while True:
         try:
             if secret:
                 otp_answer = pyotp.TOTP(secret).now()
+            elif not interactive:
+                raise RuntimeError(
+                    "WS_TOTP_SECRET is required in cron when 2FA is enabled."
+                )
 
             WealthsimpleAPI.login(
                 username,
@@ -275,7 +318,7 @@ def load_or_login_ws():
                 otp_answer,
                 persist_session,
             )
-            stored = keyring.get_password(KEYRING_SERVICE, "session")
+            stored = keyring.get_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY)
             if not stored:
                 raise RuntimeError("Session wasn't saved to keyring")
             sess = WSAPISession.from_json(stored)
@@ -562,8 +605,12 @@ def import_into_actual(
 def main():
     LOOKBACK_DAYS = 60
 
-    import_after_date = date.today() - timedelta(days=LOOKBACK_DAYS)
-    log.info("Importing Wealthsimple transactions from %s onward", import_after_date)
+    if IMPORT_AFTER:
+        import_after_date = dateparser.parse(IMPORT_AFTER).date()
+        log.info("Importing Wealthsimple transactions from %s onward (IMPORT_AFTER)", import_after_date)
+    else:
+        import_after_date = date.today() - timedelta(days=LOOKBACK_DAYS)
+        log.info("Importing Wealthsimple transactions from %s onward", import_after_date)
 
     # Wealthsimple login & fetch (only from allowed accounts)
     ws = load_or_login_ws()
@@ -574,6 +621,11 @@ def main():
         return
 
     # Confirm Actual config / password
+    if not ACTUAL_PASSWORD and not sys.stdin.isatty():
+        raise RuntimeError(
+            "ACTUAL_PASSWORD is required when running from cron. "
+            "Set ACTUAL_PASSWORD in the environment."
+        )
     actual_password = ACTUAL_PASSWORD or getpass.getpass(
         f"Password for Actual at {ACTUAL_BASE_URL}: "
     )
