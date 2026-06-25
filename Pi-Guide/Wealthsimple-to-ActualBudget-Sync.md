@@ -52,9 +52,9 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 1. Create a dedicated cron environment file in your home directory:
    ```bash
    cat > /home/pi/ws_to_actual_env.sh <<'EOF'
-   export ACTUAL_BASE_URL="http://localhost:5006"
-   export ACTUAL_PASSWORD="your_actual_password"
-   export ACTUAL_BUDGET_FILE="Wealthsimple Import"
+   export ACTUAL_BASE_URL='http://localhost:5006'
+   export ACTUAL_PASSWORD='your_actual_password'
+   export ACTUAL_BUDGET_FILE='Wealthsimple Import'
    export WS_USERNAME='your_ws_email'
    export WS_PASSWORD='your_ws_pass'
    export WS_TOTP_SECRET='your_ws_totp_secret'
