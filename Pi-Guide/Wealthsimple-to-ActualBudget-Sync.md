@@ -49,18 +49,21 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 
 ## Configuration
 
-1. Set environment variables in your `~/.bashrc` file:
-   ```
+1. Create a dedicated cron environment file in your home directory:
+   ```bash
+   cat > /home/pi/ws_to_actual_env.sh <<'EOF'
    export ACTUAL_BASE_URL="http://localhost:5006"
    export ACTUAL_PASSWORD="your_actual_password"
    export ACTUAL_BUDGET_FILE="Wealthsimple Import"
    export WS_USERNAME='your_ws_email'
    export WS_PASSWORD='your_ws_pass'
    export WS_TOTP_SECRET='your_ws_totp_secret'
+   EOF
+   chmod 600 /home/pi/ws_to_actual_env.sh
    ```
-2. Apply changes:
-   ```
-   source ~/.bashrc
+2. Apply changes for the current shell:
+   ```bash
+   source /home/pi/ws_to_actual_env.sh
    ```
 3. Run the script manually the first time:
    ```
@@ -100,18 +103,18 @@ INFO Done.
 
 ## Automation
 
-1. Create a small wrapper script so cron uses the same shell environment as your interactive login:
+1. Create a small wrapper script so cron uses a dedicated environment file:
    ```bash
    cat > /home/pi/run_ws_to_actual.sh <<'EOF'
    #!/bin/bash
    set -e
-   source /home/pi/.bashrc
+   source /home/pi/ws_to_actual_env.sh
    source /home/pi/actual_env/bin/activate
    /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py
    EOF
    chmod +x /home/pi/run_ws_to_actual.sh
    ```
-   - If `~/.bashrc` contains a non-interactive early return such as `[[ $- != *i* ]] && return`, move the exports above that check or use a dedicated env file.
+   - This avoids cron failing when `~/.bashrc` is not sourced or contains interactive-only checks.
 
 2. Open your crontab:
    ```
@@ -149,6 +152,12 @@ sudo apt install python3-pip -y
 Ensure `ACTUAL_PASSWORD` is exported in your `~/.bashrc` and that cron sources it as shown above.
 
 **Wealthsimple login issues:**
+
+If cron cannot read `~/.bashrc`, use the dedicated env file instead:
+
+```
+source /home/pi/ws_to_actual_env.sh
+```
 
 Ensure the following are set for non-interactive cron runs:
 
