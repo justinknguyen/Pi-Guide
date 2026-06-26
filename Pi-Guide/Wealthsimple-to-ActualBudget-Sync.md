@@ -170,6 +170,7 @@ export WS_TOTP_SECRET='your_ws_totp_secret'
 Clear saved session:
 ```
 python -m keyring delete ws_to_actual.ws.session
+rm -f ~/.ws_to_actual_session.json
 ```
 Then rerun the script manually to reauthenticate.
 
@@ -203,6 +204,7 @@ Notes:
 
 import os
 import sys
+import json
 import decimal
 import getpass
 import logging
@@ -229,6 +231,7 @@ import keyring
 # ---------- CONFIG ----------
 KEYRING_SERVICE = "ws_to_actual"
 WS_KEYRING_SESSION_KEY = f"{KEYRING_SERVICE}.ws.session"
+SESSION_CACHE_FILE = os.path.expanduser("~/.ws_to_actual_session.json")
 # You can set these environment variables instead of editing here:
 ACTUAL_BASE_URL = os.environ.get("ACTUAL_BASE_URL", "http://localhost:5006")
 ACTUAL_PASSWORD = os.environ.get(
@@ -256,12 +259,28 @@ def load_or_login_ws():
     # Optionally set a custom user-agent (ws-api example uses this)
     WealthsimpleAPI.set_user_agent("Mozilla/5.0 (RaspberryPi) ws-to-actual/1.0")
 
-    # Try to load session JSON from keyring.
+    # Try to load session JSON from keyring or local cache.
     # Accept old session records saved under the legacy ``session`` key too.
-    session_json = (
-        keyring.get_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY)
-        or keyring.get_password(KEYRING_SERVICE, "session")
-    )
+    def load_cached_session():
+        for key in (WS_KEYRING_SESSION_KEY, "session"):
+            try:
+                session = keyring.get_password(KEYRING_SERVICE, key)
+                if session:
+                    return session
+            except Exception:
+                pass
+        try:
+            with open(SESSION_CACHE_FILE, "r", encoding="utf-8") as f:
+                data = f.read().strip()
+                if data:
+                    return data
+        except FileNotFoundError:
+            pass
+        except Exception:
+            log.warning("Could not read local session cache %s", SESSION_CACHE_FILE)
+        return None
+
+    session_json = load_cached_session()
     username = None
     interactive = sys.stdin.isatty()
 
@@ -306,11 +325,19 @@ def load_or_login_ws():
 
     otp_answer = None
 
-    # persist function: save session JSON to keyring
+    # persist function: save session JSON to keyring and local cache
     def persist_session(sess_obj, uname):
         # sess_obj here is a JSON string (ws-api usage)
-        keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, sess_obj)
-        keyring.set_password(KEYRING_SERVICE, "session", sess_obj)
+        try:
+            keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, sess_obj)
+            keyring.set_password(KEYRING_SERVICE, "session", sess_obj)
+        except Exception:
+            log.warning("Could not write session to keyring")
+        try:
+            with open(SESSION_CACHE_FILE, "w", encoding="utf-8") as f:
+                f.write(sess_obj)
+        except Exception as e:
+            log.warning("Could not write local session cache %s: %s", SESSION_CACHE_FILE, e)
 
     while True:
         try:
@@ -327,9 +354,9 @@ def load_or_login_ws():
                 otp_answer,
                 persist_session,
             )
-            stored = keyring.get_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY)
+            stored = load_cached_session()
             if not stored:
-                raise RuntimeError("Session wasn't saved to keyring")
+                raise RuntimeError("Session wasn't saved to keyring or local cache")
             sess = WSAPISession.from_json(stored)
             ws = WealthsimpleAPI.from_token(sess, persist_session, username)
             log.info("Logged in to Wealthsimple and saved session.")
