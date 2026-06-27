@@ -167,6 +167,8 @@ export WS_PASSWORD='your_ws_pass'
 export WS_TOTP_SECRET='your_ws_totp_secret'
 ```
 
+If Wealthsimple still emails you about a new device even though the IP and user agent match, that means the saved session is being recreated or invalidated between runs. In that case, the only real fix is to ensure the same session token is reused consistently; there is no extra “device registration” setting the script can force.
+
 Clear saved session:
 ```
 python -m keyring delete ws_to_actual.ws.session
