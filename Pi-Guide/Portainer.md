@@ -27,12 +27,12 @@ Provides GUI for Docker containers to easily manage.
    ```
 3. Run Portainer
    ```
-   sudo docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+   sudo docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
    ```
 
 ## Testing
 
-You can now access the WebUI by typing `[PIIPADDRESS]:9000` into your search bar. Follow the link under Sources to learn how to use Portainer.
+You can now access the WebUI by typing `https://[PIIPADDRESS]:9443` into your search bar. Follow the link under Sources to learn how to use Portainer.
 
 ## Updating
 

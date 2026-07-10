@@ -20,8 +20,9 @@ Remotely access your Raspberry Pi's desktop environment from another device.
 1. Exit back to the terminal and run the following commands to install the desktop environment:
    ```
    sudo apt update
-   sudo apt-get install raspberrypi-ui-mods xinit xserver-xorg
+   sudo apt-get install --no-install-recommends rpd-x-core rpd-x-extras xinit xserver-xorg
    ```
+   - On Raspberry Pi OS "Trixie" (Debian 13) and newer, `raspberrypi-ui-mods` no longer exists — it was replaced by the modular `rpd-*` meta-packages. `rpd-x-core` (not `rpd-wayland-core`) is used here since XRDP/xorgxrdp needs an X11 session. If you're still on "Bookworm" (Debian 12) or earlier, `raspberrypi-ui-mods` is still valid.
 1. Reboot:
    ```
    sudo reboot

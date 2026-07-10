@@ -27,9 +27,9 @@ keepalived is to have a High Availability setup between two Pi's, meaning, one P
     ```
     sudo apt install keepalived
     ```
-3.  Install libipset13 on both Pi's:
+3.  Install the ipset runtime library on both Pi's (package name depends on OS version — `libipset13` on Raspberry Pi OS "Bookworm"/Debian 12, `libipset13t64` on "Trixie"/Debian 13+):
     ```
-    sudo apt install libipset13
+    sudo apt install libipset13 || sudo apt install libipset13t64
     ```
 4.  Enable keepalived on both Pi's:
     ```
@@ -235,14 +235,11 @@ Explanation of the options:
    @reboot sleep 60 && sudo systemctl restart keepalived.service
    ```
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-1. On both Pi's, set a delay for when Pi-Hole starts up after a reboot by going into:
+1. On both Pi's, set a delay for when Pi-Hole starts up after a reboot. Pi-hole v6 replaced `/etc/pihole/pihole-FTL.conf` with `/etc/pihole/pihole.toml`, so set this via the CLI instead of editing a conf file directly:
    ```
-   sudo nano /etc/pihole/pihole-FTL.conf
+   sudo pihole-FTL --config misc.delay_startup 5
    ```
-1. Then copy and paste the following in:
-   ```
-   DELAY_STARTUP=5
-   ```
+   (or edit `/etc/pihole/pihole.toml` directly and add `delay_startup = 5` under the `[misc]` section)
 1. On both Pi's, add another delay inside the keepalived config file:
    ```
    sudo nano /etc/keepalived/keepalived.conf

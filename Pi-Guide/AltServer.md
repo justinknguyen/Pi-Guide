@@ -216,14 +216,15 @@ If you still can't get this to work, I would recommend using SideStore instead. 
    ```
    wget https://github.com/NyaMisty/AltServer-Linux/releases/download/v0.0.5/AltServer-aarch64
    ```
-2. Install the latest netmuxd `aarch64-linux-netmuxd` (for Raspberry Pi's) binary from [here](https://github.com/jkcoxson/netmuxd/releases)
+2. Install the latest netmuxd (for Raspberry Pi's) release from [here](https://github.com/jkcoxson/netmuxd/releases), then extract it:
    ```
-   wget https://github.com/jkcoxson/netmuxd/releases/download/v0.1.4/aarch64-linux-netmuxd
+   wget https://github.com/jkcoxson/netmuxd/releases/download/v0.4.2/netmuxd-aarch64-unknown-linux-gnu.tar.gz
+   tar -xzf netmuxd-aarch64-unknown-linux-gnu.tar.gz
    ```
 3. While in our `alt-server` folder inside the terminal, enter the following to make the binaries executable:
    ```
    chmod +x AltServer-aarch64
-   chmod +x aarch64-linux-netmuxd
+   chmod +x netmuxd
    ```
 4. Have `Docker` installed on your Pi. If you don't have it installed, follow my guide for it. Run the following command to create the Docker container:
    ```
@@ -260,7 +261,7 @@ Note: you can do this with multiple devices at a time.
      ```
 5. Disconnect your device from the Pi, and run `netmuxd`:
    ```
-   sudo ./aarch64-linux-netmuxd
+   sudo ./netmuxd
    ```
    - You should see an output like this if it's successful. Ideally, nothing else should be outputing after "Adding device ...", but if it keeps saying "Adding device..." and "Removing device...", you can ignore it but try restarting the Pi and try again.
      ```
@@ -296,7 +297,7 @@ Note: you can do this with multiple devices at a time.
    ```
 8. Then add the following lines. Replace the paths as appropriate to match your environment:
    ```
-   @reboot sleep 20 && /home/pi/alt-server/aarch64-linux-netmuxd > /home/pi/alt-server/log/netmuxd.log 2>&1
+   @reboot sleep 20 && /home/pi/alt-server/netmuxd > /home/pi/alt-server/log/netmuxd.log 2>&1
    @reboot sleep 20 && ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 /home/pi/alt-server/AltServer-aarch64 > /home/pi/alt-server/log/altserver.log 2>&1
    ```
 9. In your `alt-server` folder, make a log folder:
@@ -317,7 +318,7 @@ Note: you can do this with multiple devices at a time.
   ```
   docker stop anisette-v3
   docker rm anisette-v3
-  docker volume rm lib_cache
+  docker volume rm anisette-v3_data
   ```
   Then reinstall the container:
   ```

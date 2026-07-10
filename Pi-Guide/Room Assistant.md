@@ -30,16 +30,16 @@ You may want to disable Pi-Hole temporarily before proceeding.
 3. Paste the following in with the proper replacements (click on the second link under Sources to learn how to use BLE and configure with your iPhone):
    ```
    global:
-   integrations:
+     integrations:
        - homeAssistant
        - bluetoothClassic
    homeAssistant:
-   mqttUrl: 'mqtt://homeassistant.local:1883'
-   mqttOptions:
+     mqttUrl: 'mqtt://homeassistant.local:1883'
+     mqttOptions:
        username: youruser
        password: yourpass
    bluetoothClassic:
-   addresses:
+     addresses:
        - <bluetooth-mac-of-device-to-track>
    ```
 4. To save the file, press `Ctrl+X` then `Y` then `Enter`.
@@ -49,29 +49,27 @@ You may want to disable Pi-Hole temporarily before proceeding.
    ```
 6. Paste the following in and save:
    ```
-   version: '3'
    services:
-   room-assistant:
+     room-assistant:
        image: mkerix/room-assistant
        restart: unless-stopped
        network_mode: host
        privileged: true
        volumes:
-       - /var/run/dbus:/var/run/dbus
-       - /home/pi/room-assistant/config:/room-assistant/config
+         - /var/run/dbus:/var/run/dbus
+         - /home/pi/room-assistant/config:/room-assistant/config
    ```
    - Optional: install beta version by editing `docker-compose.yml` to:
      ```
-     version: '3'
      services:
-     room-assistant:
+       room-assistant:
          image: mkerix/room-assistant:beta
          restart: unless-stopped
          network_mode: host
          privileged: true
          volumes:
-         - /var/run/dbus:/var/run/dbus
-         - /home/pi/room-assistant/config:/room-assistant/config
+           - /var/run/dbus:/var/run/dbus
+           - /home/pi/room-assistant/config:/room-assistant/config
      ```
 7. cd into the room-assistant directory:
    ```
@@ -79,7 +77,7 @@ You may want to disable Pi-Hole temporarily before proceeding.
    ```
 8. Install Room Assistant:
    ```
-   docker-compose up
+   docker compose up
    ```
 9. Check Portainer if Room Assistant is running correctly.
 

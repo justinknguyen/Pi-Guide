@@ -31,10 +31,11 @@ Containerize packages for easy removal. The benefit of Docker is being able to q
    ```
    sudo reboot
    ```
-6. Install Docker-Compose:
+6. Docker Compose (v2, the `docker compose` plugin) is already installed by the `get.docker.com` script above. Verify it:
    ```
-   sudo apt-get install docker-compose
+   docker compose version
    ```
+   - Avoid `sudo apt-get install docker-compose` — that installs the older, deprecated standalone `docker-compose` (v1) package with the hyphenated command syntax.
 7. Enable the Docker system service to start your containers on boot:
    ```
    sudo systemctl enable docker

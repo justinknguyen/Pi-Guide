@@ -2,6 +2,8 @@
 
 Sync Pi-Hole adlists and whitelists between two Raspbery Pi's.
 
+> **⚠ Deprecated/incompatible with current Pi-hole:** Gravity Sync was officially retired by its maintainer on July 26, 2024, and its GitHub repo is now archived (read-only). Its final release (v4.0.7) only works with Pi-hole 5.x — it is **not compatible with Pi-hole 6+**, which is what the [Pi-Hole](/Pi-Guide/Pi-Hole.md) install guide in this repo installs today. Following this guide as written will not work on a fresh setup. For syncing config between two Pi-holes on Pi-hole 6+, look into Pi-hole's built-in Teleporter sync or a community alternative like [Orbital Sync](https://github.com/mattwebbio/orbital-sync) instead.
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)

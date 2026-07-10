@@ -77,26 +77,28 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
 
 ### 5. Multiple Upstream DNS Servers (Optional)
 
-If you want to use multiple DNS servers and have the second server only as backup for when the primary server is unresponsive, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md) installed.
+If you want to use multiple DNS servers, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md) installed.
 
-1. Select the two upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
-2. Create a file called `99-custom.conf` by entering the below command. In the file, type in `strict-order` and save.
+Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/pihole.toml`. Note that v6's built-in resolver does **not** use strict list-order priority (the old dnsmasq `strict-order`/first-listed-is-primary behavior no longer applies) — instead it benchmarks all listed upstreams and load-balances toward whichever responds fastest, automatically failing over to another if one times out or returns `SERVFAIL`/`REFUSED`. If you need one server to always be preferred over another, use a per-domain/conditional forwarding setup instead; a flat priority list is no longer directly supported.
+
+1. Select the upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
+2. Edit `/etc/pihole/pihole.toml` and set the `[dns]` upstream list:
    ```
-   sudo nano /etc/dnsmasq.d/99-custom.conf
+   sudo nano /etc/pihole/pihole.toml
    ```
-3. Ensure that the primary DNS server you want to use is listed first in the following file:
    ```
-   sudo nano /etc/pihole/setupVars.conf
+   [dns]
+     upstreams = [
+       "127.0.0.1#5335",
+       "::1#5335",
+       "9.9.9.9",
+       "149.112.112.112",
+       "2620:fe::fe",
+       "2620:fe::9"
+     ]
    ```
-   - e.g., The first two address are Custom addresses for Unbound, and the bottom four are for Quad9:
-     ```
-     PIHOLE_DNS_1=127.0.0.1#5335
-     PIHOLE_DNS_2=::1#5335
-     PIHOLE_DNS_3=9.9.9.9
-     PIHOLE_DNS_4=149.112.112.112
-     PIHOLE_DNS_5=2620:fe::fe
-     PIHOLE_DNS_6=2620:fe::9
-     ```
+   - This example includes Custom addresses for Unbound and Quad9; all listed servers are candidates, not a strict fallback chain (see note above).
+   - You can also set this via the WebUI (Settings → All Settings → DNS) or CLI: `pihole-FTL --config dns.upstreams '["127.0.0.1#5335","9.9.9.9"]'`
 4. Restart the DNS:
    ```
    pihole restartdns

@@ -22,7 +22,6 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
    ```
 2. Inside the nano editor, copy and paste the following:
    ```
-   version: '3'
    services:
      homeassistant:
        container_name: homeassistant
@@ -39,7 +38,7 @@ Can connect anything "smart" into one single app for a unified Smart Home. Main 
 3. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 4. Install Home Assistant:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 ## Testing

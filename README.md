@@ -22,7 +22,7 @@ Once the firmware is done flashing to your micro SD, insert it in your Pi and po
 
 To connect to your Pi and use it, download a terminal to SSH into the Pi, such as `PuTTY` https://www.putty.org/ for Windows users. For Mac users, you can download `Termius` from the app store.
 
-Once your terminal app is installed, connect to your Pi by entering it's IP address or hostname; the default hostname is `raspberrypi`. Once connected, you'll be asked to enter your username and password; the default username is `pi` and the password is `raspberry`.
+Once your terminal app is installed, connect to your Pi by entering it's IP address or hostname; the default hostname is `raspberrypi`. Once connected, you'll be asked to enter your username and password; enter the credentials you set during imaging in the "Setting up the Raspberry Pi" step above (Raspberry Pi OS has not shipped a default `pi`/`raspberry` login since April 2022).
 
 ### How to Change Your Password and Hostname
 

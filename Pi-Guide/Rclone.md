@@ -28,7 +28,7 @@ Backup anything to any cloud service.
    ```
 2. Type in `n` for New remote.
 3. Type in a name for the remote (e.g., gdrive).
-4. Type in `13` for Google Drive.
+4. Type in `drive` for Google Drive (rclone accepts the backend name directly — the menu number for Google Drive shifts between versions as new backends are added, so typing the name is more reliable than a number).
 5. Leave application client id and secret empty.
 6. Type in `1` for Full access, or to your preference.
 7. Leave the next couple steps empty.

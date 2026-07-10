@@ -207,6 +207,5 @@ In your `default` file, when editing the ports, if you have more than one server
 - https://pimylifeup.com/raspberry-pi-nginx/
 - https://stackoverflow.com/questions/10829402/how-to-start-nginx-via-different-portother-than-80
 - https://medium.com/l0rd/how-to-host-a-nginx-website-with-raspberry-pi-ddos-protected-1a166e36cce
-- https://developpaper.com/compiling-sass-and-scss-with-nginx/
 - https://varhowto.com/how-to-enable-https-for-nginx-websites-on-raspbian-raspberry-pi-certbot-python-certbot-nginx-automatic-raspbian/
 - https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/

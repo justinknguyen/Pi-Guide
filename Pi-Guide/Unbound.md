@@ -33,6 +33,11 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 ## Configuration
 
 1. In your Pi-Hole web settings, go to `Settings > DNS` then scroll down to `Advanced DNS settings` and turn off "Use DNSSEC"
+1. Pi-hole v6 ignores `/etc/dnsmasq.d/*.conf` files by default, so enable that first:
+   ```
+   sudo pihole-FTL --config misc.etc_dnsmasq_d true
+   ```
+   (or via the web UI: `Settings > All Settings > Miscellaneous > etc_dnsmasq_d`)
 1. Set `cache-size=0` in the following file:
    ```
    sudo nano /etc/dnsmasq.d/01-pihole.conf
