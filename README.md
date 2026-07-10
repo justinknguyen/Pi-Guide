@@ -61,7 +61,6 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md) — automatic security updates
 - [Watchdog](/Pi-Guide/Watchdog.md) — auto-reboot on system hang
 - [XRDP](/Pi-Guide/XRDP.md) — remote desktop access
-- [Rclone](/Pi-Guide/Rclone.md) — cloud backup
 
 **Containers & Monitoring**
 - [Docker](/Pi-Guide/Docker.md)
@@ -88,6 +87,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [NAS](/Pi-Guide/NAS.md) — network-attached storage
 - [immich](/Pi-Guide/immich.md) — self-hosted photo/video backup
 - [raspiBackup](/Pi-Guide/raspiBackup.md) — scheduled system backups
+- [Rclone](/Pi-Guide/Rclone.md) — cloud backup
 
 **Media & Gaming**
 - [RetroPie](/Pi-Guide/RetroPie.md) — retro game emulation
