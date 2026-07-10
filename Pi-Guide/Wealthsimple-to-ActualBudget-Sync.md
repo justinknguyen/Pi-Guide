@@ -23,20 +23,21 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    ```
    sudo apt update && sudo apt upgrade
    ```
-2. Install Python and pip:
+1. Install Python and pip:
    ```
    sudo apt install python3 python3-venv python3-pip -y
    ```
-3. Create and activate a virtual environment:
+1. Create and activate a virtual environment:
    ```
    python3 -m venv ~/actual_env
    source ~/actual_env/bin/activate
    ```
-4. Install required dependencies:
+1. Install required dependencies:
    ```
-   pip install ws-api actualpy keyring python-dateutil pyotp
+   pip install "ws-api>=0.35" actualpy keyring python-dateutil pyotp
    ```
-5. Create the `ws_to_actual.py` script in your home directory (see [Python Script](#python-script) section below for the full code):
+   - `ws-api` versions ≤0.33.0 have a bug where session refresh silently never fires (see [Troubleshooting](#troubleshooting)); make sure you're on 0.35.0 or newer.
+1. Create the `ws_to_actual.py` script in your home directory (see [Python Script](#python-script) section below for the full code):
    ```
    nano ~/ws_to_actual.py
    ```
@@ -61,18 +62,18 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    EOF
    chmod 600 /home/pi/ws_to_actual_env.sh
    ```
-2. Apply changes for the current shell:
+1. Apply changes for the current shell:
    ```bash
    source /home/pi/ws_to_actual_env.sh
    ```
-3. Run the script manually the first time:
+1. Run the script manually the first time:
    ```
    source ~/actual_env/bin/activate
    python ~/ws_to_actual.py
    ```
    - You'll be prompted for your Wealthsimple login and OTP (stored securely in your system keyring) if not set in the environment
    - The first run may ask for your Actual password if not set in the environment
-4. (Optional) Limit imported accounts by editing the filter list in your script:
+1. (Optional) Limit imported accounts by editing the filter list in your script:
    ```
    ALLOWED_ACCOUNTS = ["Cash", "Credit card"]
    ```
@@ -116,11 +117,11 @@ INFO Done.
    ```
    - This avoids cron failing when `~/.bashrc` is not sourced or contains interactive-only checks.
 
-2. Open your crontab:
+1. Open your crontab:
    ```
    crontab -e
    ```
-3. Add jobs to run every 12 hours and rotate logs:
+1. Add jobs to run every 12 hours and rotate logs:
    ```
    0 */12 * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1
    10 0 * * * find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
@@ -129,11 +130,11 @@ INFO Done.
      ```
      * * * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual.log 2>&1
      ```
-4. Check if it ran successfully:
+1. Check if it ran successfully:
    ```bash
    tail -n 20 /home/pi/ws_to_actual.log
    ```
-5. View system cron logs if needed:
+1. View system cron logs if needed:
    ```bash
    grep CRON /var/log/syslog | tail -n 20
    ```
@@ -174,9 +175,16 @@ tail -50 ~/ws_to_actual_*.log
 ```
 
 - `Found existing Wealthsimple session in keyring.` followed by `Logged in to Wealthsimple and saved session.` (no error in between) means the cached session loaded fine but the library's internal refresh silently produced a new session anyway — expected occasionally, not every run.
-- `Saved WS session invalid or expired (refresh attempt failed): ...` means `from_token()` tried to refresh the access token using the stored `refresh_token` and that refresh call itself failed, forcing a brand-new interactive-style login (this is what triggers the device email). The access token in the cached session is short-lived (~30 minutes — check the `exp`/`iat` claims in the JWT), so if your cron interval is longer than the *refresh* token's lifetime too, every run will hit this path and you'll get a device email every single time, regardless of matching IP/user-agent. Root-caused on 2026-07-09: cron ran every 12 hours, refresh token did not survive that long, so every run was a fresh login.
+- `Saved WS session invalid or expired (refresh attempt failed): ...` means `from_token()` tried to refresh the access token and that path failed, forcing a brand-new interactive-style login (this is what triggers the device email).
 
-If this is happening on every run, the practical fix is to run the sync frequently enough that the refresh token never fully expires between runs (e.g. every 1-2 hours instead of every 12), rather than trying to eliminate the re-login entirely. There is no separate "device registration" setting the script can force — Wealthsimple's device email is tied to the login event itself.
+**Known bug (root-caused 2026-07-09):** `ws-api` versions ≤0.33.0 have a bug in `WealthsimpleAPI.check_oauth_token()`. When the access token (short-lived, ~30 min) expires, it only checks for a top-level `message` key on the GraphQL error response to detect "Not Authorized" and decide whether to attempt a refresh. But Wealthsimple's API actually returns the error nested inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), which that check doesn't match — so the refresh grant is **never even attempted**, and the code falls straight through to a full login every time the access token expires, regardless of cron interval. This is fixed in `ws-api` 0.35.0 — confirmed working on 2026-07-09 via 5 manual runs spaced up to 49 minutes apart, well past the access token's ~30 min lifetime, with no forced re-login. If you're hitting this, upgrade:
+
+```
+source ~/actual_env/bin/activate
+pip install --upgrade "ws-api>=0.35"
+```
+
+There is no separate "device registration" setting the script can force — Wealthsimple's device email is tied to the login event itself, so the real fix is making sure refresh actually works instead of falling back to login every run.
 
 Clear saved session:
 ```
@@ -204,10 +212,11 @@ ws_to_actual.py
 Fetch Wealthsimple activities and import into Actual (via actualpy).
 
 Dependencies:
-  pip install ws-api actualpy keyring python-dateutil pyotp
+  pip install "ws-api>=0.35" actualpy keyring python-dateutil pyotp
 
 Notes:
  - This uses the unofficial ws-api Python library to access Wealthsimple.
+ - Requires ws-api>=0.35 — older versions have a session-refresh bug (see repo docs' Troubleshooting section).
  - The first run will prompt for Wealthsimple credentials (and possibly OTP).
  - Credentials/session tokens are stored using the system keyring.
  - Configure ACTUAL_BASE_URL and ACTUAL_PASSWORD (environment vars or edit below).
