@@ -112,23 +112,13 @@ If you have Docker containers that depend on your external drive, you will need 
 
 ## Testing
 
-The following steps use your Pi's hostname. If it doesn't work, try using the Pi's IP Address instead.
+The following steps use your Pi's hostname. If it doesn't work, try using the Pi's IP address instead. Replace `<hostname>` with your Pi's hostname in each address below.
 
-- To access your NAS from macOS, press `Command+K` and type in the following (replace `<hostname>` with your Pi's hostname)
-  ```
-  smb://<hostname>
-  ```
-  - Then enter your Pi's username and the Samba password you set earlier when prompted
-- To access your NAS from Windows, open File explorer and type in the following in the path bar (replace `<hostname>` with your Pi's hostname)
-  ```
-  \\<hostname>
-  ```
-  - Then enter your Pi's username and the Samba password you set earlier when prompted
-- To access your NAS from your iPhone or iPad, open the Files app and press on the three dots in the top-right, then select `Connect to Server`. Type in the following for the Server field (replace `<hostname>` with your Pi's hostname)
-  ```
-  smb://<hostname>
-  ```
-  - Select Registered User, then enter your Pi's username and the Samba password you set earlier when prompted
+| Platform | Steps | Address |
+| --- | --- | --- |
+| macOS | Press `Command+K`, enter the address, then enter your Pi's username and the Samba password you set earlier when prompted | `smb://<hostname>` |
+| Windows | Open File Explorer and type the address into the path bar, then enter your Pi's username and the Samba password you set earlier when prompted | `\\<hostname>` |
+| iPhone/iPad | Open the Files app, tap the three dots in the top-right, select `Connect to Server`, type the address into the Server field, select "Registered User", then enter your Pi's username and the Samba password you set earlier when prompted | `smb://<hostname>` |
 
 ## Sources
 

@@ -18,7 +18,7 @@ Automatically backup your Raspberry Pi periodically.
    ```bash
    curl -o install -L https://raspibackup.linux-tips-and-tricks.de/install; sudo bash ./install
    ```
-1. Press Ok and then select the M2 option to install, and then select the I1 option
+1. Press Ok, then select the M2 option to install. Select the I1 option next
 1. Press Back and then select the M3 option to configure raspiBackup
 1. Select the C2 option and set your backup path:
    ```
@@ -61,7 +61,7 @@ You now have automatic backups running every Sunday at 5 AM to your external dri
    UseSTARTTLS=YES
    ```
 1. Go to your Google account settings and then click on the "Security" tab
-   - Select the "2-Step Verification" option (enable it if you don't have it already), and then scroll down and select "App passwords"
+   - Select the "2-Step Verification" option (enable it if you don't have it already). Then scroll down and select "App passwords"
    - Create an app password. Copy and paste in the app password (without spaces) into `AuthPass` of the `/etc/ssmtp/ssmtp.conf` file from before
 1. Send an email to test:
    ```bash
@@ -71,7 +71,10 @@ You now have automatic backups running every Sunday at 5 AM to your external dri
    ```bash
    sudo raspiBackupInstallUI.sh
    ```
-1. Select M3, then C8 and enter your email address that you set up. Select the `ssmtp` option and press Enter, then press Back and save your config. Finally, press Finish
+1. Configure the email settings:
+   - Select M3, then C8, and enter your email address.
+   - Select the `ssmtp` option and press Enter.
+   - Press Back to save your config, then press Finish.
 1. Test it by sending an email after a successful backup:
    ```bash
    sudo raspiBackup -m detailed

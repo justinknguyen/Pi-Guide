@@ -47,7 +47,7 @@ Copy the contents of this config file into a new `.conf` file on your computer. 
 Install the WireGuard app. Next, enter the following into your SSH terminal:
 
 ```bash
-pivpn -qr PROFILENAME
+pivpn -qr [PROFILENAME]
 ```
 
 Then scan the QR code with your phone. You can now connect to the VPN.
@@ -59,10 +59,9 @@ Once you activate the VPN, you should still have internet access. To confirm it'
 Setting up a dynamicDNS for your router is recommended so your public IP address doesn't change.
 
 ## Troubleshooting
-- No internet access:
-  - run `pivpn -d` and you may see a prompt saying "[ERR] Iptables MASQUERADE rule is not set, attempt fix now? [Y/n]", enter y.
-- Able to connect to WiFi but unable to access devices on the LAN:
-  - disable "Block untunneled traffic" within WireGuard client settings if you are on Windows.
+
+- No internet access: Run `pivpn -d`. If you see the prompt `[ERR] Iptables MASQUERADE rule is not set, attempt fix now? [Y/n]`, enter `y`.
+- Able to connect to WiFi but unable to access devices on the LAN: Disable "Block untunneled traffic" within WireGuard client settings if you are on Windows.
 
 ## Sources
 

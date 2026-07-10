@@ -707,7 +707,7 @@ if __name__ == "__main__":
 
 ## Sources
 
-- https://github.com/ianepreston/ws-api
+- https://github.com/gboudreau/ws-api-python
 - https://github.com/actualbudget/actual
 - https://docs.python.org/3/library/venv.html
 - https://man7.org/linux/man-pages/man5/crontab.5.html

@@ -221,7 +221,7 @@ Note: you can do this with multiple devices at a time.
 
 ### 1. Configuring AltServer and AltStore on Your Devices
 
-1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable, and enable "Show this iPhone/iPad when on Wi-Fi" in the Finder or in iTunes, then hit `Sync/Apply`.
+1. Connect your device (iPhone/iPad) to your Mac/PC with a USB cable. In the Finder or in iTunes, enable "Show this iPhone/iPad when on Wi-Fi", then hit `Sync/Apply`.
 1. Disconnect your device from USB, and make sure your device is broadcasting itself by checking if your Mac/PC can still see the device in Finder or in iTunes.
    - If you don't see it, you can check if your device is broadcasting itself to your network by entering the following on your Pi:
      ```bash
@@ -255,23 +255,23 @@ Note: you can do this with multiple devices at a time.
      Adding device 00008110-0123A456B789D012 # or similar, this should appear after a few seconds
      ```
    - If it's not "Adding device", then your device isn't properly broadcasting itself, or isn't properly paired. Retrace your steps and troubleshoot the problem.
-1. While `netmuxd` is running, open another terminal tab for your Pi
-   - Download the latest `AltStore.ipa`. As of Apr. 26, 2025, the latest version is 2.2, so replace `2_2` in the below command if there is a more recent version [here](https://faq.altstore.io/release-notes/altstore):
-     ```bash
-     curl -L https://cdn.altstore.io/file/altstore/apps/altstore/2_2.ipa > AltStore.ipa
-     ```
-   - Install the ipa file onto your device. Make sure to replace `00008110-0123A456B789D012` with your device's id from Step 5, and include your Apple credentials in the command
-     ```bash
-     sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
-     ```
-   - AltStore should now be installed on your device from your Raspberry Pi! The output should be something like this:
-     ```
-     Installation Progress: 1
-     Notify: Installation Succeeded
-         AltStore was successfully installed on unknown.
-     Finished!
-     ```
-   - If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
+1. While `netmuxd` is running, open another terminal tab for your Pi.
+1. Download the latest `AltStore.ipa`. As of Apr. 26, 2025, the latest version is 2.2, so replace `2_2` in the below command if there is a more recent version [here](https://faq.altstore.io/release-notes/altstore):
+   ```bash
+   curl -L https://cdn.altstore.io/file/altstore/apps/altstore/2_2.ipa > AltStore.ipa
+   ```
+1. Install the ipa file onto your device. Make sure to replace `00008110-0123A456B789D012` with your device's id from Step 5, and include your Apple credentials in the command:
+   ```bash
+   sudo ALTSERVER_ANISETTE_SERVER=http://127.0.0.1:6969 ./AltServer-aarch64 -u 00008110-0123A456B789D012 -a <apple-id-email> -p <apple-id-password> AltStore.ipa
+   ```
+   AltStore should now be installed on your device from your Raspberry Pi! The output should be something like this:
+   ```
+   Installation Progress: 1
+   Notify: Installation Succeeded
+       AltStore was successfully installed on unknown.
+   Finished!
+   ```
+   If it doesn't finish and freezes, restart the Pi and start from Step 5 again.
 
 ### 2. Configuring Services to Run Automatically on the Pi
 
@@ -297,28 +297,30 @@ Note: you can do this with multiple devices at a time.
 ## Troubleshooting
 
 - Check your `alt-server/log` folder to find and troubleshoot your issue.
-- Unfortunately, updating your device may break your setup. It could also just break on its own. If your device stops refreshing, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart your device and clear trusted computers on it, then do "Configuration" steps 1-6 again and reboot the Pi.
-- The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again by first removing the Docker container and reinstalling the anisette server. Here's how you can remove it:
-  ```bash
-  docker stop anisette-v3
-  docker rm anisette-v3
-  docker volume rm anisette-v3_data
-  ```
-  Then reinstall the container:
-  ```bash
-  docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
-  ```
-  Check if the services are running:
-  ```bash
-  sudo systemctl status avahi-daemon.service
-  sudo systemctl status usbmuxd
-  ```
-  If they're not running, enter the following:
-  ```bash
-  sudo systemctl enable --now avahi-daemon.service
-  sudo systemctl enable --now usbmuxd
-  ```
-  Next, search in your device settings for "Clear Trusted Computers" and tap it to clear it. Finally, do the "Configuration" steps 1-6 again and reboot the Pi.
+- Unfortunately, updating your device may break your setup. It could also just break on its own. If your device stops refreshing, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart your device and clear trusted computers on it. Then, redo the "Configuration" steps 1-8 and reboot the Pi.
+- The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again:
+  1. Remove the Docker container and its volume:
+     ```bash
+     docker stop anisette-v3
+     docker rm anisette-v3
+     docker volume rm anisette-v3_data
+     ```
+  1. Reinstall the container:
+     ```bash
+     docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
+     ```
+  1. Check if the services are running:
+     ```bash
+     sudo systemctl status avahi-daemon.service
+     sudo systemctl status usbmuxd
+     ```
+  1. If they're not running, enable them:
+     ```bash
+     sudo systemctl enable --now avahi-daemon.service
+     sudo systemctl enable --now usbmuxd
+     ```
+  1. In your device settings, search for "Clear Trusted Computers" and tap it.
+  1. Redo the "Configuration" steps 1-8, then reboot the Pi.
 
 ## Sources
 

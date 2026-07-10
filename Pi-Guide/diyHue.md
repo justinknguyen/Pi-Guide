@@ -45,10 +45,10 @@ If Pi-Hole is installed, diyHue needs port 80, so change Pi-Hole's port first.
 ## Configuration
 
 1. Access the webui using `[PIIPADDRESS]`.
-1. Open up the Hue App on your phone, and go to `Settings` > `My Hue System`, and then add your diyHue bridge. When it prompts to press the link button, go to the diyHue webui and click on `Link Button` tab and press Link App.
-1. If the Hue App says the bridge needs to be updated, go back to the webui and click on `Bridge` tab, and from there, you can emulate the diyHue bridge's software version to trick the Hue App.
-1. If the Hue App says the bridge cannot be found, try manually entering the Pi's IP Address to search for it.
-1. Once the diyHue bridge is set up in the app, go back to the webui and click on `Hue Bridge` tab, and enter the official Hue Bridge's IP Address, then pair it.
+1. Open the Hue App on your phone, go to `Settings` > `My Hue System`, and add your diyHue bridge. When it prompts you to press the link button, go to the diyHue webui, click the `Link Button` tab, and press Link App.
+1. If the Hue App says the bridge needs to be updated, go back to the webui and click the `Bridge` tab. From there, you can emulate the diyHue bridge's software version to trick the Hue App.
+1. If the Hue App says the bridge cannot be found, try manually entering the Pi's IP address to search for it.
+1. Once the diyHue bridge is set up in the app, go back to the webui and click the `Hue Bridge` tab. Enter the official Hue Bridge's IP address, then pair it.
 1. Once paired, click the `Lights` tab and scan for lights. When diyHue finds all your lights connected to the official Hue Bridge, go back to the Hue App and scan for lights to build your rooms/entertainment areas.
 
 ## Sources

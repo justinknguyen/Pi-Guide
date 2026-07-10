@@ -47,11 +47,11 @@ The Raspberry Pi will need to be connected to a screen somehow.
    LC_IDENTIFICATION="en_CA.UTF-8"
    LC_ALL=en_CA.UTF-8
    ```
-   - if it's not correct, change your locale settings by entering:
+   - If it's not correct, change your locale settings:
      ```bash
      sudo raspi-config
      ```
-     then select `5 Localisation Options` and then `L1 Locale`. After selecting your locale, it will ask you to set the default locale for the system environment — choose what you selected.
+     Select `5 Localisation Options` then `L1 Locale`. After selecting your locale, it will ask you to set the default locale for the system environment — choose what you selected.
 1. After changing your locale, LANGUAGE and LC_ALL will likely be empty, so set it manually:
    ```bash
    sudo update-locale LANGUAGE=en_CA:en
@@ -108,15 +108,15 @@ This example uses an external ssd connected to a Raspberry Pi. See [NAS](/Pi-Gui
    ```bash
    ls -l /mnt/sda1
    ```
-1. Mount RetroPie to your external ssd by finding the drive's UUID:
+1. Find the drive's UUID:
    ```bash
    sudo blkid
    ```
-   open the fstab file
+1. Open the fstab file:
    ```bash
    sudo nano /etc/fstab
    ```
-   and then copy the following in (replace the X's with your UUID)
+1. Add the following line to mount RetroPie to your external ssd (replace the X's with your UUID):
    ```
    UUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX /home/pi/RetroPie ext4 nofail,defaults 0 0
    ```

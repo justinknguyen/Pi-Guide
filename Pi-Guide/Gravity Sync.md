@@ -46,7 +46,7 @@ This sets up syncing between the two Pis — adding adlists or whitelists on one
    curl -sSL https://raw.githubusercontent.com/vmstan/gs-install/main/gs-install.sh | bash
    ```
 1. You will receive prompts to enter an IP Address and host username. This is NOT the host name of the Pi, but the username you use to log in. 
-    - On the primary Pi, enter the secondary Pi's IP Address and host username (pi), if it says the authenticity of the host can't be established, enter `yes` in the following prompt. 
+    - On the primary Pi, enter the secondary Pi's IP Address and host username (pi). If it says the authenticity of the host can't be established, enter `yes` at the following prompt.
     - On the secondary Pi, enter the primary Pi's IP Address and host username (pi).
 
 ## Configuration
@@ -91,21 +91,21 @@ This sets up syncing between the two Pis — adding adlists or whitelists on one
   ```bash
   rsync --version
   ```
-  1. If not, it's likely one is on v3.2.3, and in order to update to the latest (v3.2.7 currently), install dependencies:
+  1. If not, it's likely one is older, and in order to update to the latest (v3.4.4 currently), install dependencies:
      ```bash
      sudo apt install gcc g++ gawk autoconf automake python3-cmarkgfm libssl-dev attr libxxhash-dev libattr1-dev liblz4-dev libzstd-dev acl libacl1-dev -y
      ```
   1. Download the latest rsync file:
      ```bash
-     wget https://download.samba.org/pub/rsync/src/rsync-3.2.7.tar.gz
+     wget https://download.samba.org/pub/rsync/src/rsync-3.4.4.tar.gz
      ```
   1. Extract the file:
      ```bash
-     tar -xf rsync-3.2.7.tar.gz
+     tar -xf rsync-3.4.4.tar.gz
      ```
   1. Configure rsync:
      ```bash
-     cd rsync-3.2.7
+     cd rsync-3.4.4
      ./configure
      ```
   1. Prepare rsync install files:

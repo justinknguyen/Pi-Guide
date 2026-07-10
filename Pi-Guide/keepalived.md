@@ -55,7 +55,9 @@ keepalived creates a High Availability setup between two Pis — one acts as the
     ```bash
     sudo nano /etc/keepalived/keepalived.conf
     ```
-1. Copy and paste the following in (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+1. Copy and paste the following in.
+
+    <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
     ```
     global_defs {
@@ -109,7 +111,9 @@ Explanation of the options:
 | `auth_pass` | A password (max 8 characters). Must match on the Master and Backup configs. |
 | `virtual_ipaddress` | The High Availability IP address. |
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
+
+    <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
     ```
     vrrp_instance PIHOLEv6 {
@@ -142,7 +146,9 @@ Explanation of the options:
     ```bash
     sudo nano /etc/keepalived/keepalived.conf
     ```
-1. Copy and paste the following in (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+1. Copy and paste the following in.
+
+    <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
     ```
     global_defs {
@@ -183,7 +189,9 @@ Explanation of the options:
     }
     ```
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
+
+    <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
     ```
     vrrp_instance PIHOLEv6 {
@@ -282,7 +290,7 @@ Explanation of the options:
 
 If you have a problem where the second Pi gets queries even if the keepalived service is stopped:
 - Try removing the IPv6 vrrp block from the keepalived config file in both Pis, then test if you get more queries. If you see no more queries, then add it back and see if it happens again.
-- If it happens again, then it could be an IPv6 issue
+- If it happens again, it could be an IPv6 issue:
     - double check both of your Pis' IPv6 addresses with `ifconfig`. If it changed, update it inside of the keepalived config file.
     - try disabling and re-enabling router advertisement for IPv6 in router settings.
     - one reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md#this-may-help). The fix would be to keep the file, but instead of the IP addresses of the Pis, enter the virtual IPv6 address configured earlier in the keepalived setup.

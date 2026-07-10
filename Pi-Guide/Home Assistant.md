@@ -55,7 +55,6 @@ You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your search b
 1. Download WinSCP from https://winscp.net/eng/download.php to transfer files between your computer and the Pi.
 1. Transfer the `ha-backup.tar` file to your computer using WinSCP.
 1. Start up Home Assistant again with Portainer.
-<!-- -->
 
 To restore from a backup:
 

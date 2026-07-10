@@ -110,13 +110,14 @@ Set up the `Host Record` on your domain provider as follows:
 | Record 1 | Allows users to reach your website with the address format `https://example.com` | `@` | Your network's public IP address (https://whatismyipaddress.com/) | `A` if you chose your public IPv4 address, `AAAA` if you chose your IPv6 |
 | Record 2 | Allows users to reach your website with the address format `https://www.example.com` | `www` | Your network's public IP address (https://whatismyipaddress.com/) | `A` if you chose your public IPv4 address, `AAAA` if you chose your IPv6 |
 
-1. Ensure `server_name` is set:
+1. Edit the site config to set `server_name`:
    ```bash
    sudo nano /etc/nginx/sites-available/default
    ```
    ```nginx
    server_name example.com www.example.com
    ```
+1. Verify and reload nginx:
    ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload

@@ -70,7 +70,11 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
    ```bash
    sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
    ```
-1. Paste the following in (<ins>IMPORTANT:</ins> if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
+1. Paste the following in.
+
+   <ins>IMPORTANT:</ins>
+   - If you have IPv6 for your network, change `do-ip6: no` to `do-ip6: yes` below.
+   - If you're installing Unbound again for another Pi, change the port to `5353` to avoid a conflict.
 
    ```
    server:
@@ -210,7 +214,9 @@ IPv6 can be tricky to get working with Unbound, at least on an Asus router. If I
 
 If the above still doesn't work, the following applies to Asus routers. If you have keepalived installed, use the IPv6 vrrp address instead of your two Pis' addresses.
 
-1. SSH into your router (for an Asus router, enable SSH and SSH Port Forwarding by going to "Administration" then "System". Set "Enable JFFS custom scripts and configs" also.) and enter:
+On an Asus router, first go to "Administration" then "System" and enable SSH, SSH Port Forwarding, and "Enable JFFS custom scripts and configs".
+
+1. SSH into your router and enter:
    ```bash
    nano /jffs/scripts/dnsmasq.postconf
    ```

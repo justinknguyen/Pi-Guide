@@ -28,7 +28,7 @@ Automatically backup your photos and videos to your Raspberry Pi, removing the n
      ```bash
      lsblk
      ```
-1. Get the docker, .env, and hwaccel files:
+1. Get the docker-compose and .env files:
    ```bash
    sudo wget -O docker-compose.yml https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
    sudo wget -O .env https://github.com/immich-app/immich/releases/latest/download/example.env

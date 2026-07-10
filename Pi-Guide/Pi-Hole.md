@@ -32,12 +32,14 @@ Network-wide ad-blocking.
 
 ### 1. Router Settings
 
-Using an Asus router,
+Set the Pi as the router's DNS server. The steps below use an Asus router's UI as an example; the equivalent setting exists on most routers.
 
-1. For IPv4: <br>
-   Under "LAN" and "DHCP Server", enter the IPv4 address you took note of earlier under "DNS Server 1" then hit "Apply".
-1. For IPv6: <br>
-   Under "IPv6", uncheck "Connect to DNS Server automatically" and enter the IPv6 address you took note of earlier under "IPv6 DNS Server 1", then hit "Apply".
+| Protocol | Location | Field | Value |
+| --- | --- | --- | --- |
+| IPv4 | LAN > DHCP Server | DNS Server 1 | The Pi's IPv4 address (noted earlier) |
+| IPv6 | IPv6 | IPv6 DNS Server 1 | The Pi's IPv6 address (noted earlier) — first uncheck "Connect to DNS Server automatically" |
+
+Click "Apply" after each change.
 
 ### 2. Pi-Hole DNS Settings
 
@@ -45,7 +47,7 @@ Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to 
 
 For `Interface settings`, keep "Allow only local requests" checked; if you notice any devices not being ad-blocked, select "Permit all origins" instead.
 
-For `Advanced DNS settings`, enable the first three check boxes, set the rate-limiting to 1000 and 60. Conditional forwarding allows you to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
+For `Advanced DNS settings`, enable the first three check boxes and set the rate-limiting to 1000 and 60. Conditional forwarding allows you to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 
 | Setting | Example | Format |
 | --- | --- | --- |
@@ -69,7 +71,7 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
    git clone https://github.com/anudeepND/whitelist.git
    sudo python3 whitelist/scripts/whitelist.py
    ```
-   An important whitelist you need to add manually within the WebUI is `codeload.github.com`. This is to prevent future program installs from being blocked.
+1. Manually add `codeload.github.com` to the whitelist within the WebUI. This prevents future program installs from being blocked.
 
 ### 5. Multiple Upstream DNS Servers (Optional)
 
@@ -94,7 +96,7 @@ Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/p
      ]
    ```
    - This example includes Custom addresses for Unbound and Quad9; all listed servers are candidates, not a strict fallback chain (see note above).
-   - You can also set this via the WebUI (Settings → All Settings → DNS) or CLI: `pihole-FTL --config dns.upstreams '["127.0.0.1#5335","9.9.9.9"]'`
+   - You can also set this via the WebUI (Settings → All Settings → DNS) or CLI: `sudo pihole-FTL --config dns.upstreams '["127.0.0.1#5335","9.9.9.9"]'`
 1. Restart the DNS:
    ```bash
    pihole restartdns
@@ -108,15 +110,16 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 
 ## Troubleshooting
 
-- If you're getting "Rate Limit" errors in Pi-Hole, perform the following (note: newer Pi-Hole versions have this setting built-in under the `Settings` window):
+- If you're getting "Rate Limit" errors in Pi-Hole, raise or uncap the limit. Pi-hole v6 replaced the old `pihole-FTL.conf`/`RATE_LIMIT` setting with `dns.rateLimit` in `pihole.toml` (default: 1000 queries per 60 seconds). You can change it via:
 
-  1. Enter:
-     ```bash
-     sudo nano /etc/pihole/pihole-FTL.conf
-     ```
-  1. Type the following line in: `RATE_LIMIT=0/0`
-     
-     This will uncap the Rate Limit; however, it's better to simply raise the limit. For example, 2000/600 is a common choice. To find a limit tailored to you, log in to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
+  - The WebUI: log in, go to `Settings` then `DNS`, switch to "Expert" mode, and edit the rate-limit count/interval boxes.
+  - The CLI:
+    ```bash
+    sudo pihole-FTL --config dns.rateLimit.count 0
+    sudo pihole-FTL --config dns.rateLimit.interval 0
+    ```
+
+  Setting both to `0` uncaps the Rate Limit entirely; however, it's better to simply raise the limit. For example, 2000/600 is a common choice. To find a limit tailored to you, log in to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number (count), and 600 should be your second number (interval) representing 10 mins.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins". iCloud Private Relay must be turned off.
