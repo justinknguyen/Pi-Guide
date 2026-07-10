@@ -167,7 +167,16 @@ export WS_PASSWORD='your_ws_pass'
 export WS_TOTP_SECRET='your_ws_totp_secret'
 ```
 
-If Wealthsimple still emails you about a new device even though the IP and user agent match, that means the saved session is being recreated or invalidated between runs. In that case, the only real fix is to ensure the same session token is reused consistently; there is no extra “device registration” setting the script can force.
+If Wealthsimple still emails you about a new device even though the IP and user agent match, that means the saved session is being recreated (i.e. a full login is happening) instead of being refreshed. Check the log for which path was taken:
+
+```
+tail -50 ~/ws_to_actual_*.log
+```
+
+- `Found existing Wealthsimple session in keyring.` followed by `Logged in to Wealthsimple and saved session.` (no error in between) means the cached session loaded fine but the library's internal refresh silently produced a new session anyway — expected occasionally, not every run.
+- `Saved WS session invalid or expired (refresh attempt failed): ...` means `from_token()` tried to refresh the access token using the stored `refresh_token` and that refresh call itself failed, forcing a brand-new interactive-style login (this is what triggers the device email). The access token in the cached session is short-lived (~30 minutes — check the `exp`/`iat` claims in the JWT), so if your cron interval is longer than the *refresh* token's lifetime too, every run will hit this path and you'll get a device email every single time, regardless of matching IP/user-agent. Root-caused on 2026-07-09: cron ran every 12 hours, refresh token did not survive that long, so every run was a fresh login.
+
+If this is happening on every run, the practical fix is to run the sync frequently enough that the refresh token never fully expires between runs (e.g. every 1-2 hours instead of every 12), rather than trying to eliminate the re-login entirely. There is no separate "device registration" setting the script can force — Wealthsimple's device email is tied to the login event itself.
 
 Clear saved session:
 ```
@@ -286,18 +295,40 @@ def load_or_login_ws():
     username = None
     interactive = sys.stdin.isatty()
 
+    # persist function: save session JSON to keyring, local cache
+    def persist_session(sess_obj, uname):
+        try:
+            keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, sess_obj)
+            keyring.set_password(KEYRING_SERVICE, "session", sess_obj)
+        except Exception:
+            log.warning("Could not write session to keyring")
+        try:
+            with open(SESSION_CACHE_FILE, "w", encoding="utf-8") as f:
+                f.write(sess_obj)
+        except Exception as e:
+            log.warning("Could not write local session cache %s: %s", SESSION_CACHE_FILE, e)
+
     if session_json:
         try:
             sess = WSAPISession.from_json(session_json)
             log.info("Found existing Wealthsimple session in keyring.")
             ws = WealthsimpleAPI.from_token(
                 sess,
-                lambda s, u: keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, s),
+                persist_session,
                 username,
             )
             return ws
         except Exception as e:
-            log.warning("Saved WS session invalid or expired: %s", e)
+            # This is almost always a failed *refresh* attempt (the access
+            # token is only valid ~30 min, so it's expired by every cron
+            # run; from_token() tries to use the refresh_token internally
+            # before raising here). Logging the type/args helps tell an
+            # expired refresh_token apart from other auth failures.
+            log.warning(
+                "Saved WS session invalid or expired (refresh attempt failed): %s: %s",
+                type(e).__name__,
+                e,
+            )
 
     # No valid session: interactive login
     print(
@@ -326,20 +357,6 @@ def load_or_login_ws():
         )
 
     otp_answer = None
-
-    # persist function: save session JSON to keyring and local cache
-    def persist_session(sess_obj, uname):
-        # sess_obj here is a JSON string (ws-api usage)
-        try:
-            keyring.set_password(KEYRING_SERVICE, WS_KEYRING_SESSION_KEY, sess_obj)
-            keyring.set_password(KEYRING_SERVICE, "session", sess_obj)
-        except Exception:
-            log.warning("Could not write session to keyring")
-        try:
-            with open(SESSION_CACHE_FILE, "w", encoding="utf-8") as f:
-                f.write(sess_obj)
-        except Exception as e:
-            log.warning("Could not write local session cache %s: %s", SESSION_CACHE_FILE, e)
 
     while True:
         try:
