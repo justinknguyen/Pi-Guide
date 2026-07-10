@@ -172,14 +172,16 @@ tail -50 ~/ws_to_actual_*.log
 - `Found existing Wealthsimple session in keyring.` followed by `Logged in to Wealthsimple and saved session.` (no error in between) means the cached session loaded fine but the library's internal refresh silently produced a new session anyway — expected occasionally, not every run.
 - `Saved WS session invalid or expired (refresh attempt failed): ...` means `from_token()` tried to refresh the access token and that path failed, forcing a brand-new interactive-style login (this is what triggers the device email).
 
-**Known bug (root-caused 2026-07-09):** `ws-api` versions ≤0.33.0 have a bug in `WealthsimpleAPI.check_oauth_token()`. When the access token (short-lived, ~30 min) expires, it only checks for a top-level `message` key on the GraphQL error response to detect "Not Authorized" and decide whether to attempt a refresh. But Wealthsimple's API actually returns the error nested inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), which that check doesn't match — so the refresh grant is **never even attempted**, and the code falls straight through to a full login every time the access token expires, regardless of cron interval. This is fixed in `ws-api` 0.35.0 — confirmed working on 2026-07-09 via 5 manual runs spaced up to 49 minutes apart, well past the access token's ~30 min lifetime, with no forced re-login. If you're hitting this, upgrade:
+**Known bug in `ws-api` ≤0.33.0 (fixed in 0.35.0):** if you're hitting this, upgrade:
 
 ```bash
 source ~/actual_env/bin/activate
 pip install --upgrade "ws-api>=0.35"
 ```
 
-There is no separate "device registration" setting the script can force — Wealthsimple's device email is tied to the login event itself, so the real fix is making sure refresh actually works instead of falling back to login every run.
+Root cause: `WealthsimpleAPI.check_oauth_token()` only checks for a top-level `message` key to detect "Not Authorized" and decide whether to attempt a refresh. Wealthsimple actually nests the error inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), so the check never matches — the refresh is never attempted, and the code falls straight through to a full login every time the ~30 min access token expires, regardless of cron interval. There's no separate "device registration" setting to force; the device email is tied to the login event itself, so the fix is making refresh actually work.
+
+Confirmed fixed on 2026-07-09 via 5 manual runs spaced up to 49 minutes apart (past the token's ~30 min lifetime), with no forced re-login.
 
 Clear saved session:
 ```bash

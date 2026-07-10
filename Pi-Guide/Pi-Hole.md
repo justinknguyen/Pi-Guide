@@ -43,11 +43,11 @@ Click "Apply" after each change.
 
 ### 2. Pi-Hole DNS Settings
 
-Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. Using "Quad9 (filtered, DNSSEC)" is recommended. Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled.
-
-For `Interface settings`, keep "Allow only local requests" checked; if you notice any devices not being ad-blocked, select "Permit all origins" instead.
-
-For `Advanced DNS settings`, enable the first three check boxes and set the rate-limiting to 1000 and 60. Conditional forwarding allows you to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
+1. Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar, then head to "Settings" then "DNS".
+1. Under "Upstream DNS Servers", select "Quad9 (filtered, DNSSEC)" (recommended), and check both boxes under the "IPv4" column. Do the same for IPv6 if you have it enabled.
+1. Under `Interface settings`, keep "Allow only local requests" checked. If you notice any devices not being ad-blocked, select "Permit all origins" instead.
+1. Under `Advanced DNS settings`, enable the first three check boxes and set the rate-limiting to 1000 and 60.
+1. Still under `Advanced DNS settings`, enable conditional forwarding so Pi-Hole can show device names in its client list. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 
 | Setting | Example | Format |
 | --- | --- | --- |
@@ -110,16 +110,18 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 
 ## Troubleshooting
 
-- If you're getting "Rate Limit" errors in Pi-Hole, raise or uncap the limit. Pi-hole v6 replaced the old `pihole-FTL.conf`/`RATE_LIMIT` setting with `dns.rateLimit` in `pihole.toml` (default: 1000 queries per 60 seconds). You can change it via:
-
-  - The WebUI: log in, go to `Settings` then `DNS`, switch to "Expert" mode, and edit the rate-limit count/interval boxes.
-  - The CLI:
+- If you're getting "Rate Limit" errors in Pi-Hole, raise or uncap the limit (Pi-hole v6 replaced the old `pihole-FTL.conf`/`RATE_LIMIT` setting with `dns.rateLimit` in `pihole.toml`; default is 1000 queries per 60 seconds):
+  - Via the WebUI: log in, go to `Settings` then `DNS`, switch to "Expert" mode, and edit the rate-limit count/interval boxes.
+  - Via the CLI:
     ```bash
     sudo pihole-FTL --config dns.rateLimit.count 0
     sudo pihole-FTL --config dns.rateLimit.interval 0
     ```
-
-  Setting both to `0` uncaps the Rate Limit entirely; however, it's better to simply raise the limit. For example, 2000/600 is a common choice. To find a limit tailored to you, log in to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number (count), and 600 should be your second number (interval) representing 10 mins.
+    Setting both to `0` uncaps the Rate Limit entirely, but it's better to raise it instead — 2000/600 is a common choice.
+  - To find a limit tailored to your network:
+    1. Log in to Pi-Hole and hover over the highest bar under "Client activity over last 24 hours".
+    1. Take the highest number and add 25% — that's your count.
+    1. Use 600 (10 minutes) as the interval.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins". iCloud Private Relay must be turned off.

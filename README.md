@@ -10,19 +10,17 @@ A collection of setup guides for self-hosted services and utilities on a Raspber
 
 ### Setting up the Raspberry Pi
 
-Download and install the `Raspberry Pi Imager` from https://www.raspberrypi.com/software/
-
-Insert your micro SD card, open Raspberry Pi Imager, and select your Pi model and OS. "Raspberry Pi OS Lite (64-bit)" is recommended for headless setups that won't use a desktop environment.
-
-After selecting your storage device and clicking "Next", a popup asks if you want to apply custom settings. Enter your WiFi credentials and enable SSH under the "Services" tab. You can set your password and hostname here, or later via [How to Change Your Password and Hostname](#how-to-change-your-password-and-hostname).
-
-Once flashing finishes, insert the micro SD into your Pi and power it on.
+1. Download and install the `Raspberry Pi Imager` from https://www.raspberrypi.com/software/
+1. Insert your micro SD card, open Raspberry Pi Imager, and select your Pi model and OS. "Raspberry Pi OS Lite (64-bit)" is recommended for headless setups that won't use a desktop environment.
+1. Select your storage device and click "Next". When the popup asks if you want to apply custom settings, enter your WiFi credentials and enable SSH under the "Services" tab.
+   - You can set your password and hostname here, or later via [How to Change Your Password and Hostname](#how-to-change-your-password-and-hostname).
+1. Once flashing finishes, insert the micro SD into your Pi and power it on.
 
 ### Connecting to the Raspberry Pi
 
-To connect to your Pi, use an SSH client — `PuTTY` (https://www.putty.org/) on Windows, or `Termius` from the app store on Mac.
-
-Connect to your Pi by entering its IP address or hostname (default hostname is `raspberrypi`), then enter the username and password you set during imaging in the "Setting up the Raspberry Pi" step above (Raspberry Pi OS hasn't shipped a default `pi`/`raspberry` login since April 2022).
+1. Use an SSH client — `PuTTY` (https://www.putty.org/) on Windows, or `Termius` from the app store on Mac.
+1. Connect to your Pi by entering its IP address or hostname (default is `raspberrypi`), then enter the username and password you set during imaging above.
+   - Raspberry Pi OS hasn't shipped a default `pi`/`raspberry` login since April 2022.
 
 ### How to Change Your Password and Hostname
 

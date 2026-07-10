@@ -297,7 +297,10 @@ Note: you can do this with multiple devices at a time.
 ## Troubleshooting
 
 - Check your `alt-server/log` folder to find and troubleshoot your issue.
-- Unfortunately, updating your device may break your setup. It could also just break on its own. If your device stops refreshing, check in Finder/iTunes if it can still see your device over WiFi and attempt to sync. If it can't sync over WiFi, you'll have to restart your device and clear trusted computers on it. Then, redo the "Configuration" steps 1-8 and reboot the Pi.
+- Unfortunately, updating your device may break your setup — it can also just break on its own. If your device stops refreshing:
+  1. Check in Finder/iTunes if it can still see your device over WiFi and attempt to sync.
+  1. If it can't sync over WiFi, restart your device and clear trusted computers on it.
+  1. Redo the "Configuration" steps 1-8, then reboot the Pi.
 - The Raspberry Pi appears as `MacbookPro - MacBook Pro 13"` under your Apple ID trusted devices. If you accidentally remove the trusted device, you'll have to start the installation again:
   1. Remove the Docker container and its volume:
      ```bash
