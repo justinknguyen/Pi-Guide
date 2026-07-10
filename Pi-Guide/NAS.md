@@ -90,7 +90,7 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    ```bash
    sudo systemctl restart smbd
    ```
-1. Add a Samba password for your user (e.g., my Pi's username is `pi`):
+1. Add a Samba password for your user (for example, if your Pi's username is `pi`):
    ```bash
    sudo smbpasswd -a pi
    ```

@@ -26,7 +26,7 @@ If you still can't get this to work, try SideStore instead. Otherwise, there's t
 
 [Docker](/Pi-Guide/Docker.md)
 
-1. Create a folder on your Pi to store the files we'll be downloading. We'll make one at the default path, which is `/home/pi`:
+1. Create a folder on your Pi to store the files that will be downloaded. This guide uses the default path, `/home/pi`:
    ```bash
    mkdir alt-server
    ```
@@ -205,12 +205,12 @@ If you still can't get this to work, try SideStore instead. Otherwise, there's t
    wget https://github.com/jkcoxson/netmuxd/releases/download/v0.4.2/netmuxd-aarch64-unknown-linux-gnu.tar.gz
    tar -xzf netmuxd-aarch64-unknown-linux-gnu.tar.gz
    ```
-1. While in our `alt-server` folder inside the terminal, enter the following to make the binaries executable:
+1. While in the `alt-server` folder inside the terminal, enter the following to make the binaries executable:
    ```bash
    chmod +x AltServer-aarch64
    chmod +x netmuxd
    ```
-1. Have `Docker` installed on your Pi. If you don't have it installed, follow my guide for it. Run the following command to create the Docker container:
+1. Have `Docker` installed on your Pi. If it isn't installed, see the Docker guide linked above. Run the following command to create the Docker container:
    ```bash
    docker run -d --restart always --name anisette-v3 -p 6969:6969 --volume anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/ dadoum/anisette-v3-server
    ```
@@ -275,7 +275,7 @@ Note: you can do this with multiple devices at a time.
 
 ### 2. Configuring Services to Run Automatically on the Pi
 
-1. We need to make `netmuxd` and `AltServer` run on start if the Pi is rebooted. Open up crontab:
+1. To make `netmuxd` and `AltServer` run on start if the Pi is rebooted, open crontab:
    ```bash
    sudo crontab -e
    ```

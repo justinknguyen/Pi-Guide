@@ -41,24 +41,23 @@ Using an Asus router,
 
 ### 2. Pi-Hole DNS Settings
 
-Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. I recommend using "Quad9 (filtered, DNSSEC)". Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled.
+Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar. Head to "Settings" then "DNS". Here you'll see the upstream DNS server you're using. Using "Quad9 (filtered, DNSSEC)" is recommended. Ensure you check both boxes under the "IPv4" column. Same applies to IPv6 if you have it enabled.
 
-For `Interface settings`, I have "Allow only local requests" checked, but if you notice any devices not being ad-blocked, select "Permit all origins".
+For `Interface settings`, keep "Allow only local requests" checked; if you notice any devices not being ad-blocked, select "Permit all origins" instead.
 
 For `Advanced DNS settings`, enable the first three check boxes, set the rate-limiting to 1000 and 60. Conditional forwarding allows you to view the name of devices in the client list of Pi-Hole. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 
-- Local network in CIDR notation: 192.168.50.0/24
-  - the format is your router's IP address but with a 0 as the last digit, then add /24.
-- IP address of your DHCP server (router): 192.168.50.1
-  - the format is just your router's IP address.
-- Local domain name (optional): router.asus.com
-  - the format is the domain you use to sign into your router's settings.
+| Setting | Example | Format |
+| --- | --- | --- |
+| Local network in CIDR notation | 192.168.50.0/24 | Your router's IP address with a 0 as the last digit, then append `/24` |
+| IP address of your DHCP server (router) | 192.168.50.1 | Your router's IP address |
+| Local domain name (optional) | router.asus.com | The domain you use to sign into your router's settings |
 
-Optionally, you can also set Local DNS names under "DNS Records" in the side-menu. I recommend adding a domain name for your Raspberry Pi and your router, so you don't always have to enter the IP Address in the search bar.
+Optionally, you can also set Local DNS names under "DNS Records" in the side-menu. Adding a domain name for your Raspberry Pi and your router is recommended, so you don't always have to enter the IP address in the search bar.
 
 ### 3. Adding Adlists
 
-Click on "Group Management" then "Adlists" and add any adlist you want. I recommend https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt from https://github.com/hagezi/dns-blocklists. You can copy and paste multiple links at a time.
+Click on "Group Management" then "Adlists" and add any adlist you want. A recommended adlist is https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt from https://github.com/hagezi/dns-blocklists. You can copy and paste multiple links at a time.
 
 Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
 
@@ -103,7 +102,7 @@ Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/p
 
 ## Testing
 
-Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A site I recommend is https://www.speedtest.net/.
+Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A recommended site is https://www.speedtest.net/.
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
 
@@ -117,7 +116,7 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
      ```
   1. Type the following line in: `RATE_LIMIT=0/0`
      
-     This will uncap the Rate Limit; however, it's better to simply raise the limit. I have mine at 2000/600. To find a limit tailored to you, log in to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
+     This will uncap the Rate Limit; however, it's better to simply raise the limit. For example, 2000/600 is a common choice. To find a limit tailored to you, log in to Pi-Hole and hover over the highest bar under “Client activity over last 24 hours”. Take note of the highest number then add +25% to it. This number will be your first number, and 600 should be your second number representing 10 mins.
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins". iCloud Private Relay must be turned off.

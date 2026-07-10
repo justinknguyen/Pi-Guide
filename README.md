@@ -1,8 +1,8 @@
 # Pi-Guide
 
-This is a guide and collection of packages I've installed on my Raspberry Pis.
+A collection of setup guides for self-hosted services and utilities on a Raspberry Pi, covering networking, home automation, media, and backup tools.
 
-I am not responsible for anything happening to your Raspberry Pi. All guides are based on pre-existing guides on the internet.
+> **Disclaimer:** These guides are provided as-is, with no guarantee against misconfiguration or data loss. Each guide is based on established community references, linked under its own Sources section.
 
 [Table of Contents](#table-of-contents)
 
@@ -12,7 +12,7 @@ I am not responsible for anything happening to your Raspberry Pi. All guides are
 
 Download and install the `Raspberry Pi Imager` from https://www.raspberrypi.com/software/
 
-Insert your micro SD card, open Raspberry Pi Imager, and select your Pi model and OS. I recommend "Raspberry Pi OS Lite (64-bit)" if you won't use a desktop environment.
+Insert your micro SD card, open Raspberry Pi Imager, and select your Pi model and OS. "Raspberry Pi OS Lite (64-bit)" is recommended for headless setups that won't use a desktop environment.
 
 After selecting your storage device and clicking "Next", a popup asks if you want to apply custom settings. Enter your WiFi credentials and enable SSH under the "Services" tab. You can set your password and hostname here, or later via [How to Change Your Password and Hostname](#how-to-change-your-password-and-hostname).
 

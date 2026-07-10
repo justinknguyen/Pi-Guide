@@ -48,7 +48,7 @@ You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your search b
 ## Backing Up Home Assistant
 
 1. Stop the Home Assistant service by logging into Portainer.
-1. Create a .tar file of the Home Assistant folder (mine is located at `/home/pi/homeassistant`):
+1. Create a .tar file of the Home Assistant folder (for example, located at `/home/pi/homeassistant`):
    ```bash
    sudo tar -cf ha-backup.tar homeassistant/
    ```

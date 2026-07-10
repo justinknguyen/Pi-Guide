@@ -45,15 +45,17 @@ Once Hyperion is installed on the Pi, you can access the Hyperion website using 
    <br><br>
    To turn it off when it detects rainbow bars, use the following settings under `Capturing Hardware`:
 
-- Signal detection - checked
-- Red signal threshold - 0
-- Green signal threshold - 100
-- Blue signal threshold - 0
-- Signal Counter Threshold - 200
-- Signal Detection VMin - 0
-- Signal Detection VMax - 1
-- Signal Detection HMin - 0.4
-- Signal Detection HMax - 0.45
+   | Setting | Value |
+   | --- | --- |
+   | Signal detection | checked |
+   | Red signal threshold | 0 |
+   | Green signal threshold | 100 |
+   | Blue signal threshold | 0 |
+   | Signal Counter Threshold | 200 |
+   | Signal Detection VMin | 0 |
+   | Signal Detection VMax | 1 |
+   | Signal Detection HMin | 0.4 |
+   | Signal Detection HMax | 0.45 |
 
 ## Troubleshooting
 

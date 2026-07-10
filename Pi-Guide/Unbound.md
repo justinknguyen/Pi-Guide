@@ -54,13 +54,14 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
        # cache-min-ttl to e.g. 3600.
        cache-min-ttl: 0
        serve-expired: yes
-       # I had best success leaving this next entry unset.
-       # serve-expired-ttl: 3600 # 0 or not set means unlimited (I think)
+       # Best results come from leaving this next entry unset.
+       # serve-expired-ttl: 3600 # 0 or not set means unlimited (unconfirmed)
 
        # Use about 2x more for rrset cache, total memory use is about 2-2.5x
        # total cache size. Current setting is way overkill for a small network.
-       # Judging from my used cache size you can get away with 8/16 and still
-       # have lots of room, but I've got the ram and I'm not using it on anything else.
+       # Judging from typical used cache size, 8/16 may be sufficient with
+       # room to spare, but this configuration uses a larger value since the
+       # RAM would otherwise sit idle.
        # Default is 4m/4m
        msg-cache-size: 128m
        rrset-cache-size: 256m

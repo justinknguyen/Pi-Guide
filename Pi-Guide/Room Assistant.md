@@ -81,16 +81,16 @@ These steps set up Room Assistant (on one Pi) with Home Assistant (on another Pi
 
 Head to [Mosquitto](/Pi-Guide/Mosquitto.md) and complete the steps. Then log in to the Home Assistant WebUI, go to Configuration > Devices & Services, add the "MQTT" integration, and set the following fields:
 
-- Broker: `[PIIPADDRESS]`
-  - IP address of Pi 4.
-- Port: 1883
-- Username: `[USERNAME]`
-  - What you created while setting up Mosquitto.
-- Password: `[PASSWORD]`
-  - What you created while setting up Mosquitto.
-    <!-- -->
-    Within your Room Assistant config file (Step 3 of Configuration), replace `homeassistant.local` with the IP address of Pi 4. <br><br>
-    Finally, watch this video to set up cards and automations in Home Assistant with Room Assistant: https://www.youtube.com/watch?v=x5ublCxDDWE&t=379s.
+| Field | Value | Notes |
+| --- | --- | --- |
+| Broker | `[PIIPADDRESS]` | IP address of Pi 4. |
+| Port | 1883 | |
+| Username | `[USERNAME]` | Created while setting up Mosquitto. |
+| Password | `[PASSWORD]` | Created while setting up Mosquitto. |
+
+Within the Room Assistant config file (Step 3 of Configuration), replace `homeassistant.local` with the IP address of Pi 4.
+
+Finally, watch this video to set up cards and automations in Home Assistant with Room Assistant: https://www.youtube.com/watch?v=x5ublCxDDWE&t=379s.
 
 ## Troubleshooting
 

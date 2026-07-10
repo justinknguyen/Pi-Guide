@@ -96,17 +96,20 @@ keepalived creates a High Availability setup between two Pis — one acts as the
     }
     ```
 Explanation of the options:
-- router_id: a unique name, for instance your Pi-hole hostname.
-- state: Master/Active or Backup/Standby server.
-- interface: your network interface (e.g. eth0, ens3).
-- virtual_router_id: any number between 0 and 255. Must match on the Master and Backup configs.
-- priority: the master server should have a higher priority than the backup server.
-- unicast_src_ip: the IP address of this (source) server.
-- unicast_peer: the IP address of the other (peer) server.
-- auth_pass: your own password (max 8 characters). Must match on the Master and Backup configs.
-- virtual_ipaddress: the High Availability IP address.
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. I suggest you double-check your IPv6 addresses with `ifconfig`. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+| Option | Description |
+| --- | --- |
+| `router_id` | A unique name, for instance the Pi-hole hostname. |
+| `state` | Master/Active or Backup/Standby server. |
+| `interface` | The network interface (e.g. `eth0`, `ens3`). |
+| `virtual_router_id` | Any number between 0 and 255. Must match on the Master and Backup configs. |
+| `priority` | The master server should have a higher priority than the backup server. |
+| `unicast_src_ip` | The IP address of this (source) server. |
+| `unicast_peer` | The IP address of the other (peer) server. |
+| `auth_pass` | A password (max 8 characters). Must match on the Master and Backup configs. |
+| `virtual_ipaddress` | The High Availability IP address. |
+
+1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
 
     ```
     vrrp_instance PIHOLEv6 {
@@ -180,7 +183,7 @@ Explanation of the options:
     }
     ```
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. I suggest you double-check your IPv6 addresses with `ifconfig`. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
+1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
 
     ```
     vrrp_instance PIHOLEv6 {
@@ -262,11 +265,11 @@ Explanation of the options:
    ```bash
    ping [VIRTUALIPADDRESS]
    ```
-1. In our case, there is a noticeable time difference between the ping times. This is because one Pi is connected by ethernet, whereas the other is not. This makes it easy to see the switching between the two Pis in real time. If you can't tell the difference between the two Pis by this method, you can manually check the logs of each by entering `sudo systemctl status keepalived.service`. Start by pinging our virtual IP address constantly by entering:
+1. For example, there may be a noticeable time difference between the ping times if one Pi is connected by ethernet while the other is not. This makes it easy to see the switching between the two Pis in real time. If the difference between the two Pis isn't noticeable this way, manually check the logs of each by entering `sudo systemctl status keepalived.service`. Start by pinging the virtual IP address constantly by entering:
    ```bash
    ping [VIRTUALIPADDRESS] -t
    ```
-1. Now, `sudo reboot` the primary Pi and you can see the time jump up randomly; the virtual IP address switched to our secondary Pi. Once the primary Pi boots back up, we can see the time lower and become consistent. If your virtual IP address does not switch back to the primary Pi, follow the Troubleshooting steps below.
+1. Now, `sudo reboot` the primary Pi. The ping time should jump up randomly, indicating the virtual IP address switched to the secondary Pi. Once the primary Pi boots back up, the ping time should lower and become consistent again. If the virtual IP address does not switch back to the primary Pi, follow the Troubleshooting steps below.
 1. Instead of rebooting to test, you could also stop and start the service on either Pi:
    ```bash
    sudo systemctl stop keepalived.service
@@ -282,7 +285,7 @@ If you have a problem where the second Pi gets queries even if the keepalived se
 - If it happens again, then it could be an IPv6 issue
     - double check both of your Pis' IPv6 addresses with `ifconfig`. If it changed, update it inside of the keepalived config file.
     - try disabling and re-enabling router advertisement for IPv6 in router settings.
-    - one reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md#this-may-help). The fix would be to keep the file, but instead of the IP addresses of the Pis, enter the virtual IPv6 address when we set up keepalived.
+    - one reason is because of a file in your router when setting up [Unbound](/Pi-Guide/Unbound.md#this-may-help). The fix would be to keep the file, but instead of the IP addresses of the Pis, enter the virtual IPv6 address configured earlier in the keepalived setup.
 
 ## Sources
 

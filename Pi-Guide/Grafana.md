@@ -1,6 +1,6 @@
 # Grafana
 
-Monitor the Pi hardware. The most important information to me is CPU temp/load and storage.
+Monitor the Pi hardware. The most important information to track is CPU temp/load and storage.
 
 ## Table of Contents
 

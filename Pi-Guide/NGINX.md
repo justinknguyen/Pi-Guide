@@ -103,16 +103,12 @@ If you have Pi-Hole installed, you will need to change its port, since NGINX wil
 
 First, forward ports 80 and 443 on your router. If you have another package installed that uses port 80, you will need to change its port number or see [Troubleshooting](#troubleshooting).
 
-Set up the `Host Record` on your domain provider as so:
+Set up the `Host Record` on your domain provider as follows:
 
-- Record 1 (allows users to reach your website with the address format: https://example.com):
-  - Hostname: @
-  - Address: your network's public IP address (https://whatismyipaddress.com/)
-  - Record Type: if you chose your public IPv4 address, choose A. If you chose your IPv6, choose AAAA.
-- Record 2 (allows users to reach your website with the address format: https://www.example.com):
-  - Hostname: www
-  - Address: your network's public IP address (https://whatismyipaddress.com/)
-  - Record Type: if you chose your public IPv4 address, choose A. If you chose your IPv6, choose AAAA.
+| Record | Purpose | Hostname | Address | Record Type |
+| --- | --- | --- | --- | --- |
+| Record 1 | Allows users to reach your website with the address format `https://example.com` | `@` | Your network's public IP address (https://whatismyipaddress.com/) | `A` if you chose your public IPv4 address, `AAAA` if you chose your IPv6 |
+| Record 2 | Allows users to reach your website with the address format `https://www.example.com` | `www` | Your network's public IP address (https://whatismyipaddress.com/) | `A` if you chose your public IPv4 address, `AAAA` if you chose your IPv6 |
 
 1. Ensure `server_name` is set:
    ```bash

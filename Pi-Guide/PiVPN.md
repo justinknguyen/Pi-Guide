@@ -56,7 +56,7 @@ Then scan the QR code with your phone. You can now connect to the VPN.
 
 Once you activate the VPN, you should still have internet access. To confirm it's working: on a public WiFi network, go to https://www.dnsleaktest.com/ and note the IP shown, then activate the VPN and run the test again — you should now see your home network's public IP address.
 
-I recommend setting up a dynamicDNS for your router so your public IP address doesn't change.
+Setting up a dynamicDNS for your router is recommended so your public IP address doesn't change.
 
 ## Troubleshooting
 - No internet access:

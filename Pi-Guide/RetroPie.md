@@ -93,13 +93,13 @@ emulationstation
 
 ## Running ROMs From a USB Drive
 
-I have an external ssd connected to my Raspberry Pi that I will use to demonstrate here. Please see [NAS](/Pi-Guide/NAS.md) on how I connected my external ssd and mounted it.
+This example uses an external ssd connected to a Raspberry Pi. See [NAS](/Pi-Guide/NAS.md) for how to connect and mount an external ssd.
 
 1. Enter:
    ```bash
    lsblk
    ```
-1. Check the mountpoint for your USB drive. In my case, it's `/mnt/sda1` for my external ssd.
+1. Check the mountpoint for your USB drive. In this example, it's `/mnt/sda1` for the external ssd.
 1. Move the RetroPie folder to your external ssd:
    ```bash
    sudo mv -v /home/pi/RetroPie/* /mnt/sda1/

@@ -50,7 +50,7 @@ Type "rdp" into your Windows search bar and open "Remote Desktop Connection". On
 
 ## Troubleshooting
 
-If you get a blue screen and cannot connect to the RDP, just create a second user by:
+If you get a blue screen and cannot connect to the RDP, create a second user by:
 
 1. Enter:
    ```bash
