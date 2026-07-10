@@ -1,6 +1,6 @@
 # PiVPN
 
-Turn the Pi into a VPN server. When connected to any public network, being able to VPN to the Pi at home provides you with security/privacy and all access to your home network (i.e., essentially connected to your home WiFi network while away from home).
+Turn the Pi into a VPN server, giving you security/privacy and full access to your home network from anywhere — as if you were connected to your home WiFi.
 
 ## Table of Contents
 
@@ -19,15 +19,12 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
    sudo apt update
    sudo apt full-upgrade
    ```
-1. Install curl:
+1. Install curl and PiVPN:
    ```bash
    sudo apt install curl -y
-   ```
-1. Install PiVPN:
-   ```bash
    sudo curl -L https://install.pivpn.io | bash
    ```
-1. Go through the install wizard and make sure you select WireGuard. If you have Pi-Hole, make sure you select "Yes" when it asks to use Pi-Hole's DNS server for the VPN.
+1. Go through the install wizard and select WireGuard. If you have Pi-Hole, select "Yes" when asked to use Pi-Hole's DNS server for the VPN.
 
 ## Configuration
 
@@ -39,11 +36,11 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
 
 ### 1. Connect From Your Computer
 
-Install WireGuard on your computer from https://www.wireguard.com/install/. Next, enter the following into your SSH terminal. Remember to replace the section below with the profile name you created:
+Install WireGuard on your computer from https://www.wireguard.com/install/. Then enter the following into your SSH terminal, replacing `[PROFILENAME]` with the profile name you created:
 ```bash
 sudo nano /home/pi/configs/[PROFILENAME].conf
 ```
-Copy everything in this config file and make the same .conf file on your computer by pasting everything in it. Now open WireGuard and open this .conf that you just created. You can now connect to the VPN.
+Copy the contents of this config file into a new `.conf` file on your computer. Open WireGuard, load that file, and connect.
 
 ### 2. Connect From Your Phone
 
@@ -57,7 +54,7 @@ Then scan the QR code with your phone. You can now connect to the VPN.
 
 ## Testing
 
-Once you activate the VPN, you should have internet access. If you are on a public WiFi network, go to https://www.dnsleaktest.com/ and take note of the IP address. Next, activate the VPN and run the test again. You should now see your home network's public IP address.
+Once you activate the VPN, you should still have internet access. To confirm it's working: on a public WiFi network, go to https://www.dnsleaktest.com/ and note the IP shown, then activate the VPN and run the test again — you should now see your home network's public IP address.
 
 I recommend setting up a dynamicDNS for your router so your public IP address doesn't change.
 

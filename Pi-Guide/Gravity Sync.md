@@ -19,7 +19,7 @@ Sync Pi-Hole adlists and whitelists between two Raspberry Pis.
 
 ## Installation
 
-This install guide will begin by setting up syncing between the two Pis. Adding adlists or whitelists in one Pi will automatically add them to the other Pi.
+This sets up syncing between the two Pis — adding adlists or whitelists on one Pi will automatically add them to the other.
 
 1. Match your settings in Pi-Hole in your second Pi with your primary Pi.
 1. Disable DHCP in Pi-Hole settings.

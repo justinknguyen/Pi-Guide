@@ -25,12 +25,9 @@ Monitor the Pi hardware. The most important information to me is CPU temp/load a
    docker run -d  --net="host"  --pid="host"  -v "/:/host:ro,rslave"  quay.io/prometheus/node-exporter:latest  --path.rootfs=/host
    ```
 1. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your search bar.
-1. Make a directory for Prometheus:
+1. Make a directory for Prometheus and cd into it:
    ```bash
    mkdir Prometheus
-   ```
-1. cd into Prometheus:
-   ```bash
    cd Prometheus/
    ```
 1. Create a `prometheus.yml` file by entering:
@@ -75,7 +72,7 @@ Monitor the Pi hardware. The most important information to me is CPU temp/load a
 
 ## Testing
 
-Gathering metrics will take some time, so check back later and see if the data is registering in your dashboard.
+Gathering metrics takes some time, so check back later to see if data is registering in your dashboard.
 
 ## Sources
 

@@ -2,9 +2,9 @@
 
 Run AltServer on your Raspberry Pi to refresh AltStore and sideloaded apps on your iPhone or iPad.
 
-If you have any trouble, read the tutorial that this guide is based on. It provides more detail on certain parts that I skipped over: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
+If you have trouble, the tutorial this guide is based on has more detail on parts skipped here: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
 
-If you still can't get this to work, I would recommend using SideStore instead. Otherwise, you can try the dockerized version of AltServer for Linux: https://github.com/dreth/Altserver-docker or this simple GUI solution (no WiFi refresh): https://github.com/vyvir/althea
+If you still can't get this to work, try SideStore instead. Otherwise, there's the dockerized version of AltServer for Linux: https://github.com/dreth/Altserver-docker or this simple GUI solution (no WiFi refresh): https://github.com/vyvir/althea
 
 ## Table of Contents
 
@@ -60,7 +60,7 @@ If you still can't get this to work, I would recommend using SideStore instead. 
        automake \
        libtool-bin
    ```
-1. Clone and cd to the repository (this is all still inside of your alt-server folder):
+1. Clone and cd into the repository (still inside `alt-server`):
    ```bash
    git clone https://github.com/libimobiledevice/libplist.git
    cd libplist
@@ -71,14 +71,14 @@ If you still can't get this to work, I would recommend using SideStore instead. 
    make
    sudo make install
    ```
-1. You should currently be in the `libplist` folder, so after finishing, go back to the `alt-server` folder:
+1. Go back to the `alt-server` folder:
    ```bash
    cd ..
    ```
 
 ### 2. Installing libimobiledevice-glue
 
-1. Next we need to do a similar process and install `libimobiledevice-glue` from source:
+1. Install `libimobiledevice-glue` from source, the same way:
    ```bash
    sudo apt-get install \
        build-essential \
@@ -93,50 +93,38 @@ If you still can't get this to work, I would recommend using SideStore instead. 
    ```bash
    git clone https://github.com/libimobiledevice/libimobiledevice-glue.git
    cd libimobiledevice-glue
-   ```
-   ```bash
    ./autogen.sh
    make
    sudo make install
-   ```
-   ```bash
    cd ..
    ```
 
 ### 3. Installing libtatsu
 
-1. Next we need to do a similar process again and install `libtatsu` from source:
+1. Install `libtatsu` from source, the same way:
    ```bash
    sudo apt install -y \
-	   build-essential \
-	   pkg-config \
-	   checkinstall \
-	   git \
-	   autoconf \
-	   automake \
-	   libtool-bin \
-	   libplist-dev \
-      libcurl4-openssl-dev
-   ```
-   ```bash
+       build-essential \
+       pkg-config \
+       checkinstall \
+       git \
+       autoconf \
+       automake \
+       libtool-bin \
+       libplist-dev \
+       libcurl4-openssl-dev
    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-   ```
-   ```bash
    git clone https://github.com/libimobiledevice/libtatsu
    cd libtatsu
-   ```
-   ```bash
    ./autogen.sh
    make
    sudo make install
-   ```
-   ```bash
    cd ..
    ```
 
 ### 4. Installing libimobiledevice
 
-1. Next we need to do a similar process again and install `libimobiledevice` from source:
+1. Install `libimobiledevice` from source, the same way:
     ```bash
     sudo apt-get install \
         build-essential \
@@ -155,13 +143,9 @@ If you still can't get this to work, I would recommend using SideStore instead. 
     ```bash
     git clone https://github.com/libimobiledevice/libimobiledevice.git
     cd libimobiledevice
-    ```
-    ```bash
     ./autogen.sh
     make
     sudo make install
-    ```
-    ```bash
     cd ..
     ```
 1. Run the command to update the links and cache:

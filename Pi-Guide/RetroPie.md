@@ -25,7 +25,7 @@ The Raspberry Pi will need to be connected to a screen somehow.
    ```bash
    sudo apt update && sudo apt upgrade
    ```
-1. This is important: you have to make sure your locale settings are all populated and correct. Check by entering:
+1. Make sure your locale settings are all populated and correct. Check by entering:
    ```bash
    locale
    ```
@@ -64,17 +64,11 @@ The Raspberry Pi will need to be connected to a screen somehow.
    
 ## Installation
 
-1. Install required packages:
+1. Install required packages, download the setup script, then make it executable and run it:
    ```bash
    sudo apt install git lsb-release
-   ```
-1. Download the setup script:
-   ```bash
    cd
    git clone --depth=1 https://github.com/RetroPie/RetroPie-Setup.git
-   ```
-1. Make the script executable and then execute it:
-   ```bash
    cd RetroPie-Setup
    chmod +x retropie_setup.sh
    sudo ./retropie_setup.sh

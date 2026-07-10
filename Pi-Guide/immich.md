@@ -19,18 +19,15 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
 
 ## Installation
 
-1. First create a folder for immich. For example, I have an external ssd that I have mounted on `/mnt/sda1` (follow [NAS](/Pi-Guide/NAS.md) to mount a drive):
+1. Create a folder for immich and cd into it. For example, I have an external ssd mounted at `/mnt/sda1` (follow [NAS](/Pi-Guide/NAS.md) to mount a drive):
    ```bash
    sudo mkdir /mnt/sda1/immich-app
+   cd /mnt/sda1/immich-app
    ```
    - you can view where your drive is mounted to by entering:
      ```bash
      lsblk
      ```
-1. cd to the immich folder you created in Step 1:
-   ```bash
-   cd /mnt/sda1/immich-app
-   ```
 1. Get the docker, .env, and hwaccel files:
    ```bash
    sudo wget -O docker-compose.yml https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
@@ -58,16 +55,13 @@ Automatically backup your photos and videos to your Raspberry Pi. No more iCloud
    ```
 1. Click on Getting Started, create your account, and log in
 
-You're done! You can download the immich app from the app store and start backing up your photos and videos automatically.
+You're done! Download the immich app from the app store to start backing up automatically.
 
 ## Updating
 
-1. cd to the immich folder:
+1. cd to the immich folder and pull the update:
    ```bash
    cd /mnt/sda1/immich-app
-   ```
-1. Pull and update:
-   ```bash
    docker compose pull && docker compose up -d
    ```
 

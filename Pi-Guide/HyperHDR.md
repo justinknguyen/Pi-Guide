@@ -1,6 +1,6 @@
 # HyperHDR
 
-Fork of Hyperion, with improvements, notably to HDR colour accuracy and brightness. Used to sync smart lights to picture on display. Far cheaper alternative to the Hue Sync Box (~$300).
+Fork of Hyperion with improvements, notably to HDR colour accuracy and brightness. Used to sync smart lights to the picture on your display. Far cheaper alternative to the Hue Sync Box (~$300).
 
 ## Table of Contents
 

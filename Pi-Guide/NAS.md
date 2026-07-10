@@ -12,7 +12,7 @@ Network-attached Storage (NAS) so you can access shared storage on your local ne
 
 ## Configuration
 
-If you have an external ssd, your Pi may have trouble booting due to static on the USB 3.0 port. Either plug it into a USB 2.0 port or put a USB hub between the ssd and the Pi. If you have a fast modern external ssd, you will need to use a powered USB hub, because the Pi doesn't supply enough power to its USB ports.
+If you have an external ssd, your Pi may have trouble booting due to static on the USB 3.0 port. Either plug it into a USB 2.0 port or put a USB hub between the ssd and the Pi. Fast modern external ssds need a powered USB hub, since the Pi doesn't supply enough power on its own.
 
 1. If you have an external drive, you can find it by entering:
    ```bash
@@ -48,12 +48,9 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
      ```
      UUID=your-uuid-here /mnt/sda1 ext4 defaults,auto,users,rw,nofail 0 0
      ```
-1. Reload daemon:
+1. Reload the daemon and mount your drive:
    ```bash
    sudo systemctl daemon-reload
-   ```
-1. Mount your drive:
-   ```bash
    sudo mkdir -p /mnt/sda1
    sudo mount /dev/sda1 /mnt/sda1
    lsblk
@@ -64,12 +61,9 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
      ```
    - You can check if it was successfully mounted by entering `lsblk`
    - If it says it can't mount the drive, it could be a false alarm. Try rebooting and then check if the drive was mounted with `lsblk`. If it still doesn't say it was mounted, try entering the command again
-1. Create a shared folder:
+1. Create a shared folder and grant it read/write access:
    ```bash
    sudo mkdir /mnt/sda1/shared
-   ```
-1. Grant read/write access to shared folder
-   ```bash
    sudo chmod -R 777 /mnt/sda1/shared
    ```
 

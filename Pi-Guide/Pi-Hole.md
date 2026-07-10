@@ -64,12 +64,9 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
 
 ### 4. Adding Whitelists
 
-1. Install python3:
+1. Install python3 and the whitelist tool:
    ```bash
    sudo apt install python3
-   ```
-1. Install whitelist:
-   ```bash
    git clone https://github.com/anudeepND/whitelist.git
    sudo python3 whitelist/scripts/whitelist.py
    ```
@@ -79,7 +76,7 @@ Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tool
 
 If you want to use multiple DNS servers, follow the steps below. These steps assume you have [Unbound](/Pi-Guide/Unbound.md) installed.
 
-Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/pihole.toml`. Note that v6's built-in resolver does **not** use strict list-order priority (the old dnsmasq `strict-order`/first-listed-is-primary behavior no longer applies) — instead it benchmarks all listed upstreams and load-balances toward whichever responds fastest, automatically failing over to another if one times out or returns `SERVFAIL`/`REFUSED`. If you need one server to always be preferred over another, use a per-domain/conditional forwarding setup instead; a flat priority list is no longer directly supported.
+Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/pihole.toml`. Its built-in resolver does **not** use strict list-order priority — instead it benchmarks all listed upstreams and load-balances toward whichever responds fastest, automatically failing over to another if one times out or returns `SERVFAIL`/`REFUSED`. If you need one server to always be preferred over another, use a per-domain/conditional forwarding setup instead; a flat priority list is no longer directly supported.
 
 1. Select the upstream providers you want in Pi-Hole's settings (e.g., Quad9 (filtered, DNSSEC) and Custom addresses for Unbound).
 1. Edit `/etc/pihole/pihole.toml` and set the `[dns]` upstream list:
@@ -103,8 +100,6 @@ Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/p
    ```bash
    pihole restartdns
    ```
-
-Pi-Hole has a feature that uses the fastest DNS resolver, so it's possible that it doesn't follow the order you set.
 
 ## Testing
 

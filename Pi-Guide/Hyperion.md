@@ -17,23 +17,20 @@ Used to sync smart lights to picture on display. Far cheaper alternative to the 
 - 3 HDMI Cables
 
 Total cost: ~$50 <br><br>
-One HDMI cable will go from the input device (e.g., PS5 or PC) to the input port of the HDMI splitter. This is so it can output its video feed to both the monitor/tv and the Raspberry Pi simultaneously (that’s why we need two output ports on the splitter). The second HDMI cable will be connected from one of the output ports of the splitter to the monitor/tv. The third HDMI cable will be connected from the other output port of the splitter to the USB Capture Card, and the USB Capture Card will then be connected to the Raspberry Pi.
+One HDMI cable runs from the input device (e.g., PS5 or PC) to the splitter's input port, so it can feed both the monitor/tv and the Raspberry Pi at once (that's why the splitter needs two output ports). The second cable connects one splitter output to the monitor/tv. The third connects the other splitter output to the USB Capture Card, which then connects to the Raspberry Pi.
 
 ## Installation
 
-1. First install the required dependencies:
+1. Install the required dependencies:
    ```bash
    sudo apt-get update && sudo apt-get install wget gpg apt-transport-https lsb-release
    ```
-1. Next, we import the public key from Hyperion:
+1. Import the Hyperion public key and add it as an APT source:
    ```bash
    wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
-   ```
-1. After that we enter Hyperion-Project as source of Hyperion:
-   ```bash
    echo "deb [signed-by=/usr/share/keyrings/hyperion.pub.gpg] https://apt.hyperion-project.org/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hyperion.list
    ```
-1. Lastly, we update the package list and install Hyperion:
+1. Update the package list and install Hyperion:
    ```bash
    sudo apt-get update && sudo apt-get install hyperion
    ```
@@ -44,9 +41,9 @@ Once Hyperion is installed on the Pi, you can access the Hyperion website using 
 
 1. Go to LED Instances > LED Output, and choose the controller type depending on your smart lights (e.g., philipshue), then proceed with the setup.
 1. Go to Capturing Hardware and activate the USB Capture option.
-1. To reduce capture delay, I suggest changing device resolution to 640x480 and FPS to 30.
+1. To reduce capture delay, set device resolution to 640x480 and FPS to 30.
    <br><br>
-   If you want to make it so it turns off when it detects rainbow bars, use the following settings under `Capturing Hardware`,
+   To turn it off when it detects rainbow bars, use the following settings under `Capturing Hardware`:
 
 - Signal detection - checked
 - Red signal threshold - 0

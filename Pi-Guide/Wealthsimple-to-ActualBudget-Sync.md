@@ -1,6 +1,6 @@
 # Wealthsimple to Actual Budget Sync
 
-Automate syncing Wealthsimple transactions into ActualBudget using a Python script on your Raspberry Pi. The script connects to the Wealthsimple GraphQL API and uploads transaction data directly into ActualBudget.
+Automate syncing Wealthsimple transactions into ActualBudget using a Python script on your Raspberry Pi, via Wealthsimple's GraphQL API.
 
 ## Table of Contents
 
@@ -20,37 +20,35 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 ## Installation
 
 1. Update system packages:
-   ```
+   ```bash
    sudo apt update && sudo apt upgrade
    ```
 1. Install Python and pip:
-   ```
+   ```bash
    sudo apt install python3 python3-venv python3-pip -y
    ```
 1. Create and activate a virtual environment:
-   ```
+   ```bash
    python3 -m venv ~/actual_env
    source ~/actual_env/bin/activate
    ```
 1. Install required dependencies:
-   ```
+   ```bash
    pip install "ws-api>=0.35" actualpy keyring python-dateutil pyotp
    ```
-   - `ws-api` versions ≤0.33.0 have a bug where session refresh silently never fires (see [Troubleshooting](#troubleshooting)); make sure you're on 0.35.0 or newer.
-1. Create the `ws_to_actual.py` script in your home directory (see [Python Script](#python-script) section below for the full code):
-   ```
+   - `ws-api` ≤0.33.0 has a bug where session refresh silently never fires (see [Troubleshooting](#troubleshooting)) — make sure you're on 0.35.0+.
+1. Create the `ws_to_actual.py` script in your home directory (full code in [Python Script](#python-script) below):
+   ```bash
    nano ~/ws_to_actual.py
    ```
-   - Copy and paste the script from the [Python Script](#python-script) section
-   - Save with `Ctrl+X`, then `Y`
-   - Make it executable:
-     ```
+   - Paste in the script, save with `Ctrl+X` then `Y`, then make it executable:
+     ```bash
      chmod +x ~/ws_to_actual.py
      ```
 
 ## Configuration
 
-1. Create a dedicated cron environment file in your home directory:
+1. Create a dedicated cron environment file in your home directory, then apply it to the current shell:
    ```bash
    cat > /home/pi/ws_to_actual_env.sh <<'EOF'
    export ACTUAL_BASE_URL='http://localhost:5006'
@@ -61,20 +59,17 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    export WS_TOTP_SECRET='your_ws_totp_secret'
    EOF
    chmod 600 /home/pi/ws_to_actual_env.sh
-   ```
-1. Apply changes for the current shell:
-   ```bash
    source /home/pi/ws_to_actual_env.sh
    ```
 1. Run the script manually the first time:
-   ```
+   ```bash
    source ~/actual_env/bin/activate
    python ~/ws_to_actual.py
    ```
    - You'll be prompted for your Wealthsimple login and OTP (stored securely in your system keyring) if not set in the environment
-   - The first run may ask for your Actual password if not set in the environment
+   - The first run may also ask for your Actual password if not set in the environment
 1. (Optional) Limit imported accounts by editing the filter list in your script:
-   ```
+   ```python
    ALLOWED_ACCOUNTS = ["Cash", "Credit card"]
    ```
 
@@ -82,14 +77,14 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 
 You can test the script manually before automating:
 
-```
+```bash
 source ~/actual_env/bin/activate
 python ~/ws_to_actual.py
 ```
 
 Check logs:
 
-```
+```bash
 tail -n 20 ~/ws_to_actual.log
 ```
 
@@ -118,7 +113,7 @@ INFO Done.
    - This avoids cron failing when `~/.bashrc` is not sourced or contains interactive-only checks.
 
 1. Open your crontab:
-   ```
+   ```bash
    crontab -e
    ```
 1. Add jobs to run every 12 hours and rotate logs:
@@ -144,7 +139,7 @@ INFO Done.
 **pip not found:**
 
 Run:
-```
+```bash
 sudo apt install python3-pip -y
 ```
 
@@ -156,13 +151,13 @@ Ensure `ACTUAL_PASSWORD` is exported in your `~/.bashrc` and that cron sources i
 
 If cron cannot read `~/.bashrc`, use the dedicated env file instead:
 
-```
+```bash
 source /home/pi/ws_to_actual_env.sh
 ```
 
 Ensure the following are set for non-interactive cron runs:
 
-```
+```bash
 export WS_USERNAME='your_ws_email'
 export WS_PASSWORD='your_ws_pass'
 export WS_TOTP_SECRET='your_ws_totp_secret'
@@ -170,7 +165,7 @@ export WS_TOTP_SECRET='your_ws_totp_secret'
 
 If Wealthsimple still emails you about a new device even though the IP and user agent match, that means the saved session is being recreated (i.e. a full login is happening) instead of being refreshed. Check the log for which path was taken:
 
-```
+```bash
 tail -50 ~/ws_to_actual_*.log
 ```
 
@@ -179,7 +174,7 @@ tail -50 ~/ws_to_actual_*.log
 
 **Known bug (root-caused 2026-07-09):** `ws-api` versions ≤0.33.0 have a bug in `WealthsimpleAPI.check_oauth_token()`. When the access token (short-lived, ~30 min) expires, it only checks for a top-level `message` key on the GraphQL error response to detect "Not Authorized" and decide whether to attempt a refresh. But Wealthsimple's API actually returns the error nested inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), which that check doesn't match — so the refresh grant is **never even attempted**, and the code falls straight through to a full login every time the access token expires, regardless of cron interval. This is fixed in `ws-api` 0.35.0 — confirmed working on 2026-07-09 via 5 manual runs spaced up to 49 minutes apart, well past the access token's ~30 min lifetime, with no forced re-login. If you're hitting this, upgrade:
 
-```
+```bash
 source ~/actual_env/bin/activate
 pip install --upgrade "ws-api>=0.35"
 ```
@@ -187,7 +182,7 @@ pip install --upgrade "ws-api>=0.35"
 There is no separate "device registration" setting the script can force — Wealthsimple's device email is tied to the login event itself, so the real fix is making sure refresh actually works instead of falling back to login every run.
 
 Clear saved session:
-```
+```bash
 python -m keyring delete ws_to_actual.ws.session
 rm -f ~/.ws_to_actual_session.json
 ```
@@ -196,7 +191,7 @@ Then rerun the script manually to reauthenticate.
 **Script not running from cron:**
 
 Make sure cron is using your user's environment, not root's:
-```
+```bash
 crontab -l
 ```
 Avoid `sudo crontab -e` unless necessary.

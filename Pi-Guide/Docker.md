@@ -1,6 +1,6 @@
 # Docker
 
-Containerize packages for easy removal. The benefit of Docker is being able to quickly and easily remove an entire package — something that's much harder to do with normally installed packages. There's also less chance of packages conflicting with each other.
+Containerize packages for easy removal. Docker lets you remove an entire package cleanly — much harder with normally installed packages — and reduces the chance of packages conflicting with each other.
 
 ## Table of Contents
 

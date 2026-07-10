@@ -13,7 +13,7 @@ Turn the Raspberry Pi into another Hue Bridge for multiple entertainment areas/h
 
 [Docker](/Pi-Guide/Docker.md)
 
-If you have Pi-Hole installed, you will need to change the port as diyHue will now need to use the default port (80).
+If Pi-Hole is installed, diyHue needs port 80, so change Pi-Hole's port first.
 
 1. Go to:
    ```bash
@@ -49,7 +49,7 @@ If you have Pi-Hole installed, you will need to change the port as diyHue will n
 1. If the Hue App says the bridge needs to be updated, go back to the webui and click on `Bridge` tab, and from there, you can emulate the diyHue bridge's software version to trick the Hue App.
 1. If the Hue App says the bridge cannot be found, try manually entering the Pi's IP Address to search for it.
 1. Once the diyHue bridge is set up in the app, go back to the webui and click on `Hue Bridge` tab, and enter the official Hue Bridge's IP Address, then pair it.
-1. Once paired, you can then click on the `Lights` tab and scan for lights. Once diyHue is able to search for all of your lights connected to the official Hue Bridge, you can finally go back to the Hue App, and scan for lights to make your rooms/entertainment areas.
+1. Once paired, click the `Lights` tab and scan for lights. When diyHue finds all your lights connected to the official Hue Bridge, go back to the Hue App and scan for lights to build your rooms/entertainment areas.
 
 ## Sources
 

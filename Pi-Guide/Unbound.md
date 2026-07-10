@@ -1,6 +1,6 @@
 # Unbound
 
-Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and also provides privacy by getting rid of third parties, such as Google, Cloudflare, OpenDNS, etc.
+Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds privacy by cutting out third parties like Google, Cloudflare, and OpenDNS.
 
 ## Table of Contents
 
@@ -17,12 +17,9 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 
 ## Installation
 
-1. Update:
+1. Update and install Unbound:
    ```bash
    sudo apt update
-   ```
-1. Install Unbound:
-   ```bash
    sudo apt install unbound
    ```
 1. Download the current root hints file:
@@ -196,24 +193,21 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 
 ## Getting IPv6 to Work with Unbound
 
-IPv6 is tricky to get working with Unbound, with an Asus router at least. If your IPv6 is breaking Pi-Hole and Unbound, then perform the following:
+IPv6 can be tricky to get working with Unbound, at least on an Asus router. If IPv6 is breaking Pi-Hole and Unbound, do the following:
 
 1. Edit file `resolvconf.conf` and comment out the last line which should read, `unbound_conf=/etc/unbound/unbound.conf.d/resolvconf_resolvers.conf`.
    ```bash
    sudo nano /etc/resolvconf.conf
    ```
-1. Delete the unwanted unbound configuration file:
+1. Delete the unwanted unbound configuration file and restart unbound:
    ```bash
    sudo rm /etc/unbound/unbound.conf.d/resolvconf_resolvers.conf
-   ```
-1. Restart unbound:
-   ```bash
    sudo service unbound restart
    ```
 
 ### This MAY Help
 
-If the above steps still do not work, the below can be performed on an Asus router; however, if you have keepalived installed, you will want to put in the IPv6 vrrp address instead of your two Pis' addresses.
+If the above still doesn't work, the following applies to Asus routers. If you have keepalived installed, use the IPv6 vrrp address instead of your two Pis' addresses.
 
 1. SSH into your router (for an Asus router, enable SSH and SSH Port Forwarding by going to "Administration" then "System". Set "Enable JFFS custom scripts and configs" also.) and enter:
    ```bash

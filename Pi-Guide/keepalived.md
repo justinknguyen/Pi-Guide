@@ -1,6 +1,6 @@
 # keepalived
 
-keepalived is used to create a High Availability setup between two Pis, meaning one Pi will act as the master server and the other will act as the backup server. When the master server shuts down, internet traffic will be redirected to the backup server until the master server comes back online.
+keepalived creates a High Availability setup between two Pis — one acts as the master server, the other as backup. If the master goes down, traffic redirects to the backup until the master comes back online.
 
 ## Table of Contents
 
@@ -19,23 +19,14 @@ keepalived is used to create a High Availability setup between two Pis, meaning 
 
 ## Installation
 
-1.  Update:
+1.  On both Pis, update, install keepalived and the ipset runtime library (package name depends on OS version — `libipset13` on Raspberry Pi OS "Bookworm"/Debian 12, `libipset13t64` on "Trixie"/Debian 13+), then enable the keepalived service:
     ```bash
     sudo apt update
-    ```
-1.  Install keepalived on both Pis:
-    ```bash
     sudo apt install keepalived
-    ```
-1.  Install the ipset runtime library on both Pis (package name depends on OS version — `libipset13` on Raspberry Pi OS "Bookworm"/Debian 12, `libipset13t64` on "Trixie"/Debian 13+):
-    ```bash
     sudo apt install libipset13 || sudo apt install libipset13t64
-    ```
-1.  Enable keepalived on both Pis:
-    ```bash
     sudo systemctl enable keepalived.service
     ```
-1.  We will now create the pihole-FTL service check script. Run the following commands on both Pis:
+1.  Create the pihole-FTL service check script. Run the following commands on both Pis:
     ```bash
     sudo mkdir /etc/scripts
     sudo nano /etc/scripts/chk_ftl
@@ -60,7 +51,7 @@ keepalived is used to create a High Availability setup between two Pis, meaning 
     ```bash
     sudo chmod 755 /etc/scripts/chk_ftl
     ```
-1.  Now we will add the keepalived configuration on the primary Pi-Hole machine, the master/active server. Change the settings according to your setup.
+1.  Now add the keepalived configuration on the primary Pi-Hole machine (the master/active server). Adjust the settings for your setup.
     ```bash
     sudo nano /etc/keepalived/keepalived.conf
     ```
@@ -105,15 +96,15 @@ keepalived is used to create a High Availability setup between two Pis, meaning 
     }
     ```
 Explanation of the options:
-- router_id: should be a unique name, for instance your Pi-hole hostname
-- state: describes which server is the Master/Active and which is the Backup/Standby server.
-- interface: change this according to your network interface (e.g. eth0, ens3 etc)
-- virtual_router_id: this can be any number between 0 and 255. Must be the same on the Master and Backup configs.
+- router_id: a unique name, for instance your Pi-hole hostname.
+- state: Master/Active or Backup/Standby server.
+- interface: your network interface (e.g. eth0, ens3).
+- virtual_router_id: any number between 0 and 255. Must match on the Master and Backup configs.
 - priority: the master server should have a higher priority than the backup server.
-- unicast_src_ip: should be the IP address of the (source) server.
-- unicast_peer: should be the IP address of the other (peer) server.
-- auth_pass: create your own (max 8 character) password. Must be the same on the Master and Backup configs.
-- virtual_ipaddress: this will be the High Availability IP address.
+- unicast_src_ip: the IP address of this (source) server.
+- unicast_peer: the IP address of the other (peer) server.
+- auth_pass: your own password (max 8 characters). Must match on the Master and Backup configs.
+- virtual_ipaddress: the High Availability IP address.
 
 1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. I suggest you double-check your IPv6 addresses with `ifconfig`. (<ins>IMPORTANT:</ins> the password you enter below has a maximum of 8 characters):
 
@@ -144,7 +135,7 @@ Explanation of the options:
     }
     ```
 
-1. Now we will add the keepalived configuration on the secondary Pi-hole machine, the Backup/Standby server.
+1. Now add the keepalived configuration on the secondary Pi-hole machine (the Backup/Standby server).
     ```bash
     sudo nano /etc/keepalived/keepalived.conf
     ```

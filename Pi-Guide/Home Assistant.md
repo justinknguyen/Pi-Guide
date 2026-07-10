@@ -1,6 +1,6 @@
 # Home Assistant
 
-Can connect anything "smart" into a single app for a unified Smart Home. Main benefit is being able to integrate into Apple HomeKit.
+Connects any "smart" device into a single app for a unified Smart Home. Main benefit: integrates with Apple HomeKit.
 
 ## Table of Contents
 
@@ -34,7 +34,7 @@ Can connect anything "smart" into a single app for a unified Smart Home. Main be
        privileged: true
        network_mode: host
    ```
-   - Copying and pasting the above into the YAML file may not work due to formatting. Directly copy and paste it from here https://www.home-assistant.io/installation/raspberrypi/#docker-compose and replace `/PATH_TO_YOUR_CONFIG` with `/home/pi/homeassistant`
+   - Pasting the above may break YAML formatting — copy it directly from here instead: https://www.home-assistant.io/installation/raspberrypi/#docker-compose, and replace `/PATH_TO_YOUR_CONFIG` with `/home/pi/homeassistant`
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 1. Install Home Assistant:
    ```bash
@@ -52,7 +52,7 @@ You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your search b
    ```bash
    sudo tar -cf ha-backup.tar homeassistant/
    ```
-1. Download WinSCP from https://winscp.net/eng/download.php. This is to easily transfer files between your computer and the Pi.
+1. Download WinSCP from https://winscp.net/eng/download.php to transfer files between your computer and the Pi.
 1. Transfer the `ha-backup.tar` file to your computer using WinSCP.
 1. Start up Home Assistant again with Portainer.
 <!-- -->

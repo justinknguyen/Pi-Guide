@@ -38,7 +38,7 @@ Remotely access your Raspberry Pi's desktop environment from another device.
    ```bash
    systemctl show -p SubState --value xrdp
    ```
-1. By default XRDP uses the `/etc/ssl/private/ssl-cert-snakeoil.key` file which is readable only by users that are members of the “ssl-cert” group. You’ll need to add the user that runs the XRDP server to the ssl-cert group by entering:
+1. XRDP's default `/etc/ssl/private/ssl-cert-snakeoil.key` file is only readable by members of the "ssl-cert" group, so add the user running the XRDP server to that group:
    ```bash
    sudo adduser pi ssl-cert
    ```

@@ -1,6 +1,6 @@
 # Mosquitto
 
-MQTT communication. This is how one Pi can communicate with another Pi to provide Room Assistant (on one Pi) data to Home Assistant (on another Pi). Mosquitto will be installed on the Pi with Home Assistant.
+MQTT communication — lets Room Assistant (on one Pi) send data to Home Assistant (on another Pi). Install Mosquitto on the Pi running Home Assistant.
 
 ## Table of Contents
 

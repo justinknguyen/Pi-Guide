@@ -19,15 +19,12 @@ Uses Bluetooth Low Energy (BLE) to detect how far away a BLE-compatible device i
 
 You may want to disable Pi-Hole temporarily before proceeding.
 
-1. Create a new folder to store your room-assistant files in with:
+1. Create a folder for your room-assistant files and open a new config file:
    ```bash
    mkdir -p ~/room-assistant/config
-   ```
-1. Create a new config file with:
-   ```bash
    nano ~/room-assistant/config/local.yml
    ```
-1. Paste the following in with the proper replacements (click on the second link under Sources to learn how to use BLE and configure with your iPhone):
+1. Paste the following in with the proper replacements (see the second Sources link for how to use BLE and configure with your iPhone):
    ```yaml
    global:
      integrations:
@@ -71,32 +68,29 @@ You may want to disable Pi-Hole temporarily before proceeding.
            - /var/run/dbus:/var/run/dbus
            - /home/pi/room-assistant/config:/room-assistant/config
      ```
-1. cd into the room-assistant directory:
+1. cd into the room-assistant directory and install Room Assistant:
    ```bash
    cd ~/room-assistant
-   ```
-1. Install Room Assistant:
-   ```bash
    docker compose up
    ```
 1. Check Portainer if Room Assistant is running correctly.
 
 ## Configuration
 
-These steps will show you how to set up Room Assistant (on one Pi) with Home Assistant (on another Pi).
+These steps set up Room Assistant (on one Pi) with Home Assistant (on another Pi).
 
-Head to [Mosquitto](/Pi-Guide/Mosquitto.md) and complete the steps. After completing, log in to the WebUI of Home Assistant and head over to Configuration>Devices & Services. Next, add the "MQTT" integration and set the following fields to:
+Head to [Mosquitto](/Pi-Guide/Mosquitto.md) and complete the steps. Then log in to the Home Assistant WebUI, go to Configuration > Devices & Services, add the "MQTT" integration, and set the following fields:
 
-- Broker: [PIIPADDRESS]
+- Broker: `[PIIPADDRESS]`
   - IP address of Pi 4.
 - Port: 1883
-- Username: [USERNAME]
+- Username: `[USERNAME]`
   - What you created while setting up Mosquitto.
-- Password: [PASSWORD]
+- Password: `[PASSWORD]`
   - What you created while setting up Mosquitto.
     <!-- -->
     Within your Room Assistant config file (Step 3 of Configuration), replace `homeassistant.local` with the IP address of Pi 4. <br><br>
-    Finally, follow this YouTube video to learn how to set up simple cards and automations in Home Assistant with Room Assistant: https://www.youtube.com/watch?v=x5ublCxDDWE&t=379s.
+    Finally, watch this video to set up cards and automations in Home Assistant with Room Assistant: https://www.youtube.com/watch?v=x5ublCxDDWE&t=379s.
 
 ## Troubleshooting
 

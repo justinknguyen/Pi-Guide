@@ -47,16 +47,10 @@ If you have Pi-Hole installed, you will need to change its port, since NGINX wil
    sudo apt update
    sudo apt upgrade
    ```
-1. Remove apache2:
+1. Remove apache2, install NGINX, and start the service:
    ```bash
    sudo apt remove apache2
-   ```
-1. Install NGINX:
-   ```bash
    sudo apt install nginx
-   ```
-1. Start the service:
-   ```bash
    sudo systemctl start nginx
    ```
 
@@ -64,16 +58,10 @@ If you have Pi-Hole installed, you will need to change its port, since NGINX wil
 
 ### 1. Hosting the Website
 
-1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
+1. Assuming your website is in a GitHub repo, go to the directory, clone the repo, and check the folder name it was cloned to:
    ```bash
    cd /var/www/html/
-   ```
-1. Then clone your repo into the path:
-   ```bash
    sudo git clone [your repo.git]
-   ```
-1. Check the name of the folder where your repo was cloned to:
-   ```bash
    ls
    ```
 1. Edit the site config so it points to the git folder:
@@ -183,9 +171,9 @@ Visit `http://[PIIPADDRESS]`
 
 ## Troubleshooting
 
-If you can't install NGINX, it's likely because you have something installed that is currently using port 80 on the Pi. Follow the below steps to change NGINX's port, however, doing so might render you unable to enable HTTPS on the website.
+If you can't install NGINX, something else is likely already using port 80 on the Pi. Follow the steps below to change NGINX's port — note this may prevent you from enabling HTTPS.
 
-In your `default` file, when editing the ports, if you have more than one server block, you need to make sure you have the `listen` command in each server block. If you don't have it in one of them, it will default to listening on port 80.
+If your `default` file has more than one server block, make sure each one has a `listen` line. Any block missing it will default to listening on port 80.
 
 1. Edit the default configuration so NGINX listens to a different port (default is 80) to avoid conflicts:
    ```bash

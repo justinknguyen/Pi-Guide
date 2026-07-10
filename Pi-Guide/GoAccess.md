@@ -1,6 +1,6 @@
 # GoAccess
 
-View NGINX access log in a UI/dashboard
+View the NGINX access log in a UI/dashboard.
 
 ## Table of Contents
 

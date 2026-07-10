@@ -45,7 +45,7 @@ Run a "fork bomb" on your shell:
 :(){ :|:& };:
 ```
 
-Running this code will render your Raspberry Pi inaccessible until it’s reset by the watchdog. The Pi should be back up and running after a few minutes.
+This will make your Pi inaccessible until the watchdog resets it — it should be back up within a few minutes.
 
 ## Sources
 

@@ -37,7 +37,7 @@ Automatically backup your Raspberry Pi periodically.
    sudo raspiBackup -m detailed
    ```
 
-Congrats! If you followed everything, you should have automatic backups set up that will run every Sunday at 5 AM to your external drive.
+You now have automatic backups running every Sunday at 5 AM to your external drive.
 
 ## Setup Email Notifications
 
