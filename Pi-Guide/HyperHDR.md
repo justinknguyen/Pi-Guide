@@ -14,13 +14,13 @@ Fork of Hyperion, with improvements, notably to HDR colour accuracy and brightne
 
 If you have Hyperion installed, uninstall it:
 
-```
+```bash
 sudo apt-get --purge autoremove hyperion
 ```
 
 ## Installation
 
-```
+```bash
 type -p curl >/dev/null || sudo apt install curl -y
 curl -fsSL https://awawa-dev.github.io/hyperhdr.public.apt.gpg.key | sudo dd of=/usr/share/keyrings/hyperhdr.public.apt.gpg.key \
 && sudo chmod go+r /usr/share/keyrings/hyperhdr.public.apt.gpg.key \
@@ -36,10 +36,10 @@ You can open the HyperHDR website by heading to `[PIIPADDRESS]:8090`
 ## Updating
 
 1. First remove the HyperHDR install:
-   ```
+   ```bash
    sudo apt remove hyperhdr
    ```
-2. Repeat the [Installation](#installation) steps again. Your settings will be saved.
+1. Repeat the [Installation](#installation) steps again. Your settings will be saved.
 
 ## Sources
 

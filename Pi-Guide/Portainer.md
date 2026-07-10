@@ -1,6 +1,6 @@
 # Portainer
 
-Provides GUI for Docker containers to easily manage.
+Provides a GUI to easily manage Docker containers.
 
 ## Table of Contents
 
@@ -17,16 +17,16 @@ Provides GUI for Docker containers to easily manage.
 ## Installation
 
 1. Update and Upgrade:
-   ```
+   ```bash
    sudo apt update
    sudo apt upgrade
    ```
-2. Install Portainer
-   ```
+1. Install Portainer:
+   ```bash
    sudo docker pull portainer/portainer-ce:latest
    ```
-3. Run Portainer
-   ```
+1. Run Portainer:
+   ```bash
    sudo docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
    ```
 
@@ -37,14 +37,14 @@ You can now access the WebUI by typing `https://[PIIPADDRESS]:9443` into your se
 ## Updating
 
 1. Stop Portainer
-   ```
+   ```bash
    docker stop portainer
    ```
-2. Remove Portainer
-   ```
+1. Remove Portainer
+   ```bash
    docker rm portainer
    ```
-3. Repeat steps 2-3 under `Installation`.
+1. Repeat steps 2-3 under `Installation`.
 
 ## Sources
 

@@ -13,54 +13,54 @@ Remotely access your Raspberry Pi's desktop environment from another device.
 ## Prerequisites
 
 1. Enter:
-   ```
+   ```bash
    sudo raspi-config
    ```
 1. Go to (1) System Options -> S5 Boot/Auto Login -> select "B4 Desktop Autologin".
 1. Exit back to the terminal and run the following commands to install the desktop environment:
-   ```
+   ```bash
    sudo apt update
    sudo apt-get install --no-install-recommends rpd-x-core rpd-x-extras xinit xserver-xorg
    ```
    - On Raspberry Pi OS "Trixie" (Debian 13) and newer, `raspberrypi-ui-mods` no longer exists — it was replaced by the modular `rpd-*` meta-packages. `rpd-x-core` (not `rpd-wayland-core`) is used here since XRDP/xorgxrdp needs an X11 session. If you're still on "Bookworm" (Debian 12) or earlier, `raspberrypi-ui-mods` is still valid.
 1. Reboot:
-   ```
+   ```bash
    sudo reboot
    ```
 
 ## Installation
 
 1. Install XRDP:
-   ```
+   ```bash
    sudo apt install xrdp
    ```
-2. When the installation process is complete, the XRDP service will automatically start. You can verify that XRDP is running by entering:
-   ```
+1. When the installation process is complete, the XRDP service will automatically start. You can verify that XRDP is running by entering:
+   ```bash
    systemctl show -p SubState --value xrdp
    ```
-3. By default XRDP uses the `/etc/ssl/private/ssl-cert-snakeoil.key` file which is readable only by users that are members of the “ssl-cert” group. You’ll need to add the user that runs the XRDP server to the ssl-cert group by entering:
-   ```
+1. By default XRDP uses the `/etc/ssl/private/ssl-cert-snakeoil.key` file which is readable only by users that are members of the “ssl-cert” group. You’ll need to add the user that runs the XRDP server to the ssl-cert group by entering:
+   ```bash
    sudo adduser pi ssl-cert
    ```
    - Replace "pi" with the name of your login username if you changed it.
 
 ## Testing
 
-Type "rdp" into your Windows search bar and open "Remote Desktop Connection". Once opened, you can enter the IP address of the Pi to login and view the desktop.
+Type "rdp" into your Windows search bar and open "Remote Desktop Connection". Once opened, you can enter the IP address of the Pi to log in and view the desktop.
 
 ## Troubleshooting
 
 If you get a blue screen and cannot connect to the RDP, just create a second user by:
 
-1. Entering:
-   ```
+1. Enter:
+   ```bash
    sudo adduser <username>
    ```
-2. Choose and confirm password.
-3. Hit enter for defaults.
-4. Try RDP again with that login.
-5. Add user to ssl-cert group:
-   ```
+1. Choose and confirm password.
+1. Hit enter for defaults.
+1. Try RDP again with that login.
+1. Add user to ssl-cert group:
+   ```bash
    sudo adduser <username> ssl-cert
    ```
 

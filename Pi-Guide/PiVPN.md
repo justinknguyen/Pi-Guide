@@ -15,41 +15,41 @@ Turn the Pi into a VPN server. When connected to any public network, being able 
 ## Installation
 
 1. Update and Upgrade:
-   ```
+   ```bash
    sudo apt update
    sudo apt full-upgrade
    ```
-2. Install curl:
-   ```
+1. Install curl:
+   ```bash
    sudo apt install curl -y
    ```
-3. Install PiVPN:
-   ```
+1. Install PiVPN:
+   ```bash
    sudo curl -L https://install.pivpn.io | bash
    ```
-4. Go through the install wizard and make sure you select WireGuard. If you have Pi-Hole, make sure you select "Yes" when it asks to use Pi-Hole's DNS server for the VPN.
+1. Go through the install wizard and make sure you select WireGuard. If you have Pi-Hole, make sure you select "Yes" when it asks to use Pi-Hole's DNS server for the VPN.
 
 ## Configuration
 
-1. In your router settings, port forward the port `51820` to your Pi's IP address.
-2. Create your WireGuard profile:
-   ```
+1. In your router settings, port forward `51820` to your Pi's IP address.
+1. Create your WireGuard profile:
+   ```bash
    sudo pivpn add
    ```
 
 ### 1. Connect From Your Computer
 
 Install WireGuard on your computer from https://www.wireguard.com/install/. Next, enter the following into your SSH terminal. Remember to replace the section below with the profile name you created:
-```  
+```bash
 sudo nano /home/pi/configs/[PROFILENAME].conf
 ```
-Copy everything in this config file and make the same .conf file on your Windows computer by pasting everything in it. Now open WireGuard and open this .conf that you just created. You can now connect to the VPN.
+Copy everything in this config file and make the same .conf file on your computer by pasting everything in it. Now open WireGuard and open this .conf that you just created. You can now connect to the VPN.
 
 ### 2. Connect From Your Phone
 
 Install the WireGuard app. Next, enter the following into your SSH terminal:
 
-```
+```bash
 pivpn -qr PROFILENAME
 ```
 
@@ -57,7 +57,7 @@ Then scan the QR code with your phone. You can now connect to the VPN.
 
 ## Testing
 
-Once activating the VPN, you should have internet access. If you are on a public WiFi network, go to https://www.dnsleaktest.com/ and take note of the IP address. Next, activate the VPN and run the test again. You should now see your home network's public IP address.
+Once you activate the VPN, you should have internet access. If you are on a public WiFi network, go to https://www.dnsleaktest.com/ and take note of the IP address. Next, activate the VPN and run the test again. You should now see your home network's public IP address.
 
 I recommend setting up a dynamicDNS for your router so your public IP address doesn't change.
 
@@ -65,7 +65,7 @@ I recommend setting up a dynamicDNS for your router so your public IP address do
 - No internet access:
   - run `pivpn -d` and you may see a prompt saying "[ERR] Iptables MASQUERADE rule is not set, attempt fix now? [Y/n]", enter y.
 - Able to connect to WiFi but unable to access devices on the LAN:
-  - disable "Block untunneled traffic" within Wireguard client settings if you are on Windows.
+  - disable "Block untunneled traffic" within WireGuard client settings if you are on Windows.
 
 ## Sources
 

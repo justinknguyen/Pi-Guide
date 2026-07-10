@@ -2,7 +2,7 @@
 
 Host your website on your Pi.
 
-A much simpler alternative than setting nginx configs manually is [NGINX Proxy Manager](https://nginxproxymanager.com/)
+A much simpler alternative than setting nginx configs manually is [NGINX Proxy Manager](https://nginxproxymanager.com/).
 
 ## Table of Contents
 
@@ -12,51 +12,51 @@ A much simpler alternative than setting nginx configs manually is [NGINX Proxy M
   - [1. Hosting the Website](#1-hosting-the-website)
   - [2. DDoS Protection](#2-ddos-protection)
   - [3. Enable HTTPS](#3-enable-https)
-  - [4. Blocking IP's](#4-blocking-ips)
+  - [4. Blocking IPs](#4-blocking-ips)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
 ## Prerequisites
 
-If you have Pi-Hole installed, you will need to change the port as this will now need to use the default port (80).
+If you have Pi-Hole installed, you will need to change its port, since NGINX will need to use the default port (80).
 
 1. Go to:
-   ```
+   ```bash
    sudo nano /etc/lighttpd/lighttpd.conf
    ```
-2. Change the line that says `server.port = 80` to `server.port = 8080`.
-3. Go to:
-   ```
+1. Change the line that says `server.port = 80` to `server.port = 8080`.
+1. Go to:
+   ```bash
    sudo nano /etc/lighttpd/external.conf
    ```
-4. Enter the following in the file and save it:
+1. Enter the following in the file and save it:
    ```
    server.port := 8080
    ```
-5. Restart the service:
-   ```
+1. Restart the service:
+   ```bash
    sudo service lighttpd restart
    ```
-6. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
+1. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
 
 ## Installation
 
 1. Update and upgrade:
-   ```
+   ```bash
    sudo apt update
    sudo apt upgrade
    ```
-2. Remove apache2:
-   ```
+1. Remove apache2:
+   ```bash
    sudo apt remove apache2
    ```
-3. Install NGINX:
-   ```
+1. Install NGINX:
+   ```bash
    sudo apt install nginx
    ```
-4. Start the service:
-   ```
+1. Start the service:
+   ```bash
    sudo systemctl start nginx
    ```
 
@@ -65,24 +65,24 @@ If you have Pi-Hole installed, you will need to change the port as this will now
 ### 1. Hosting the Website
 
 1. Assuming you created the Website and have it on your GitHub repo, go to the directory:
-   ```
+   ```bash
    cd /var/www/html/
    ```
-2. Then clone your repo into the path:
-   ```
+1. Then clone your repo into the path:
+   ```bash
    sudo git clone [your repo.git]
    ```
-3. Check the name of the folder where your repo was cloned to:
-   ```
+1. Check the name of the folder where your repo was cloned to:
+   ```bash
    ls
    ```
-4. Edit the site config so it points to the git folder:
-   ```
+1. Edit the site config so it points to the git folder:
+   ```bash
    sudo nano /etc/nginx/sites-available/default
    ```
    - Find the line `root /var/www/html/` and append your git folder name to it, for example `root /var/www/html/my-website`.
-5. Verify and reload nginx:
-   ```
+1. Verify and reload nginx:
+   ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```
@@ -90,11 +90,11 @@ If you have Pi-Hole installed, you will need to change the port as this will now
 ### 2. DDoS Protection
 
 1. Edit the main config:
-   ```
+   ```bash
    sudo nano /etc/nginx/nginx.conf
    ```
-2. Inside of `http{}`, enter the following at the bottom:
-   ```
+1. Inside of `http{}`, enter the following at the bottom:
+   ```nginx
            limit_req_zone $binary_remote_addr zone=global:10m rate=1r/m;
            limit_conn_zone $binary_remote_addr zone=addr:10m;
            server {
@@ -105,15 +105,15 @@ If you have Pi-Hole installed, you will need to change the port as this will now
                }
            }
    ```
-3. Verify and reload nginx:
-   ```
+1. Verify and reload nginx:
+   ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```
 
 ### 3. Enable HTTPS
 
-First, forward port 80 and 443 on your router. If you have another package installed that uses port 80, you will need to change it's port number or see [Troubleshooting](#troubleshooting).
+First, forward ports 80 and 443 on your router. If you have another package installed that uses port 80, you will need to change its port number or see [Troubleshooting](#troubleshooting).
 
 Set up the `Host Record` on your domain provider as so:
 
@@ -127,52 +127,52 @@ Set up the `Host Record` on your domain provider as so:
   - Record Type: if you chose your public IPv4 address, choose A. If you chose your IPv6, choose AAAA.
 
 1. Ensure `server_name` is set:
-   ```
+   ```bash
    sudo nano /etc/nginx/sites-available/default
    ```
-   ```
+   ```nginx
    server_name example.com www.example.com
    ```
-   ```
+   ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```
-2. Install certbot:
-   ```
+1. Install certbot:
+   ```bash
    sudo apt-get install certbot python3-certbot-nginx
    ```
-3. Do a dry run to make sure it works before proceeding:
-   ```
+1. Do a dry run to make sure it works before proceeding:
+   ```bash
    sudo certbot certonly --nginx --dry-run -d example.com -d www.example.com
    ```
-4. If there are no errors, proceed:
-   ```
+1. If there are no errors, proceed:
+   ```bash
    sudo certbot --nginx -d example.com -d www.example.com
    ```
-5. Create a cron task to schedule renewal of certificates:
-   ```
+1. Create a cron task to schedule renewal of certificates:
+   ```bash
    sudo crontab -e
    ```
    ```
    0 12 * * * /usr/bin/certbot renew --quiet
    ```
 
-### 4. Blocking IP's
+### 4. Blocking IPs
 
 If you notice a suspicious IP traffic, perform the following to block access from that IP.
 
 1. Open the site config:
-   ```
+   ```bash
    sudo nano /etc/nginx/sites-available/default
    ```
-2. Enter the following under `location`:
-   ```
+1. Enter the following under `location`:
+   ```nginx
            location / {
-                   deny [IP ADDRESS];
+                   deny [IPADDRESS];
            }
    ```
-3. Confirm config and reload:
-   ```
+1. Confirm config and reload:
+   ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```
@@ -185,19 +185,19 @@ Visit `http://[PIIPADDRESS]`
 
 If you can't install NGINX, it's likely because you have something installed that is currently using port 80 on the Pi. Follow the below steps to change NGINX's port, however, doing so might render you unable to enable HTTPS on the website.
 
-In your `default` file, when editing the ports, if you have more than one server block, you need to make sure your have the `listen` command in each server block. If you don't have it in one of them, it will default to listening on port 80.
+In your `default` file, when editing the ports, if you have more than one server block, you need to make sure you have the `listen` command in each server block. If you don't have it in one of them, it will default to listening on port 80.
 
 1. Edit the default configuration so NGINX listens to a different port (default is 80) to avoid conflicts:
-   ```
+   ```bash
    sudo nano /etc/nginx/sites-enabled/default
    ```
-2. Edit the first two lines from 80 to 81 as shown below:
-   ```
+1. Edit the first two lines from 80 to 81 as shown below:
+   ```nginx
    listen 81 default_server;
    listen [::]:81 default_server;
    ```
-3. Confirm config and reload:
-   ```
+1. Confirm config and reload:
+   ```bash
    sudo nginx -t
    sudo /etc/init.d/nginx reload
    ```

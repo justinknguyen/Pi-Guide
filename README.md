@@ -1,6 +1,6 @@
 # Pi-Guide
 
-This is a guide and collection of packages I've installed on my Raspberry Pi's.
+This is a guide and collection of packages I've installed on my Raspberry Pis.
 
 I am not responsible for anything happening to your Raspberry Pi. All guides are based on pre-existing guides on the internet.
 
@@ -14,7 +14,7 @@ Download and install the `Raspberry Pi Imager` from https://www.raspberrypi.com/
 
 After installing, insert your micro SD card into your computer and open the Raspberry Pi Imager. Select your Raspberry Pi model and choose your preferred OS. I recommend "Raspberry Pi OS Lite (64-bit)" if you will not use the desktop environment.
 
-After selecting your storage device and clicking on "Next", a popup will appear asking if you want to apply custom settings. In the settings, enter your WiFi credentials and enable SSH under the "Services" tab. You can set your password and hostname at this point, or set it later by following the steps under [How to Change Your Password and Hostname](#how-to-change-your-password-and-hostname).
+After selecting your storage device and clicking on "Next", a popup will appear asking if you want to apply custom settings. In the settings, enter your WiFi credentials and enable SSH under the "Services" tab. You can set your password and hostname at this point, or set them later by following the steps under [How to Change Your Password and Hostname](#how-to-change-your-password-and-hostname).
 
 Once the firmware is done flashing to your micro SD, insert it in your Pi and power it on.
 
@@ -22,7 +22,7 @@ Once the firmware is done flashing to your micro SD, insert it in your Pi and po
 
 To connect to your Pi and use it, download a terminal to SSH into the Pi, such as `PuTTY` https://www.putty.org/ for Windows users. For Mac users, you can download `Termius` from the app store.
 
-Once your terminal app is installed, connect to your Pi by entering it's IP address or hostname; the default hostname is `raspberrypi`. Once connected, you'll be asked to enter your username and password; enter the credentials you set during imaging in the "Setting up the Raspberry Pi" step above (Raspberry Pi OS has not shipped a default `pi`/`raspberry` login since April 2022).
+Once your terminal app is installed, connect to your Pi by entering its IP address or hostname; the default hostname is `raspberrypi`. Once connected, you'll be asked to enter your username and password; enter the credentials you set during imaging in the "Setting up the Raspberry Pi" step above (Raspberry Pi OS has not shipped a default `pi`/`raspberry` login since April 2022).
 
 ### How to Change Your Password and Hostname
 
@@ -30,26 +30,26 @@ Once your terminal app is installed, connect to your Pi by entering it's IP addr
 
 SSH into the Pi and enter the following to change your password:
 
-```
+```bash
 sudo passwd
 ```
 
 #### Change Hostname
 
 1. SSH into the Pi, and open the hosts file by entering:
-   ```
+   ```bash
    sudo nano /etc/hosts
    ```
-2. At the bottom, change `raspberrypi` to whatever name you want for the Pi.
-3. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-4. Next, open the hostname file by entering:
-   ```
+1. At the bottom, change `raspberrypi` to whatever name you want for the Pi.
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
+1. Next, open the hostname file by entering:
+   ```bash
    sudo nano /etc/hostname
    ```
-5. Change `raspberrypi` to whatever name you want for the Pi.
-6. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-7. Reboot:
-   ```
+1. Change `raspberrypi` to whatever name you want for the Pi.
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
+1. Reboot:
+   ```bash
    sudo reboot
    ```
 

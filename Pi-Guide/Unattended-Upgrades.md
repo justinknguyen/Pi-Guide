@@ -10,16 +10,16 @@ Automatically update and upgrade Raspberry Pi.
 ## Installation
 
 1. Enter:
-   ```
+   ```bash
    sudo apt-get update
    sudo apt-get install unattended-upgrades
    ```
 1. Test with a dry run:
-   ```
+   ```bash
    sudo unattended-upgrade -d -v --dry-run
    ```
 1. Enable by selecting `Yes`:
-   ```
+   ```bash
    sudo dpkg-reconfigure --priority=low unattended-upgrades
    ```
 

@@ -17,34 +17,34 @@ Used to sync smart lights to picture on display. Far cheaper alternative to the 
 - 3 HDMI Cables
 
 Total cost: ~$50 <br><br>
-One HDMI cable will go from the input device (e.g., PS5 or PC) to the input port of the HDMI splitter. This is so it can output it’s video feed to both the monitor/tv and the Raspberry Pi simultaneously (that’s why we need two output ports on the splitter). The second HDMI cable will be connected from one of the output ports of the splitter to the monitor/tv. The third HDMI cable will be connected from the other output port of the splitter to the USB Capture Card, and the USB Capture Card will then be connected to the Raspberry Pi.
+One HDMI cable will go from the input device (e.g., PS5 or PC) to the input port of the HDMI splitter. This is so it can output its video feed to both the monitor/tv and the Raspberry Pi simultaneously (that’s why we need two output ports on the splitter). The second HDMI cable will be connected from one of the output ports of the splitter to the monitor/tv. The third HDMI cable will be connected from the other output port of the splitter to the USB Capture Card, and the USB Capture Card will then be connected to the Raspberry Pi.
 
 ## Installation
 
 1. First install the required dependencies:
-   ```
+   ```bash
    sudo apt-get update && sudo apt-get install wget gpg apt-transport-https lsb-release
    ```
 1. Next, we import the public key from Hyperion:
-   ```
+   ```bash
    wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
    ```
 1. After that we enter Hyperion-Project as source of Hyperion:
-   ```
+   ```bash
    echo "deb [signed-by=/usr/share/keyrings/hyperion.pub.gpg] https://apt.hyperion-project.org/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hyperion.list
    ```
 1. Lastly, we update the package list and install Hyperion:
-   ```
+   ```bash
    sudo apt-get update && sudo apt-get install hyperion
    ```
 
 ## Configuration
 
-Once, Hyperion is installed on the pi, you can access the Hyperion website using `[PIIPADDRESS]:8090`.
+Once Hyperion is installed on the Pi, you can access the Hyperion website using `[PIIPADDRESS]:8090`.
 
 1. Go to LED Instances > LED Output, and choose the controller type depending on your smart lights (e.g., philipshue), then proceed with the setup.
-2. Go to Capturing Hardware and activate the USB Capture option.
-3. To reduce the delay captured, I suggest changing device resolution to 640x480 and FPS to 30.
+1. Go to Capturing Hardware and activate the USB Capture option.
+1. To reduce capture delay, I suggest changing device resolution to 640x480 and FPS to 30.
    <br><br>
    If you want to make it so it turns off when it detects rainbow bars, use the following settings under `Capturing Hardware`,
 
@@ -68,7 +68,7 @@ W: Failed to fetch https://apt.hyperion-project.org/dists/bullseye/InRelease  Th
 
 import the public key again and then you should be able to update and upgrade your Pi:
 
-```
+```bash
 wget -qO- https://apt.hyperion-project.org/hyperion.pub.key | sudo gpg --dearmor -o /usr/share/keyrings/hyperion.pub.gpg
 ```
 

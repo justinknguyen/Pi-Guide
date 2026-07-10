@@ -1,6 +1,6 @@
 # Grafana
 
-Monitor the Pi hardware. Most important information to me are CPU temp/load and storage.
+Monitor the Pi hardware. The most important information to me is CPU temp/load and storage.
 
 ## Table of Contents
 
@@ -17,28 +17,28 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
 ## Installation
 
 1. Run everything as sudo:
-   ```
+   ```bash
    sudo su
    ```
-2. Install Node Exporter:
-   ```
+1. Install Node Exporter:
+   ```bash
    docker run -d  --net="host"  --pid="host"  -v "/:/host:ro,rslave"  quay.io/prometheus/node-exporter:latest  --path.rootfs=/host
    ```
-3. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your search bar.
-4. Make a directory for Prometheus:
-   ```
+1. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your search bar.
+1. Make a directory for Prometheus:
+   ```bash
    mkdir Prometheus
    ```
-5. cd into Prometheus:
-   ```
+1. cd into Prometheus:
+   ```bash
    cd Prometheus/
    ```
-6. Create a `prometheus.yml` file by entering:
-   ```
+1. Create a `prometheus.yml` file by entering:
+   ```bash
    nano prometheus.yml
    ```
-7. Copy and paste the following in then replace `PIIPADDRESS`:
-   ```
+1. Copy and paste the following in then replace `PIIPADDRESS`:
+   ```yaml
    global:
      scrape_interval: 5s
      external_labels:
@@ -52,30 +52,30 @@ Monitor the Pi hardware. Most important information to me are CPU temp/load and 
        static_configs:
          - targets: ['<IP_ADDRESS>:9100'] # Replace <IP_ADDRESS> with your actual IP address
    ```
-8. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-9. Install Prometheus:
-   ```
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
+1. Install Prometheus:
+   ```bash
    docker run -d --name prometheus -p 9090:9090 -v /home/pi/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
    ```
-10. Install Grafana:
-    ```
+1. Install Grafana:
+    ```bash
     docker run -d --name=grafana -p 3000:3000 grafana/grafana
     ```
 
 ## Configuration
 
-1. Login to Grafana by typing `[PIIPADDRESS]:3000` into your search bar. The default username and password is `admin`. Click on "Add your first data source" then select "Prometheus".
-2. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
-3. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074 or https://grafana.com/grafana/dashboards/1860-node-exporter-full/).
-4. Copy the ID (in this case, 11074).
-5. Go back to Grafana, click on the "+" icon on the top-right, and click "Import dashboard".
-6. Paste in the ID and click "Load".
-7. Under "VictoriaMetrics", select "Prometheus" and then import.
-8. <ins>IMPORTANT:</ins> login to Portainer and click on your "Local" environment then "Containers". You should see node exporter, prometheus, and grafana installed. Click on each one and scroll down until you see "RESTART POLICIES" then set each to "Always" or "Unless Stopped". They will now start on their own whenever the Pi is rebooted.
+1. Log in to Grafana by typing `[PIIPADDRESS]:3000` into your search bar. The default username and password are `admin`. Click on "Add your first data source" then select "Prometheus".
+1. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
+1. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074 or https://grafana.com/grafana/dashboards/1860-node-exporter-full/).
+1. Copy the ID (in this case, 11074).
+1. Go back to Grafana, click on the "+" icon on the top-right, and click "Import dashboard".
+1. Paste in the ID and click "Load".
+1. Under "VictoriaMetrics", select "Prometheus" and then import.
+1. <ins>IMPORTANT:</ins> log in to Portainer and click on your "Local" environment then "Containers". You should see node exporter, prometheus, and grafana installed. Click on each one and scroll down until you see "RESTART POLICIES" then set each to "Always" or "Unless Stopped". They will now start on their own whenever the Pi is rebooted.
 
 ## Testing
 
-Gathering data metrics will take some time, so check back later and see if the data metrics are registering in your dashboard.
+Gathering metrics will take some time, so check back later and see if the data is registering in your dashboard.
 
 ## Sources
 

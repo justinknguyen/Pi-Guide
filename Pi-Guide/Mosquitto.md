@@ -1,6 +1,6 @@
 # Mosquitto
 
-MQTT communication. This is how a one Pi can communicate with another Pi to provide Room Assistant (on one Pi) data to Home Assistant (on another Pi). Mosquitto will be installed on the Pi with Home Assistant.
+MQTT communication. This is how one Pi can communicate with another Pi to provide Room Assistant (on one Pi) data to Home Assistant (on another Pi). Mosquitto will be installed on the Pi with Home Assistant.
 
 ## Table of Contents
 
@@ -18,50 +18,50 @@ MQTT communication. This is how a one Pi can communicate with another Pi to prov
 ## Installation
 
 1. SSH into the Pi with Home Assistant and enter:
-   ```
+   ```bash
    sudo apt update
    sudo apt upgrade
    ```
-2. Install Mosquitto:
-   ```
+1. Install Mosquitto:
+   ```bash
    sudo apt install mosquitto mosquitto-clients
    ```
-3. Check status:
-   ```
+1. Check status:
+   ```bash
    sudo systemctl status mosquitto
    ```
 
 ## Configuration
 
 1. Create a username and password. This will be used for Home Assistant:
-   ```
+   ```bash
    mosquitto_passwd -c passwordfile [USERNAME]
    ```
-2. Edit the config file:
-   ```
+1. Edit the config file:
+   ```bash
    sudo nano /etc/mosquitto/mosquitto.conf
    ```
-3. Add the following lines to the bottom. This will allow you to use your Pi's IP address when testing.
+1. Add the following lines to the bottom. This will allow you to use your Pi's IP address when testing.
    ```
    listener 1883
    allow_anonymous true
    ```
-4. Reboot:
-   ```
+1. Reboot:
+   ```bash
    sudo reboot
    ```
 
 ## Testing
 
 1. Enter the following:
-   ```
+   ```bash
    mosquitto_sub -h [PIIPADDRESS] -t "mqtt/pimylifeup"
    ```
-2. Open up another SSH terminal into the Pi (keep the other one open still), and enter the following:
-   ```
+1. Open up another SSH terminal into the Pi (keep the other one open still), and enter the following:
+   ```bash
    mosquitto_pub -h [PIIPADDRESS] -t "mqtt/pimylifeup" -m "Hello world"
    ```
-3. You should see `Hello World` in your original terminal.
+1. You should see `Hello World` in your original terminal.
 
 ## Sources
 

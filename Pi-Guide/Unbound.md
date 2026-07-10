@@ -1,6 +1,6 @@
 # Unbound
 
-Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and also provides privacy by getting rid of the third party, such as Google, Cloudflare, OpenDNS, etc.
+Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and also provides privacy by getting rid of third parties, such as Google, Cloudflare, OpenDNS, etc.
 
 ## Table of Contents
 
@@ -18,15 +18,15 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 ## Installation
 
 1. Update:
-   ```
+   ```bash
    sudo apt update
    ```
-2. Install Unbound:
-   ```
+1. Install Unbound:
+   ```bash
    sudo apt install unbound
    ```
-3. Download the current root hints file:
-   ```
+1. Download the current root hints file:
+   ```bash
    wget https://www.internic.net/domain/named.root -qO- | sudo tee /var/lib/unbound/root.hints
    ```
 
@@ -34,12 +34,12 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 
 1. In your Pi-Hole web settings, go to `Settings > DNS` then scroll down to `Advanced DNS settings` and turn off "Use DNSSEC"
 1. Pi-hole v6 ignores `/etc/dnsmasq.d/*.conf` files by default, so enable that first:
-   ```
+   ```bash
    sudo pihole-FTL --config misc.etc_dnsmasq_d true
    ```
    (or via the web UI: `Settings > All Settings > Miscellaneous > etc_dnsmasq_d`)
 1. Set `cache-size=0` in the following file:
-   ```
+   ```bash
    sudo nano /etc/dnsmasq.d/01-pihole.conf
    ```
 1. Add the following to `sudo nano /etc/unbound/unbound.conf`:
@@ -69,10 +69,10 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
        rrset-cache-size: 256m
    ```
 1. Create the unbound config file for Pi-Hole:
-   ```
+   ```bash
    sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
    ```
-1. Paste the following in (IMPORTANT: if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
+1. Paste the following in (<ins>IMPORTANT:</ins> if you have IPv6 for your network change line below from `do-ip6: no` to `do-ip6: yes`. If you’re installing Unbound again for another Pi, you should change the port to `5353` to avoid conflict):
 
    ```
    server:
@@ -144,7 +144,7 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
    ```
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 1. Restart Unbound:
-   ```
+   ```bash
    sudo service unbound restart
    ```
 1. Go to the WebUI for Pi-Hole and head to "Settings" then "DNS", and uncheck whatever is checked under "Upstream DNS Servers".
@@ -160,10 +160,10 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 ## Testing
 
 1. Query the following:
-   ```
+   ```bash
    dig pi-hole.net @127.0.0.1 -p 5335
    ```
-2. You should see something similar below (look for `status: NOERROR`). If you have IPv6 enabled, it might fail and you'll get `SERVFAIL`. The solution to fix that is provided in the next section.
+1. You should see something similar below (look for `status: NOERROR`). If you have IPv6 enabled, it might fail and you'll get `SERVFAIL`. The solution to fix that is provided in the next section.
 
    ```
    pi@pi4:~ $ dig pi-hole.net @127.0.0.1 -p 5335
@@ -188,8 +188,8 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
    ;; MSG SIZE  rcvd: 56
    ```
 
-3. You can test DNSSEC validation using the commands below. The first command should give a status report of `SERVFAIL`, and the second should give `NOERROR`.
-   ```
+1. You can test DNSSEC validation using the commands below. The first command should give a status report of `SERVFAIL`, and the second should give `NOERROR`.
+   ```bash
    dig sigfail.verteiltesysteme.net @127.0.0.1 -p 5335
    dig sigok.verteiltesysteme.net @127.0.0.1 -p 5335
    ```
@@ -199,44 +199,44 @@ Recursive DNS for Pi-Hole. Tends to resolve faster than iterative queries and al
 IPv6 is tricky to get working with Unbound, with an Asus router at least. If your IPv6 is breaking Pi-Hole and Unbound, then perform the following:
 
 1. Edit file `resolvconf.conf` and comment out the last line which should read, `unbound_conf=/etc/unbound/unbound.conf.d/resolvconf_resolvers.conf`.
-   ```
+   ```bash
    sudo nano /etc/resolvconf.conf
    ```
-2. Delete the unwanted unbound configuration file:
-   ```
+1. Delete the unwanted unbound configuration file:
+   ```bash
    sudo rm /etc/unbound/unbound.conf.d/resolvconf_resolvers.conf
    ```
-3. Restart unbound:
-   ```
+1. Restart unbound:
+   ```bash
    sudo service unbound restart
    ```
 
 ### This MAY Help
 
-If the above steps still do not work, the below can be performed on an Asus router, however, if you have keepalived installed, you will want to put in the IPv6 vrrp address instead of your two Pi’s addresses.
+If the above steps still do not work, the below can be performed on an Asus router; however, if you have keepalived installed, you will want to put in the IPv6 vrrp address instead of your two Pis' addresses.
 
 1. SSH into your router (for an Asus router, enable SSH and SSH Port Forwarding by going to "Administration" then "System". Set "Enable JFFS custom scripts and configs" also.) and enter:
-   ```
+   ```bash
    nano /jffs/scripts/dnsmasq.postconf
    ```
-2. Paste the following in. Make sure you enter your IPv6 address within the square brackets below. You can get rid of
+1. Paste the following in. Make sure you enter your IPv6 address within the square brackets below. You can get rid of
    `,[IPv6 address of second Pi]` if you don't have a second Pi.
-   ```
+   ```bash
    #!/bin/sh
    CONFIG=$1
    source /usr/sbin/helper.sh
    pc_replace "dhcp-option=lan,option6:23,[::]" "dhcp-option=lan,option6:23,[IPv6 address of first Pi],[IPv6 address of second Pi]" $CONFIG
    ```
-3. Enter:
-   ```
+1. Enter:
+   ```bash
    chmod 755 /jffs/scripts/dnsmasq.postconf
    ```
-4. Reboot the router.
-5. SSH into Pi and enter:
-   ```
+1. Reboot the router.
+1. SSH into Pi and enter:
+   ```bash
    sudo nano /etc/dhcpcd.conf
    ```
-6. Scroll down to the bottom and you should set the lines similar to below.
+1. Scroll down to the bottom and you should set the lines similar to below.
    ```
    interface eth0
        static ip_address= [IPv4 Address of the Pihole]/24
@@ -244,8 +244,8 @@ If the above steps still do not work, the below can be performed on an Asus rout
        static routers=[IP Address of the router]
        static domain_name_servers=[IP Address of the router] [LAN IPv6 Address of the router]
    ```
-7. Restart services:
-   ```
+1. Restart services:
+   ```bash
    sudo service pihole-FTL restart
    sudo systemctl restart dhcpcd
    sudo service unbound restart

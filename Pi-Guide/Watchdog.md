@@ -11,7 +11,7 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
 ## Configuration
 
 1. Check if you have `/dev/watchdog` by entering:
-   ```
+   ```bash
    ls -al /dev/watchdog*
    ```
    You should see something similar below:
@@ -20,20 +20,20 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
    crw------- 1 root root  10, 130 Feb  9 23:22 /dev/watchdog
    crw------- 1 root root 250,   0 Feb  9 23:22 /dev/watchdog0
    ```
-2. Enter:
-   ```
+1. Enter:
+   ```bash
    sudo nano /etc/systemd/system.conf
    ```
    Then uncomment by removing the `#` and set the following lines to:
-   ```
+   ```ini
    RuntimeWatchdogSec=15s
    RebootWatchdogSec=10min
    ```
    What the lines above mean:
    - `RuntimeWatchdogSec`: refresh the hardware watchdog every 15 seconds. If for some reason the refresh fails after 3 intervals, power cycle the system.
    - `RebootWatchdogSec`: on reboot, if the system takes more than 10 minutes, power cycle the system.
-3. Reboot:
-   ```
+1. Reboot:
+   ```bash
    sudo reboot
    ```
 
@@ -41,7 +41,7 @@ Reboot the Pi when there is a hardware failure. The Raspberry Pi has a hardware 
 
 Run a "fork bomb" on your shell:
 
-```
+```bash
 :(){ :|:& };:
 ```
 
