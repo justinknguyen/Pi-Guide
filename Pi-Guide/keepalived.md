@@ -15,7 +15,7 @@ keepalived creates a High Availability setup between two Pis — one acts as the
 
 - [Pi-Hole](/Pi-Guide/Pi-Hole.md)
 - [Unbound](/Pi-Guide/Unbound.md) (recommended)
-- [Gravity Sync](/Pi-Guide/Gravity%20Sync.md) (recommended)
+- [Gravity Sync](/Pi-Guide/Gravity-Sync.md) (recommended)
 
 ## Installation
 

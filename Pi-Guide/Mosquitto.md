@@ -12,8 +12,8 @@ MQTT communication — lets Room Assistant (on one Pi) send data to Home Assista
 
 ## Prerequisites
 
-- [Home Assistant](/Pi-Guide/Home%20Assistant.md)
-- [Room Assistant](/Pi-Guide/Room%20Assistant.md)
+- [Home Assistant](/Pi-Guide/Home-Assistant.md)
+- [Room Assistant](/Pi-Guide/Room-Assistant.md)
 
 ## Installation
 

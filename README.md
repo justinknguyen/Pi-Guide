@@ -55,30 +55,45 @@ sudo passwd
 
 ## Table of Contents
 
-Listed in recommended install order.
+Grouped by category. Indented guides depend on their parent guide — each guide's own Prerequisites section lists exactly what it needs.
 
-- [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md)
-- [Watchdog](/Pi-Guide/Watchdog.md)
-- [XRDP](/Pi-Guide/XRDP.md)
-- [Rclone](/Pi-Guide/Rclone.md)
+**Core System Setup**
+- [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md) — automatic security updates
+- [Watchdog](/Pi-Guide/Watchdog.md) — auto-reboot on system hang
+- [XRDP](/Pi-Guide/XRDP.md) — remote desktop access
+- [Rclone](/Pi-Guide/Rclone.md) — cloud backup
+
+**Containers & Monitoring**
 - [Docker](/Pi-Guide/Docker.md)
-- [Portainer](/Pi-Guide/Portainer.md)
-- [Grafana](/Pi-Guide/Grafana.md)
-- [Home Assistant](/Pi-Guide/Home%20Assistant.md)
-  - [Room Assistant](/Pi-Guide/Room%20Assistant.md)
-  - [Mosquitto](/Pi-Guide/Mosquitto.md)
-- [Pi-Hole](/Pi-Guide/Pi-Hole.md)
-  - [Unbound](/Pi-Guide/Unbound.md)
-  - [Gravity Sync](/Pi-Guide/Gravity%20Sync.md)
-  - [keepalived](/Pi-Guide/keepalived.md)
-- [PiVPN](/Pi-Guide/PiVPN.md)
-- [NGINX](/Pi-Guide/NGINX.md)
-  - [GoAccess](/Pi-Guide/GoAccess.md)
-- [diyHue](/Pi-Guide/diyHue.md)
-- [Hyperion](/Pi-Guide/Hyperion.md) or [HyperHDR](/Pi-Guide/HyperHDR.md)
-- [AltServer](/Pi-Guide/AltServer.md)
-- [NAS](/Pi-Guide/NAS.md)
-- [immich](/Pi-Guide/immich.md)
-- [RetroPie](/Pi-Guide/RetroPie.md)
-- [raspiBackup](/Pi-Guide/raspiBackup.md)
-- [Wealthsimple to Actual Budget Sync](/Pi-Guide/Wealthsimple-to-ActualBudget-Sync.md)
+- [Portainer](/Pi-Guide/Portainer.md) — Docker web UI
+- [Grafana](/Pi-Guide/Grafana.md) — hardware metrics dashboard
+
+**Networking & DNS**
+- [Pi-Hole](/Pi-Guide/Pi-Hole.md) — network-wide ad blocking
+  - [Unbound](/Pi-Guide/Unbound.md) — recursive DNS resolver
+  - [Gravity Sync](/Pi-Guide/Gravity-Sync.md) — sync two Pi-holes (deprecated, see guide)
+  - [keepalived](/Pi-Guide/keepalived.md) — Pi-hole failover
+- [PiVPN](/Pi-Guide/PiVPN.md) — WireGuard VPN server
+- [NGINX](/Pi-Guide/NGINX.md) — web server / reverse proxy
+  - [GoAccess](/Pi-Guide/GoAccess.md) — NGINX log analytics
+
+**Home Automation**
+- [Home Assistant](/Pi-Guide/Home-Assistant.md)
+  - [Room Assistant](/Pi-Guide/Room-Assistant.md) — BLE room presence detection
+  - [Mosquitto](/Pi-Guide/Mosquitto.md) — MQTT broker
+- [diyHue](/Pi-Guide/diyHue.md) — Philips Hue Bridge emulator
+- [Hyperion](/Pi-Guide/Hyperion.md) or [HyperHDR](/Pi-Guide/HyperHDR.md) — ambient TV lighting
+
+**Storage & Backup**
+- [NAS](/Pi-Guide/NAS.md) — network-attached storage
+- [immich](/Pi-Guide/immich.md) — self-hosted photo/video backup
+- [raspiBackup](/Pi-Guide/raspiBackup.md) — scheduled system backups
+
+**Media & Gaming**
+- [RetroPie](/Pi-Guide/RetroPie.md) — retro game emulation
+
+**Apple Ecosystem**
+- [AltServer](/Pi-Guide/AltServer.md) — sideload apps to iOS without a computer
+
+**Personal Finance**
+- [Wealthsimple to Actual Budget Sync](/Pi-Guide/Wealthsimple-to-ActualBudget-Sync.md) — automated transaction import

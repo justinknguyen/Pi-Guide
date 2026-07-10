@@ -13,7 +13,7 @@ Uses Bluetooth Low Energy (BLE) to detect how far away a BLE-compatible device i
 ## Prerequisites
 
 - [Docker](/Pi-Guide/Docker.md)
-- [Home Assistant](/Pi-Guide/Home%20Assistant.md)
+- [Home Assistant](/Pi-Guide/Home-Assistant.md)
 
 ## Installation
 
