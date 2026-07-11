@@ -23,7 +23,7 @@ Containerize packages for easy removal. Docker lets you remove an entire package
    ```bash
    sudo usermod -aG docker ${USER}
    ```
-1. Check it running with:
+1. Verify the user was added to the `docker` group:
    ```bash
    groups ${USER}
    ```

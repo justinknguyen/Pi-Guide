@@ -35,16 +35,17 @@ MQTT communication — lets Room Assistant (on one Pi) send data to Home Assista
 
 1. Create a username and password. This will be used for Home Assistant:
    ```bash
-   mosquitto_passwd -c passwordfile [USERNAME]
+   sudo mosquitto_passwd -c /etc/mosquitto/passwd [USERNAME]
    ```
 1. Edit the config file:
    ```bash
    sudo nano /etc/mosquitto/mosquitto.conf
    ```
-1. Add the following lines to the bottom. This will allow you to use your Pi's IP address when testing.
+1. Add the following lines to the bottom. `allow_anonymous true` lets you test without credentials, while `password_file` makes the username and password above valid for clients (like Home Assistant) that do supply credentials.
    ```
    listener 1883
    allow_anonymous true
+   password_file /etc/mosquitto/passwd
    ```
 1. Reboot:
    ```bash

@@ -118,7 +118,7 @@ This example uses an external ssd connected to a Raspberry Pi. See [NAS](/Pi-Gui
    ```
 1. Add the following line to mount RetroPie to your external ssd (replace the X's with your UUID):
    ```
-   UUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX /home/pi/RetroPie ext4 nofail,defaults 0 0
+   UUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX /home/pi/RetroPie ext4 nofail,defaults 0 0
    ```
 1. After saving the file, restart:
    ```bash

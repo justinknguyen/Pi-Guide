@@ -145,7 +145,7 @@ sudo apt install python3-pip -y
 
 **Actual password prompt appearing in cron:**
 
-Ensure `ACTUAL_PASSWORD` is exported in your `~/.bashrc` and that cron sources it as shown above.
+Ensure `ACTUAL_PASSWORD` is exported in `/home/pi/ws_to_actual_env.sh` and that the wrapper script sources it as shown in [Automation](#automation).
 
 **Wealthsimple login issues:**
 

@@ -96,8 +96,10 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
        prefer-ip6: no
 
        # Use this only when you downloaded the list of primary root servers!
-       # If you use the default dns-root-data package, unbound will find it automatically
-       #root-hints: "/var/lib/unbound/root.hints"
+       # This guide downloads it in the Installation section above, so it's enabled here.
+       # If you skipped that step and use the default dns-root-data package instead,
+       # comment this line out — unbound will find the root servers automatically.
+       root-hints: "/var/lib/unbound/root.hints"
 
        # Trust glue only if it is within the server's authority
        harden-glue: yes

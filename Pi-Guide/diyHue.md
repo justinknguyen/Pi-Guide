@@ -13,7 +13,17 @@ Turn the Raspberry Pi into another Hue Bridge for multiple entertainment areas/h
 
 [Docker](/Pi-Guide/Docker.md)
 
-If Pi-Hole is installed, diyHue needs port 80, so change Pi-Hole's port first.
+If Pi-Hole is installed, diyHue needs port 80, so change Pi-Hole's web interface port first.
+
+Pi-hole v6+ no longer uses lighttpd — it ships its own embedded web server, configured in `/etc/pihole/pihole.toml`. Change the port with:
+
+```bash
+sudo pihole-FTL --config webserver.port 8080
+```
+
+Then test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
+
+If you're still on Pi-hole v5 (which served its web interface with lighttpd), change the port there instead:
 
 1. Go to:
    ```bash

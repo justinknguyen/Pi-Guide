@@ -25,16 +25,16 @@ Monitor the Pi hardware. The most important information to track is CPU temp/loa
    docker run -d  --net="host"  --pid="host"  -v "/:/host:ro,rslave"  quay.io/prometheus/node-exporter:latest  --path.rootfs=/host
    ```
 1. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your search bar.
-1. Make a directory for Prometheus and cd into it:
+1. Make a directory for Prometheus and cd into it (this path must match the one mounted in the `docker run` command below):
    ```bash
-   mkdir Prometheus
-   cd Prometheus/
+   mkdir /home/pi/Prometheus
+   cd /home/pi/Prometheus/
    ```
 1. Create a `prometheus.yml` file by entering:
    ```bash
    nano prometheus.yml
    ```
-1. Copy and paste the following in then replace `PIIPADDRESS`:
+1. Copy and paste the following in, then replace `<IP_ADDRESS>` with your Pi's IP address:
    ```yaml
    global:
      scrape_interval: 5s

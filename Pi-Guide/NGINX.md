@@ -19,7 +19,17 @@ A much simpler alternative than setting nginx configs manually is [NGINX Proxy M
 
 ## Prerequisites
 
-If you have Pi-Hole installed, you will need to change its port, since NGINX will need to use the default port (80).
+If you have Pi-Hole installed, you will need to change its web interface port, since NGINX will need to use the default port (80).
+
+Pi-hole v6+ no longer uses lighttpd — it ships its own embedded web server, configured in `/etc/pihole/pihole.toml`. Change the port with:
+
+```bash
+sudo pihole-FTL --config webserver.port 8080
+```
+
+Then test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
+
+If you're still on Pi-hole v5 (which served its web interface with lighttpd), change the port there instead:
 
 1. Go to:
    ```bash
@@ -115,7 +125,7 @@ Set up the `Host Record` on your domain provider as follows:
    sudo nano /etc/nginx/sites-available/default
    ```
    ```nginx
-   server_name example.com www.example.com
+   server_name example.com www.example.com;
    ```
 1. Verify and reload nginx:
    ```bash
