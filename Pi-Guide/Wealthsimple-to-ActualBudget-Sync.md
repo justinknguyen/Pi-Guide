@@ -181,8 +181,6 @@ pip install --upgrade "ws-api>=0.35"
 
 Root cause: `WealthsimpleAPI.check_oauth_token()` only checks for a top-level `message` key to detect "Not Authorized" and decide whether to attempt a refresh. Wealthsimple actually nests the error inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), so the check never matches — the refresh is never attempted, and the code falls straight through to a full login every time the ~30 min access token expires, regardless of cron interval. There's no separate "device registration" setting to force; the device email is tied to the login event itself, so the fix is making refresh actually work.
 
-Confirmed fixed on 2026-07-09 via 5 manual runs spaced up to 49 minutes apart (past the token's ~30 min lifetime), with no forced re-login.
-
 Clear saved session:
 ```bash
 python -m keyring delete ws_to_actual.ws.session

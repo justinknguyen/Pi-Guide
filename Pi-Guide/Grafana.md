@@ -16,15 +16,11 @@ Monitor the Pi hardware. The most important information to track is CPU temp/loa
 
 ## Installation
 
-1. Run everything as sudo:
-   ```bash
-   sudo su
-   ```
 1. Install Node Exporter:
    ```bash
-   docker run -d  --net="host"  --pid="host"  -v "/:/host:ro,rslave"  quay.io/prometheus/node-exporter:latest  --path.rootfs=/host
+   docker run -d --name=node-exporter --restart=unless-stopped --net="host" --pid="host" -v "/:/host:ro,rslave" quay.io/prometheus/node-exporter:latest --path.rootfs=/host
    ```
-1. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your search bar.
+1. You can test if Node Exporter is running by entering `[PIIPADDRESS]:9100` into your address bar.
 1. Make a directory for Prometheus and cd into it (this path must match the one mounted in the `docker run` command below):
    ```bash
    mkdir /home/pi/Prometheus
@@ -52,23 +48,23 @@ Monitor the Pi hardware. The most important information to track is CPU temp/loa
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 1. Install Prometheus:
    ```bash
-   docker run -d --name prometheus -p 9090:9090 -v /home/pi/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+   docker run -d --name=prometheus --restart=unless-stopped -p 9090:9090 -v /home/pi/Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
    ```
 1. Install Grafana:
     ```bash
-    docker run -d --name=grafana -p 3000:3000 grafana/grafana
+    docker run -d --name=grafana --restart=unless-stopped -p 3000:3000 grafana/grafana
     ```
+   - The `--restart=unless-stopped` flag on each container makes them start on their own whenever the Pi reboots.
 
 ## Configuration
 
-1. Log in to Grafana by typing `[PIIPADDRESS]:3000` into your search bar. The default username and password are `admin`. Click on "Add your first data source" then select "Prometheus".
+1. Log in to Grafana by typing `[PIIPADDRESS]:3000` into your address bar. The default username and password are `admin`. Click on "Add your first data source" then select "Prometheus".
 1. In the "URL" box, type in `http://[PIIPADDRESS]:9090` then click "Save & Test".
 1. Google "Node Exporter Grafana Dashboards" and choose one (e.g., https://grafana.com/grafana/dashboards/11074 or https://grafana.com/grafana/dashboards/1860-node-exporter-full/).
 1. Copy the ID (in this case, 11074).
 1. Go back to Grafana, click on the "+" icon on the top-right, and click "Import dashboard".
 1. Paste in the ID and click "Load".
 1. Under "VictoriaMetrics", select "Prometheus" and then import.
-1. <ins>IMPORTANT:</ins> log in to Portainer and click on your "Local" environment then "Containers". You should see node exporter, prometheus, and grafana installed. Click on each one and scroll down until you see "RESTART POLICIES" then set each to "Always" or "Unless Stopped". They will now start on their own whenever the Pi is rebooted.
 
 ## Testing
 

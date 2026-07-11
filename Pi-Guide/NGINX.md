@@ -19,36 +19,7 @@ A much simpler alternative than setting nginx configs manually is [NGINX Proxy M
 
 ## Prerequisites
 
-If you have Pi-Hole installed, you will need to change its web interface port, since NGINX will need to use the default port (80).
-
-Pi-hole v6+ no longer uses lighttpd — it ships its own embedded web server, configured in `/etc/pihole/pihole.toml`. Change the port with:
-
-```bash
-sudo pihole-FTL --config webserver.port 8080
-```
-
-Then test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
-
-If you're still on Pi-hole v5 (which served its web interface with lighttpd), change the port there instead:
-
-1. Go to:
-   ```bash
-   sudo nano /etc/lighttpd/lighttpd.conf
-   ```
-1. Change the line that says `server.port = 80` to `server.port = 8080`.
-1. Go to:
-   ```bash
-   sudo nano /etc/lighttpd/external.conf
-   ```
-1. Enter the following in the file and save it:
-   ```
-   server.port := 8080
-   ```
-1. Restart the service:
-   ```bash
-   sudo service lighttpd restart
-   ```
-1. You can test and access Pi-Hole's webui using `[PIIPADDRESS]:8080`.
+If you have Pi-Hole installed, you will need to change its web interface port, since NGINX needs the default port (80) — see [Pi-Hole: Changing the Web Interface Port](/Pi-Guide/Pi-Hole.md#changing-the-web-interface-port).
 
 ## Installation
 
@@ -82,7 +53,7 @@ If you're still on Pi-hole v5 (which served its web interface with lighttpd), ch
 1. Verify and reload nginx:
    ```bash
    sudo nginx -t
-   sudo /etc/init.d/nginx reload
+   sudo systemctl reload nginx
    ```
 
 ### 2. DDoS Protection
@@ -91,22 +62,28 @@ If you're still on Pi-hole v5 (which served its web interface with lighttpd), ch
    ```bash
    sudo nano /etc/nginx/nginx.conf
    ```
-1. Inside of `http{}`, enter the following at the bottom:
+1. Inside of `http{}`, define the rate-limit zones at the bottom:
    ```nginx
-           limit_req_zone $binary_remote_addr zone=global:10m rate=1r/m;
+           limit_req_zone $binary_remote_addr zone=global:10m rate=10r/s;
            limit_conn_zone $binary_remote_addr zone=addr:10m;
-           server {
-               location / {
-                   limit_req zone=global burst=10 nodelay;
-                   limit_conn addr 1;
+   ```
+1. Open the site config:
+   ```bash
+   sudo nano /etc/nginx/sites-available/default
+   ```
+1. Add the limits inside the existing `location /` block (they must be in your site's own server block to take effect):
+   ```nginx
+           location / {
+                   limit_req zone=global burst=20 nodelay;
+                   limit_conn addr 10;
                    limit_rate 100k;
-               }
            }
    ```
+   - `limit_req` caps each IP at 10 requests/second (bursting up to 20), `limit_conn` caps each IP at 10 open connections, and `limit_rate` caps download speed per connection. Adjust to your traffic.
 1. Verify and reload nginx:
    ```bash
    sudo nginx -t
-   sudo /etc/init.d/nginx reload
+   sudo systemctl reload nginx
    ```
 
 ### 3. Enable HTTPS
@@ -130,7 +107,7 @@ Set up the `Host Record` on your domain provider as follows:
 1. Verify and reload nginx:
    ```bash
    sudo nginx -t
-   sudo /etc/init.d/nginx reload
+   sudo systemctl reload nginx
    ```
 1. Install certbot:
    ```bash
@@ -169,7 +146,7 @@ If you notice a suspicious IP traffic, perform the following to block access fro
 1. Confirm config and reload:
    ```bash
    sudo nginx -t
-   sudo /etc/init.d/nginx reload
+   sudo systemctl reload nginx
    ```
 
 ## Testing
@@ -194,7 +171,7 @@ If your `default` file has more than one server block, make sure each one has a 
 1. Confirm config and reload:
    ```bash
    sudo nginx -t
-   sudo /etc/init.d/nginx reload
+   sudo systemctl reload nginx
    ```
 
 ## Sources

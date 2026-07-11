@@ -34,7 +34,7 @@ Connects any "smart" device into a single app for a unified Smart Home. Main ben
        privileged: true
        network_mode: host
    ```
-   - Pasting the above may break YAML formatting — copy it directly from here instead: https://www.home-assistant.io/installation/raspberrypi/#docker-compose, and replace `/PATH_TO_YOUR_CONFIG` with `/home/pi/homeassistant`
+   - This matches the official compose file from https://www.home-assistant.io/installation/raspberrypi/#docker-compose, with `/PATH_TO_YOUR_CONFIG` set to `/home/pi/homeassistant`. If pasting breaks the YAML indentation, copy it from there directly.
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
 1. Install Home Assistant:
    ```bash
@@ -43,7 +43,7 @@ Connects any "smart" device into a single app for a unified Smart Home. Main ben
 
 ## Testing
 
-You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your search bar. Follow the second link under Sources to learn how to use Home Assistant.
+You can now access the WebUI by entering `[PIIPADDRESS]:8123` into your address bar. Follow the second link under Sources to learn how to use Home Assistant.
 
 ## Backing Up Home Assistant
 

@@ -11,6 +11,7 @@ Network-wide ad-blocking.
   - [3. Adding Adlists](#3-adding-adlists)
   - [4. Adding Whitelists](#4-adding-whitelists)
   - [5. Multiple Upstream DNS Servers (Optional)](#5-multiple-upstream-dns-servers-optional)
+- [Changing the Web Interface Port](#changing-the-web-interface-port)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
@@ -43,7 +44,7 @@ Click "Apply" after each change.
 
 ### 2. Pi-Hole DNS Settings
 
-1. Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your search bar, then head to "Settings" then "DNS".
+1. Log in to Pi-Hole by typing `[PIIPADDRESS]/admin` into your address bar, then head to "Settings" then "DNS".
 1. Under "Upstream DNS Servers", select "Quad9 (filtered, DNSSEC)" (recommended), and check both boxes under the "IPv4" column. Do the same for IPv6 if you have it enabled.
 1. Under `Interface settings`, keep "Allow only local requests" checked. If you notice any devices not being ad-blocked, select "Permit all origins" instead.
 1. Under `Advanced DNS settings`, enable the first three check boxes and set the rate-limiting to 1000 and 60.
@@ -55,13 +56,13 @@ Click "Apply" after each change.
 | IP address of your DHCP server (router) | 192.168.50.1 | Your router's IP address |
 | Local domain name (optional) | router.asus.com | The domain you use to sign into your router's settings |
 
-Optionally, you can also set Local DNS names under "DNS Records" in the side-menu. Adding a domain name for your Raspberry Pi and your router is recommended, so you don't always have to enter the IP address in the search bar.
+Optionally, you can also set Local DNS names under "DNS Records" in the side-menu. Adding a domain name for your Raspberry Pi and your router is recommended, so you don't always have to enter the IP address in the address bar.
 
 ### 3. Adding Adlists
 
 Click on "Group Management" then "Adlists" and add any adlist you want. A recommended adlist is https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt from https://github.com/hagezi/dns-blocklists. You can copy and paste multiple links at a time.
 
-Once added, either enter `pihole -g` into PuTTY or within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
+Once added, either enter `pihole -g` in the terminal or, within the WebUI, go to "Tools" then "Update Gravity". Finally, click on "Update".
 
 ### 4. Adding Whitelists
 
@@ -102,6 +103,16 @@ Pi-hole v6 replaced `setupVars.conf` with a single config file at `/etc/pihole/p
    pihole restartdns
    ```
 
+## Changing the Web Interface Port
+
+Services like [NGINX](/Pi-Guide/NGINX.md) and [diyHue](/Pi-Guide/diyHue.md) need port 80, which Pi-Hole's web interface uses by default. To move Pi-Hole's web interface to another port (e.g., 8080):
+
+```bash
+sudo pihole-FTL --config webserver.port 8080
+```
+
+Then access Pi-Hole's WebUI at `[PIIPADDRESS]:8080/admin`.
+
 ## Testing
 
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A recommended site is https://www.speedtest.net/.
@@ -125,7 +136,7 @@ If you have IPv6 enabled, you can test if IPv6 is working by going to https://te
 
 - If you have an Asus router and you suspect IPv6 is breaking Pi-Hole, perform the second half of the steps outlined here, [Getting IPv6 to Work with Unbound](/Pi-Guide/Unbound.md#getting-ipv6-to-work-with-unbound).
 - If your ad-blocking does not work, try updating Pi-Hole with `pihole -up` or changing Interface settings to "Permit all origins". iCloud Private Relay must be turned off.
-- If you changed your port for Pi-Hole, you might have to change it again if you update Pi-Hole with `pihole -up`. Follow the steps outlined at the top in the following link: [diyHue - Prerequisites](/Pi-Guide/diyHue.md#prerequisites)
+- If you changed your port for Pi-Hole, you might have to set it again after updating Pi-Hole with `pihole -up`. See [Changing the Web Interface Port](#changing-the-web-interface-port).
 
 ## Sources
 

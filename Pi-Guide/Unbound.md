@@ -54,15 +54,9 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
        # cache-min-ttl to e.g. 3600.
        cache-min-ttl: 0
        serve-expired: yes
-       # Best results come from leaving this next entry unset.
-       # serve-expired-ttl: 3600 # 0 or not set means unlimited (unconfirmed)
 
-       # Use about 2x more for rrset cache, total memory use is about 2-2.5x
-       # total cache size. Current setting is way overkill for a small network.
-       # Judging from typical used cache size, 8/16 may be sufficient with
-       # room to spare, but this configuration uses a larger value since the
-       # RAM would otherwise sit idle.
-       # Default is 4m/4m
+       # Larger caches than the 4m/4m defaults — overkill for a small network,
+       # but the RAM would otherwise sit idle. Keep rrset about 2x msg.
        msg-cache-size: 128m
        rrset-cache-size: 256m
    ```
@@ -111,28 +105,15 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
        # see https://discourse.pi-hole.net/t/unbound-stubby-or-dnscrypt-proxy/9378 for further details
        use-caps-for-id: no
 
-       # Reduce EDNS reassembly buffer size.
-       # IP fragmentation is unreliable on the Internet today, and can cause
-       # transmission failures when large DNS messages are sent via UDP. Even
-       # when fragmentation does work, it may not be secure; it is theoretically
-       # possible to spoof parts of a fragmented DNS message, without easy
-       # detection at the receiving end. Recently, there was an excellent study
-       # >>> Defragmenting DNS - Determining the optimal maximum UDP response size for DNS <<<
-       # by Axel Koolhaas, and Tjeerd Slokker (https://indico.dns-oarc.net/event/36/contributions/776/)
-       # in collaboration with NLnet Labs explored DNS using real world data from the
-       # the RIPE Atlas probes and the researchers suggested different values for
-       # IPv4 and IPv6 and in different scenarios. They advise that servers should
-       # be configured to limit DNS messages sent over UDP to a size that will not
-       # trigger fragmentation on typical network links. DNS servers can switch
-       # from UDP to TCP when a DNS response is too big to fit in this limited
-       # buffer size. This value has also been suggested in DNS Flag Day 2020.
+       # Reduce EDNS reassembly buffer size to avoid unreliable IP fragmentation
+       # over UDP (recommended by DNS Flag Day 2020)
        edns-buffer-size: 1232
 
        # Perform prefetching of close to expired message cache entries
        # This only applies to domains that have been frequently queried
        prefetch: yes
 
-       # One thread should be sufficient, can be increased on beefy machines. In reality for most users running on small networks or on a single machine, it should be unnecessary to seek performance enhancement by increasing num-threads above 1.
+       # One thread is sufficient for a small home network
        num-threads: 1
 
        # Ensure kernel buffer is large enough to not lose messages in traffic spikes
@@ -167,30 +148,16 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
    ```bash
    dig pi-hole.net @127.0.0.1 -p 5335
    ```
-1. You should see something similar below (look for `status: NOERROR`). If you have IPv6 enabled, it might fail and you'll get `SERVFAIL`. The solution to fix that is provided in the next section.
+1. Look for `status: NOERROR` and an answer section in the output:
 
    ```
-   pi@pi4:~ $ dig pi-hole.net @127.0.0.1 -p 5335
-
-   ; <<>> DiG 9.16.22-Raspbian <<>> pi-hole.net @127.0.0.1 -p 5335
-   ;; global options: +cmd
-   ;; Got answer:
    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 25728
-   ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
-
-   ;; OPT PSEUDOSECTION:
-   ; EDNS: version: 0, flags:; udp: 1232
-   ;; QUESTION SECTION:
-   ;pi-hole.net.                   IN      A
-
+   ...
    ;; ANSWER SECTION:
    pi-hole.net.            300     IN      A       3.18.136.52
-
-   ;; Query time: 59 msec
-   ;; SERVER: 127.0.0.1#5335(127.0.0.1)
-   ;; WHEN: Sat Feb 12 17:42:12 MST 2022
-   ;; MSG SIZE  rcvd: 56
    ```
+
+   If you have IPv6 enabled, it might fail with `SERVFAIL` instead — the fix is in [Getting IPv6 to Work with Unbound](#getting-ipv6-to-work-with-unbound) below.
 
 1. You can test DNSSEC validation using the commands below. The first command should give a status report of `SERVFAIL`, and the second should give `NOERROR`.
    ```bash

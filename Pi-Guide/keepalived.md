@@ -15,7 +15,7 @@ keepalived creates a High Availability setup between two Pis — one acts as the
 
 - [Pi-Hole](/Pi-Guide/Pi-Hole.md)
 - [Unbound](/Pi-Guide/Unbound.md) (recommended)
-- [Gravity Sync](/Pi-Guide/Gravity-Sync.md) (recommended)
+- Something to keep the two Pi-holes in sync — [Gravity Sync](/Pi-Guide/Gravity-Sync.md) is deprecated (see that guide for alternatives like Pi-hole's built-in Teleporter or Orbital Sync)
 
 ## Installation
 
@@ -103,7 +103,7 @@ Explanation of the options:
 | --- | --- |
 | `router_id` | A unique name, for instance the Pi-hole hostname. |
 | `state` | Master/Active or Backup/Standby server. |
-| `interface` | The network interface (e.g. `eth0`, `ens3`). |
+| `interface` | The network interface that Pi uses — `eth0` for ethernet, `wlan0` for WiFi (the example configs here use `eth0` on the master and `wlan0` on the backup; set each to match your setup). |
 | `virtual_router_id` | Any number between 0 and 255. Must match on the Master and Backup configs. |
 | `priority` | The master server should have a higher priority than the backup server. |
 | `unicast_src_ip` | The IP address of this (source) server. |

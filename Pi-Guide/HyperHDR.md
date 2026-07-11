@@ -12,6 +12,8 @@ Fork of Hyperion with improvements, notably to HDR colour accuracy and brightnes
 
 ## Prerequisites
 
+HyperHDR uses the same capture hardware setup as Hyperion — see [Hyperion: Prerequisites](/Pi-Guide/Hyperion.md#prerequisites) for the capture card, HDMI splitter, and cabling.
+
 If you have Hyperion installed, uninstall it:
 
 ```bash
@@ -35,11 +37,12 @@ You can open the HyperHDR website by heading to `[PIIPADDRESS]:8090`
 
 ## Updating
 
-1. First remove the HyperHDR install:
-   ```bash
-   sudo apt remove hyperhdr
-   ```
-1. Repeat the [Installation](#installation) steps again. Your settings will be saved.
+Since HyperHDR was installed through its APT repository, update it with apt. Your settings will be saved:
+
+```bash
+sudo apt update
+sudo apt install --only-upgrade hyperhdr
+```
 
 ## Sources
 

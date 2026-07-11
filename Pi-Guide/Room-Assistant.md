@@ -2,6 +2,8 @@
 
 Uses Bluetooth Low Energy (BLE) to detect how far away a BLE-compatible device is from the Pi. This can be used to detect room presence and integrate with Home Assistant to set up smart home automations.
 
+> **Note:** Room Assistant appears unmaintained — its last release (v2.20.0) was in March 2022. It still works, but don't expect fixes or updates.
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
@@ -56,18 +58,7 @@ You may want to disable Pi-Hole temporarily before proceeding.
          - /var/run/dbus:/var/run/dbus
          - /home/pi/room-assistant/config:/room-assistant/config
    ```
-   - Optional: install beta version by editing `docker-compose.yml` to:
-     ```yaml
-     services:
-       room-assistant:
-         image: mkerix/room-assistant:beta
-         restart: unless-stopped
-         network_mode: host
-         privileged: true
-         volumes:
-           - /var/run/dbus:/var/run/dbus
-           - /home/pi/room-assistant/config:/room-assistant/config
-     ```
+   - Optional: for the beta version, change the image line to `image: mkerix/room-assistant:beta`.
 1. cd into the room-assistant directory and install Room Assistant:
    ```bash
    cd ~/room-assistant

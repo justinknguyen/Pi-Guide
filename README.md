@@ -4,8 +4,6 @@ A collection of setup guides for self-hosted services and utilities on a Raspber
 
 > **Disclaimer:** These guides are provided as-is, with no guarantee against misconfiguration or data loss. Each guide is based on established community references, linked under its own Sources section.
 
-[Table of Contents](#table-of-contents)
-
 ## Getting Started
 
 ### Setting up the Raspberry Pi

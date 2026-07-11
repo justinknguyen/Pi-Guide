@@ -47,9 +47,9 @@ MQTT communication — lets Room Assistant (on one Pi) send data to Home Assista
    allow_anonymous true
    password_file /etc/mosquitto/passwd
    ```
-1. Reboot:
+1. Restart Mosquitto to apply the changes:
    ```bash
-   sudo reboot
+   sudo systemctl restart mosquitto
    ```
 
 ## Testing
