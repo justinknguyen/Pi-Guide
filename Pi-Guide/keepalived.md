@@ -13,9 +13,9 @@ keepalived creates a High Availability setup between two Pis — one acts as the
 
 ## Prerequisites
 
-- [Pi-Hole](/Pi-Guide/Pi-Hole.md)
+- [Pi-hole](/Pi-Guide/Pi-hole.md)
 - [Unbound](/Pi-Guide/Unbound.md) (recommended)
-- Something to keep the two Pi-holes in sync — [Gravity Sync](/Pi-Guide/Gravity-Sync.md) is deprecated (see that guide for alternatives like Pi-hole's built-in Teleporter or Orbital Sync)
+- [nebula-sync](/Pi-Guide/Nebula-Sync.md) (recommended) — keeps the two Pi-holes' settings in sync
 
 ## Installation
 
@@ -51,7 +51,7 @@ keepalived creates a High Availability setup between two Pis — one acts as the
     ```bash
     sudo chmod 755 /etc/scripts/chk_ftl
     ```
-1.  Now add the keepalived configuration on the primary Pi-Hole machine (the master/active server). Adjust the settings for your setup.
+1.  Now add the keepalived configuration on the primary Pi-hole machine (the master/active server). Adjust the settings for your setup.
     ```bash
     sudo nano /etc/keepalived/keepalived.conf
     ```
@@ -111,7 +111,7 @@ Explanation of the options:
 | `auth_pass` | A password (max 8 characters). Must match on the Master and Backup configs. |
 | `virtual_ipaddress` | The High Availability IP address. |
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
+1. If you have IPv6 enabled on Pi-hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
 
     <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
@@ -189,7 +189,7 @@ Explanation of the options:
     }
     ```
 
-1. If you have IPv6 enabled on Pi-Hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
+1. If you have IPv6 enabled on Pi-hole, enter the following after everything above. Double-check the IPv6 addresses with `ifconfig` first.
 
     <ins>IMPORTANT:</ins> The password you enter below has a maximum of 8 characters.
 
@@ -227,7 +227,7 @@ Explanation of the options:
 
 ## Configuration
 
-1. Head into your router settings and replace the DNS servers for Pi-Hole with the virtual IP address you configured with keepalived.
+1. Head into your router settings and replace the DNS servers for Pi-hole with the virtual IP address you configured with keepalived.
 1. Set a crontask to restart the keepalived service after a reboot. Enter on both Pis:
    ```bash
    sudo crontab -e
@@ -237,7 +237,7 @@ Explanation of the options:
    @reboot sleep 60 && sudo systemctl restart keepalived.service
    ```
 1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-1. On both Pis, set a delay for when Pi-Hole starts up after a reboot. Pi-hole v6 replaced `/etc/pihole/pihole-FTL.conf` with `/etc/pihole/pihole.toml`, so set this via the CLI instead of editing a conf file directly:
+1. On both Pis, set a delay for when Pi-hole starts up after a reboot. Pi-hole v6 replaced `/etc/pihole/pihole-FTL.conf` with `/etc/pihole/pihole.toml`, so set this via the CLI instead of editing a conf file directly:
    ```bash
    sudo pihole-FTL --config misc.delay_startup 5
    ```

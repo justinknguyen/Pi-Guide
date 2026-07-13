@@ -15,6 +15,7 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 
 ## Prerequisites
 
+- [Actual Budget](/Pi-Guide/Actual-Budget.md) — a running Actual server to import into
 - [Docker](/Pi-Guide/Docker.md) (if running ActualBudget in a container)
 
 ## Installation

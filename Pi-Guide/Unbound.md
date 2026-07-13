@@ -1,6 +1,6 @@
 # Unbound
 
-Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds privacy by cutting out third parties like Google, Cloudflare, and OpenDNS.
+Recursive DNS for Pi-hole. Resolves faster than iterative queries and adds privacy by cutting out third parties like Google, Cloudflare, and OpenDNS.
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
 
 ## Prerequisites
 
-[Pi-Hole](/Pi-Guide/Pi-Hole.md)
+[Pi-hole](/Pi-Guide/Pi-hole.md)
 
 ## Installation
 
@@ -29,7 +29,7 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
 
 ## Configuration
 
-1. In your Pi-Hole web settings, go to `Settings > DNS` then scroll down to `Advanced DNS settings` and turn off "Use DNSSEC"
+1. In your Pi-hole web settings, go to `Settings > DNS` then scroll down to `Advanced DNS settings` and turn off "Use DNSSEC"
 1. Pi-hole v6 ignores `/etc/dnsmasq.d/*.conf` files by default, so enable that first:
    ```bash
    sudo pihole-FTL --config misc.etc_dnsmasq_d true
@@ -60,7 +60,7 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
        msg-cache-size: 128m
        rrset-cache-size: 256m
    ```
-1. Create the unbound config file for Pi-Hole:
+1. Create the unbound config file for Pi-hole:
    ```bash
    sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
    ```
@@ -132,7 +132,7 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
    ```bash
    sudo service unbound restart
    ```
-1. Go to the WebUI for Pi-Hole and head to "Settings" then "DNS", and uncheck whatever is checked under "Upstream DNS Servers".
+1. Go to the WebUI for Pi-hole and head to "Settings" then "DNS", and uncheck whatever is checked under "Upstream DNS Servers".
 1. Under "Custom 1 (IPv4)" enter:
    ```
    127.0.0.1#5335
@@ -167,7 +167,7 @@ Recursive DNS for Pi-Hole. Resolves faster than iterative queries and adds priva
 
 ## Getting IPv6 to Work with Unbound
 
-IPv6 can be tricky to get working with Unbound, at least on an Asus router. If IPv6 is breaking Pi-Hole and Unbound, do the following:
+IPv6 can be tricky to get working with Unbound, at least on an Asus router. If IPv6 is breaking Pi-hole and Unbound, do the following:
 
 1. Edit file `resolvconf.conf` and comment out the last line which should read, `unbound_conf=/etc/unbound/unbound.conf.d/resolvconf_resolvers.conf`.
    ```bash

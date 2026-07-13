@@ -19,7 +19,7 @@ A much simpler alternative than setting nginx configs manually is [NGINX Proxy M
 
 ## Prerequisites
 
-If you have Pi-Hole installed, you will need to change its web interface port, since NGINX needs the default port (80) — see [Pi-Hole: Changing the Web Interface Port](/Pi-Guide/Pi-Hole.md#changing-the-web-interface-port).
+If you have Pi-hole installed, you will need to change its web interface port, since NGINX needs the default port (80) — see [Pi-hole: Changing the Web Interface Port](/Pi-Guide/Pi-hole.md#changing-the-web-interface-port).
 
 ## Installation
 

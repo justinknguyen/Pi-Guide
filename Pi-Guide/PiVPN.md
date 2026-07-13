@@ -24,7 +24,7 @@ Turn the Pi into a VPN server, giving you security/privacy and full access to yo
    sudo apt install curl -y
    sudo curl -L https://install.pivpn.io | bash
    ```
-1. Go through the install wizard and select WireGuard. If you have Pi-Hole, select "Yes" when asked to use Pi-Hole's DNS server for the VPN.
+1. Go through the install wizard and select WireGuard. If you have Pi-hole, select "Yes" when asked to use Pi-hole's DNS server for the VPN.
 
 ## Configuration
 
@@ -56,7 +56,7 @@ Then scan the QR code with your phone. You can now connect to the VPN.
 
 Once you activate the VPN, you should still have internet access. To confirm it's working: on a public WiFi network, go to https://www.dnsleaktest.com/ and note the IP shown, then activate the VPN and run the test again — you should now see your home network's public IP address.
 
-Setting up a dynamicDNS for your router is recommended so your public IP address doesn't change.
+Setting up dynamic DNS is recommended so your VPN keeps working when your public IP address changes — see [DDNS](/Pi-Guide/DDNS.md).
 
 ## Troubleshooting
 

@@ -13,7 +13,7 @@ Turn the Raspberry Pi into another Hue Bridge for multiple entertainment areas/h
 
 [Docker](/Pi-Guide/Docker.md)
 
-If Pi-Hole is installed, diyHue needs port 80, so change Pi-Hole's web interface port first — see [Pi-Hole: Changing the Web Interface Port](/Pi-Guide/Pi-Hole.md#changing-the-web-interface-port).
+If Pi-hole is installed, diyHue needs port 80, so change Pi-hole's web interface port first — see [Pi-hole: Changing the Web Interface Port](/Pi-Guide/Pi-hole.md#changing-the-web-interface-port).
 
 ## Installation
 

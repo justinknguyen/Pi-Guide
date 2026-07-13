@@ -19,7 +19,7 @@ Uses Bluetooth Low Energy (BLE) to detect how far away a BLE-compatible device i
 
 ## Installation
 
-You may want to disable Pi-Hole temporarily before proceeding.
+You may want to disable Pi-hole temporarily before proceeding.
 
 1. Create a folder for your room-assistant files and open a new config file:
    ```bash
