@@ -30,7 +30,7 @@ docker run -d --name vaultwarden --restart unless-stopped -v /home/pi/vw-data/:/
 
 Bitwarden clients (and the web vault's crypto) refuse to work over plain HTTP, so you need HTTPS in front of Vaultwarden. Pick one:
 
-- **NGINX reverse proxy + certbot** — follow [NGINX](/Pi-Guide/NGINX.md) (requires a domain, e.g. via [DDNS](/Pi-Guide/DDNS.md)), and proxy a subdomain to `http://127.0.0.1:8200`. The Vaultwarden wiki (under Sources) has ready-made proxy configs.
+- **NGINX reverse proxy** — the easiest route is [NGINX Proxy Manager](/Pi-Guide/NGINX.md#docker-alternative-nginx-proxy-manager) (requires a domain, e.g. via [DDNS](/Pi-Guide/DDNS.md)): add a proxy host pointing to `http://[PIIPADDRESS]:8200` with a Let's Encrypt certificate. For a manual NGINX setup, the Vaultwarden wiki (under Sources) has ready-made proxy configs.
 - **Tailscale** — if you only need access on your own devices, follow [Tailscale](/Pi-Guide/Tailscale.md) and serve it inside your tailnet with a valid certificate, no port forwarding or domain needed:
   ```bash
   sudo tailscale serve --bg 8200

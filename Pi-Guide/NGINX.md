@@ -2,7 +2,7 @@
 
 Host your website on your Pi.
 
-A much simpler alternative than setting nginx configs manually is [NGINX Proxy Manager](https://nginxproxymanager.com/).
+If your goal is HTTPS in front of your self-hosted services (rather than hosting a website's files), the [Docker Alternative: NGINX Proxy Manager](#docker-alternative-nginx-proxy-manager) section at the bottom does it all from a web UI.
 
 ## Table of Contents
 
@@ -15,6 +15,7 @@ A much simpler alternative than setting nginx configs manually is [NGINX Proxy M
   - [4. Blocking IPs](#4-blocking-ips)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
+- [Docker Alternative: NGINX Proxy Manager](#docker-alternative-nginx-proxy-manager)
 - [Sources](#sources)
 
 ## Prerequisites
@@ -174,9 +175,48 @@ If your `default` file has more than one server block, make sure each one has a 
    sudo systemctl reload nginx
    ```
 
+## Docker Alternative: NGINX Proxy Manager
+
+NGINX Proxy Manager (NPM) wraps NGINX in a web UI: reverse proxying, Let's Encrypt certificates, and automatic renewals become a few clicks instead of config files, certbot, and cron. Choose it if you want to put HTTPS and domain names in front of services like [Vaultwarden](/Pi-Guide/Vaultwarden.md), [immich](/Pi-Guide/immich.md), or [Home Assistant](/Pi-Guide/Home-Assistant.md). Stick with the native install above if you're hosting a website's files — NPM only proxies, it doesn't serve them.
+
+Run one or the other, not both — they both need ports 80 and 443 (the [Prerequisites](#prerequisites) note about Pi-hole's port applies here too).
+
+1. Have [Docker](/Pi-Guide/Docker.md) installed, then create a folder and compose file:
+   ```bash
+   mkdir ~/npm
+   nano ~/npm/docker-compose.yml
+   ```
+1. Paste the following in:
+   ```yaml
+   services:
+     app:
+       image: 'jc21/nginx-proxy-manager:latest'
+       container_name: npm
+       restart: unless-stopped
+       ports:
+         - '80:80'
+         - '81:81'
+         - '443:443'
+       volumes:
+         - ./data:/data
+         - ./letsencrypt:/etc/letsencrypt
+   ```
+1. To save the file, press `Ctrl+X` then `Y` then `Enter`. Then start it:
+   ```bash
+   cd ~/npm
+   docker compose up -d
+   ```
+1. Open the admin UI at `[PIIPADDRESS]:81` and log in with the default credentials — you'll be prompted to change them immediately:
+   ```
+   Email:    admin@example.com
+   Password: changeme
+   ```
+1. To proxy a service: forward ports 80 and 443 on your router, point a domain at your public IP (see [DDNS](/Pi-Guide/DDNS.md)), then in NPM go to Hosts > Proxy Hosts > Add Proxy Host — enter the domain, the service's IP and port, and on the SSL tab request a Let's Encrypt certificate with "Force SSL" enabled.
+
 ## Sources
 
 - https://pimylifeup.com/raspberry-pi-nginx/
+- https://nginxproxymanager.com/guide/
 - https://stackoverflow.com/questions/10829402/how-to-start-nginx-via-different-portother-than-80
 - https://medium.com/l0rd/how-to-host-a-nginx-website-with-raspberry-pi-ddos-protected-1a166e36cce
 - https://varhowto.com/how-to-enable-https-for-nginx-websites-on-raspbian-raspberry-pi-certbot-python-certbot-nginx-automatic-raspbian/
