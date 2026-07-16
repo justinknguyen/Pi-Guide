@@ -56,6 +56,17 @@ sudo passwd
    sudo reboot
    ```
 
+### Starting Over (Factory Reset)
+
+There's no software reset button on a Pi — wiping the SD card and reflashing is the actual fresh start. The good news is that's less work than it sounds:
+
+- Raspberry Pi Imager already formats the card as part of writing the OS — you don't need a separate formatting step. Just power off the Pi, remove the card, and repeat [Setting up the Raspberry Pi](#setting-up-the-raspberry-pi) above from a computer.
+- If you only want to wipe the card (no new OS), select "Erase" from Imager's OS list instead of an operating system.
+- Imager remembers your last-used WiFi/SSH/username settings (gear icon, or `Ctrl+Shift+X`), so you're not retyping everything each time.
+- If you set up a DHCP reservation per [Give the Pi a Static IP](#give-the-pi-a-static-ip), that lives on your router, not the SD card — it survives a reset and the Pi will get the same address again automatically.
+
+**Faster, if you do this often:** reflashing still means redoing every setup step from scratch — WiFi, SSH, hostname, and all your guides. Skip that by keeping a clean backup instead. Right after your first full setup (before installing anything else), take a backup with [raspiBackup](/Pi-Guide/raspiBackup.md). Next time you want to start over, [restore that backup](/Pi-Guide/raspiBackup.md#restoring-the-whole-pi) onto the card instead of reflashing — it comes back exactly as it was the moment you backed it up, in a fraction of the time.
+
 ## Table of Contents
 
 Grouped by category. Indented guides depend on their parent guide — each guide's own Prerequisites section lists exactly what it needs.
