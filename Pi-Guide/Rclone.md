@@ -6,6 +6,8 @@ Backup anything to any cloud service.
 
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Testing](#testing)
+- [Restoring From Rclone](#restoring-from-rclone)
 - [Sources](#sources)
 
 ## Installation
@@ -41,12 +43,40 @@ Backup anything to any cloud service.
     ```
 1. (Optional) Automate backups every day at midnight:
     ```bash
-    sudo crontab -e
+    crontab -e
     ```
+    - <ins>IMPORTANT:</ins> use your own crontab here, **not** `sudo crontab -e`. The remote you just configured is saved to your user's config file (`~/.config/rclone/rclone.conf`). A job scheduled under `sudo crontab -e` runs as root instead, which has no such file and can't find `gdrive:` — the backup would silently fail every night even though it worked when you tested it manually above.
 1. Add the following line:
     ```
-    0 0 * * * rclone copy [FOLDERDIRECTORY] "gdrive:backups"
+    0 0 * * * rclone copy [FOLDERDIRECTORY] "gdrive:backups" --log-file /home/pi/rclone.log
     ```
+    - The `--log-file` flag gives you something to check in [Testing](#testing) below, since cron won't show you any output otherwise.
+
+## Testing
+
+Since the whole point of automating this is that you stop checking it manually, verify the cron job is actually running before trusting it:
+
+1. The morning after your first scheduled run, check the log for errors:
+   ```bash
+   cat /home/pi/rclone.log
+   ```
+1. Confirm the files actually landed in your cloud storage:
+   ```bash
+   rclone ls gdrive:backups
+   ```
+   Or just check the `backups` folder in Google Drive directly in your browser.
+
+## Restoring From Rclone
+
+Restoring is the same command with the source and destination swapped — `rclone copy` never deletes files, so it's safe to run:
+
+```bash
+rclone copy "gdrive:backups" [FOLDERDIRECTORY]
+```
+
+To restore to a fresh Pi, first repeat the [Installation](#installation) and [Configuration](#configuration) steps above (installing rclone and re-adding the `gdrive` remote — sign in again if prompted), then run the restore command with your desired destination folder.
+
+If you only want to preview what would change without copying anything yet, add `--dry-run` to either the backup or restore command.
 
 ## Sources
 
