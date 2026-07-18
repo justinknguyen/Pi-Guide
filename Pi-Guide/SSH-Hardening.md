@@ -35,14 +35,21 @@ Secure your Pi's SSH access with key-based login, a firewall, and fail2ban. Stro
 
 `authorized_keys` can hold multiple keys, one per line — so give each device (phone, laptop, etc.) its own key pair rather than copying one private key everywhere. That way losing a device only means removing its one line, not regenerating a shared key.
 
-1. On the new device (e.g., in Termius: Key Chain → New Key), generate an ED25519 key pair and copy its public key.
-1. Append it to the Pi's `authorized_keys` from a computer that already has access. This creates `~/.ssh` if it doesn't exist yet and sets the permissions sshd requires (it silently ignores keys if permissions are too open):
-   ```bash
-   ssh pi@[PIIPADDRESS] "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo 'PASTE_PUBLIC_KEY_HERE' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-   ```
+1. On the new device (e.g., in Termius: Keychain → New Key), generate an ED25519 key pair.
+1. Get its public key onto the Pi's `authorized_keys`:
+   - **Termius:** with the key selected, use **Key export → Export to host**, pick the host, and leave the default location (`.ssh`) and filename (`authorized_keys`). This connects using the host's existing credentials (e.g., password) and appends the key for you — no manual copying needed.
+   - **Manually**, from a computer that already has access. This creates `~/.ssh` if it doesn't exist yet and sets the permissions sshd requires (it silently ignores keys if permissions are too open):
+     ```bash
+     ssh pi@[PIIPADDRESS] "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo 'PASTE_PUBLIC_KEY_HERE' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+     ```
 1. In the SSH client on the new device, set the connection to use that key, then test it logs in.
 
 Repeat for each additional device.
+
+If a new key gets rejected with "Permission denied (publickey)" even though the key in `authorized_keys` looks correct, check your home directory's permissions — sshd's `StrictModes` setting (on by default) silently refuses key auth if `~` or `~/.ssh` is group- or world-writable:
+```bash
+ssh pi@[PIIPADDRESS] "chmod 755 ~"
+```
 
 ## Disable Password Login
 
