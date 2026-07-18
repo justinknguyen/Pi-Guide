@@ -36,9 +36,9 @@ Secure your Pi's SSH access with key-based login, a firewall, and fail2ban. Stro
 `authorized_keys` can hold multiple keys, one per line — so give each device (phone, laptop, etc.) its own key pair rather than copying one private key everywhere. That way losing a device only means removing its one line, not regenerating a shared key.
 
 1. On the new device (e.g., in Termius: Key Chain → New Key), generate an ED25519 key pair and copy its public key.
-1. Append it to the Pi's `authorized_keys` from a computer that already has access:
+1. Append it to the Pi's `authorized_keys` from a computer that already has access. This creates `~/.ssh` if it doesn't exist yet and sets the permissions sshd requires (it silently ignores keys if permissions are too open):
    ```bash
-   ssh pi@[PIIPADDRESS] "echo 'PASTE_PUBLIC_KEY_HERE' >> ~/.ssh/authorized_keys"
+   ssh pi@[PIIPADDRESS] "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo 'PASTE_PUBLIC_KEY_HERE' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
    ```
 1. In the SSH client on the new device, set the connection to use that key, then test it logs in.
 
