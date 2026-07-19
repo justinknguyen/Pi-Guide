@@ -43,7 +43,7 @@ Lets your remote devices reach *everything* on your home LAN (router, printers, 
    ```bash
    sudo tailscale up --advertise-routes=192.168.50.0/24
    ```
-1. In the admin console, open the Pi's route settings and approve the advertised route.
+1. In the [admin console](https://login.tailscale.com/admin/machines), click on the Pi and find the "Subnets" tag next to its name — click it to open "Edit route settings," then check the box next to `192.168.50.0/24` and save. <ins>This step is required</ins> — advertising a route with `--advertise-routes` does not activate it. The tag showing up next to the Pi just means it's been advertised, not approved; until you check this box, remote devices will connect to Tailscale fine but silently fail to reach anything on your LAN.
 
 ### 2. Route All Traffic Through Home (Exit Node)
 
@@ -53,7 +53,7 @@ Sends *all* your device's traffic through your home connection (like a tradition
 sudo tailscale up --advertise-routes=192.168.50.0/24 --advertise-exit-node
 ```
 
-Approve the exit node in the admin console, then select the Pi as the exit node in the Tailscale app on your device when you want it.
+Same as above: open "Edit route settings" for the Pi in the admin console and check "Use as exit node," then save — advertising it alone isn't enough. Once approved, select the Pi as the exit node in the Tailscale app on your device when you want it.
 
 ### 3. Pi-hole Ad-Blocking Everywhere
 
