@@ -59,9 +59,9 @@ Approve the exit node in the admin console, then select the Pi as the exit node 
 
 If this Pi runs [Pi-hole](/Pi-Guide/Pi-hole.md), you can get ad-blocking on your phone wherever you are:
 
-1. In the admin console, go to the DNS tab.
-1. Add the Pi's Tailscale IP (`100.x.y.z`, shown with `tailscale ip -4`) as a global nameserver and enable "Override local DNS".
-1. In Pi-hole, make sure Interface settings allow answering on the Tailscale interface ("Permit all origins" is the simple option).
+1. In the [Tailscale admin console](https://login.tailscale.com/admin/dns) (not Pi-hole) — go to the DNS tab.
+1. Still in the Tailscale admin console: add the Pi's Tailscale IP (`100.x.y.z`, shown with `tailscale ip -4`) as a global nameserver and enable "Override local DNS". This tells every device on your Tailnet to send DNS queries to the Pi instead of their normal DNS, even away from home.
+1. Now in Pi-hole's web UI, make sure Interface settings allow answering on the Tailscale interface ("Permit all origins" is the simple option) — otherwise Pi-hole ignores the queries Tailscale just started sending it.
 
 ## Testing
 
