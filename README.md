@@ -114,6 +114,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 
 **Media & Gaming**
 - [Jellyfin](/Pi-Guide/Jellyfin.md) — media streaming server
+  - [Sonarr, Radarr & Prowlarr](/Pi-Guide/Arr-Stack.md) — automated media library management, plus Seerr for requests
 - [RetroPie](/Pi-Guide/RetroPie.md) — retro game emulation
 
 **Security & Passwords**
