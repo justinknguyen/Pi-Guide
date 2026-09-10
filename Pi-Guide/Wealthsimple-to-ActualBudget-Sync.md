@@ -6,6 +6,7 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Upgrading ws-api](#upgrading-ws-api)
 - [Configuration](#configuration)
 - [Testing](#testing)
 - [Automation](#automation)
@@ -35,9 +36,9 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
    ```
 1. Install required dependencies:
    ```bash
-   pip install "ws-api>=0.35" actualpy keyring python-dateutil pyotp
+    pip install "ws-api>=0.38.1" actualpy keyring python-dateutil pyotp
    ```
-   - `ws-api` ≤0.33.0 has a bug where session refresh silently never fires (see [Troubleshooting](#troubleshooting)) — make sure you're on 0.35.0+.
+    - `ws-api` ≤0.33.0 has a bug where session refresh silently never fires (see [Troubleshooting](#troubleshooting)) — make sure you're on 0.38.1+.
 1. Create the `ws_to_actual.py` script in your home directory (full code in [Python Script](#python-script) below):
    ```bash
    nano ~/ws_to_actual.py
@@ -46,6 +47,24 @@ Automate syncing Wealthsimple transactions into ActualBudget using a Python scri
      ```bash
      chmod +x ~/ws_to_actual.py
      ```
+
+## Upgrading ws-api
+
+To upgrade `ws-api` in the virtual environment used by the sync script:
+
+```bash
+source ~/actual_env/bin/activate
+python -m pip install --upgrade "ws-api>=0.38.1"
+python -m pip show ws-api
+```
+
+Confirm that the installed version is `0.38.1` or newer, then test the sync manually:
+
+```bash
+python ~/ws_to_actual.py
+```
+
+The cron wrapper uses the same virtual environment, so scheduled runs will use the upgraded version automatically.
 
 ## Configuration
 
@@ -177,7 +196,7 @@ tail -50 ~/ws_to_actual_*.log
 
 ```bash
 source ~/actual_env/bin/activate
-pip install --upgrade "ws-api>=0.35"
+pip install --upgrade "ws-api>=0.38.1"
 ```
 
 Root cause: `WealthsimpleAPI.check_oauth_token()` only checks for a top-level `message` key to detect "Not Authorized" and decide whether to attempt a refresh. Wealthsimple actually nests the error inside `errors[0].message` (e.g. `{'errors': [{'message': 'Not Authorized.', ...}]}`), so the check never matches — the refresh is never attempted, and the code falls straight through to a full login every time the ~30 min access token expires, regardless of cron interval. There's no separate "device registration" setting to force; the device email is tied to the login event itself, so the fix is making refresh actually work.
@@ -208,11 +227,11 @@ ws_to_actual.py
 Fetch Wealthsimple activities and import into Actual (via actualpy).
 
 Dependencies:
-  pip install "ws-api>=0.35" actualpy keyring python-dateutil pyotp
+    pip install "ws-api>=0.38.1" actualpy keyring python-dateutil pyotp
 
 Notes:
  - This uses the unofficial ws-api Python library to access Wealthsimple.
- - Requires ws-api>=0.35 — older versions have a session-refresh bug (see repo docs' Troubleshooting section).
+ - Requires ws-api>=0.38.1 — older versions have a session-refresh bug (see repo docs' Troubleshooting section).
  - The first run will prompt for Wealthsimple credentials (and possibly OTP).
  - Credentials/session tokens are stored using the system keyring.
  - Configure ACTUAL_BASE_URL and ACTUAL_PASSWORD (environment vars or edit below).
