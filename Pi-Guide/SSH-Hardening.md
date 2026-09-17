@@ -84,11 +84,13 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
    ```bash
    sudo ufw allow ssh
    ```
-1. Allow the ports for the services you run on this Pi. Common examples from this repo:
+1. Allow the ports for the services you run on this Pi. This repo has grown a lot of guides, each with its own port — check the one you're using rather than assuming this list is complete. A few common ones:
    ```bash
    sudo ufw allow 53          # Pi-hole DNS
-   sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface
+   sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface / NGINX Proxy Manager
    sudo ufw allow 51820/udp   # PiVPN (WireGuard)
+   sudo ufw allow 51821/tcp   # wg-easy admin UI
+   sudo ufw allow 8200/tcp    # Vaultwarden
    ```
 1. Enable the firewall and check its status:
    ```bash
