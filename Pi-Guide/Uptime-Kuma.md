@@ -37,6 +37,14 @@ docker run -d --name uptime-kuma --restart unless-stopped -p 3001:3001 -v uptime
 
 Tip: if this Pi itself goes down, Uptime Kuma goes down with it — monitor the important Pi from a second device, or pair with [Watchdog](/Pi-Guide/Watchdog.md) so the Pi recovers on its own.
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), monitors that point at this Pi's own IP go red as soon as it's enabled, even though the service is fine. Uptime Kuma runs in Docker, so its checks come from Docker's network, not your LAN. Allow each monitored port:
+
+```bash
+sudo ufw allow from 172.16.0.0/12 to any port [PORT] proto tcp comment 'Uptime Kuma'
+```
+
+If `docker network inspect` shows the container on a network outside `172.16.0.0/12`, add the same rule for that subnet — see [the note in SSH Hardening](/Pi-Guide/SSH-Hardening.md#firewall-ufw). This applies to ports belonging to other containers too, not only to services installed on the Pi. Monitors pointing at a *different* machine aren't affected.
+
 ## Updating
 
 ```bash

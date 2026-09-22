@@ -40,6 +40,11 @@ Connects any "smart" device into a single app for a unified Smart Home. Main ben
    ```bash
    docker compose up -d
    ```
+1. If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Home Assistant's web port. With `network_mode: host`, Home Assistant listens directly on the Pi, so UFW blocks it like any program installed on the Pi:
+   ```bash
+   sudo ufw allow from 192.168.50.0/24 to any port 8123 proto tcp comment 'Home Assistant'
+   ```
+   UFW already lets in mDNS discovery (port 5353), which most integrations use to find devices. If an integration still can't reach a device, look for its port in `sudo journalctl -k | grep 'UFW BLOCK'`.
 
 ## Testing
 

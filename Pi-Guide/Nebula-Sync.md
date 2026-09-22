@@ -48,6 +48,12 @@ Keep two (or more) Pi-holes in sync — adlists, whitelists, and settings change
    sudo pihole-FTL --config webserver.api.app_sudo true
    ```
 
+If nebula-sync runs on one of the Pi-hole Pis and that Pi uses the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), it can't reach its own Pi-hole: it's in Docker, so the request comes from Docker's network rather than your LAN. Allow the Pi-hole web port from Docker (`80`, or `8080` if you [moved it](/Pi-Guide/Pi-hole.md#changing-the-web-interface-port)):
+
+```bash
+sudo ufw allow from 172.16.0.0/12 to any port 80 proto tcp comment 'nebula-sync'
+```
+
 ## Testing
 
 1. Check the logs for a successful sync:

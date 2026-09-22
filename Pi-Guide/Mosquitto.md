@@ -52,6 +52,18 @@ MQTT communication — lets Room Assistant (on one Pi) send data to Home Assista
    sudo systemctl restart mosquitto
    ```
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow MQTT from your network. Mosquitto is installed directly on the Pi, so UFW blocks it like anything else:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 1883 proto tcp comment 'MQTT (LAN)'
+```
+
+Docker containers on the same Pi that connect to `[PIIPADDRESS]:1883`, like [Zigbee2MQTT](/Pi-Guide/Zigbee2MQTT.md), come from Docker's network rather than your LAN and need their own rule:
+
+```bash
+sudo ufw allow from 172.16.0.0/12 to any port 1883 proto tcp comment 'MQTT (Docker)'
+```
+
 ## Testing
 
 1. Enter the following:

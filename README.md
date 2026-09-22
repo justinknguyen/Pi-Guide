@@ -84,7 +84,7 @@ There's no rush: each release keeps getting security updates for a while after t
 Grouped by category. Indented guides depend on their parent guide — each guide's own Prerequisites section lists exactly what it needs.
 
 **Core System Setup**
-- [SSH Hardening](/Pi-Guide/SSH-Hardening.md) — key-based login, firewall, fail2ban
+- [SSH Hardening](/Pi-Guide/SSH-Hardening.md) — key-based login, firewall (including which services it blocks), fail2ban
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md) — automatic security updates
 - [Log2Ram](/Pi-Guide/Log2RAM.md) — reduce SD card wear
 - [System Tuning & Cleanup](/Pi-Guide/System-Tuning.md) — free SD card space, swap less, trim unused services, update the bootloader
@@ -131,6 +131,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 **Media & Gaming**
 - [Jellyfin](/Pi-Guide/Jellyfin.md) — media streaming server
   - [Sonarr, Radarr & Prowlarr](/Pi-Guide/Arr-Stack.md) — automated media library management, plus Seerr for requests
+    - [Gluetun](/Pi-Guide/Gluetun.md) — route qBittorrent through a VPN, with a kill switch
 - [RetroPie](/Pi-Guide/RetroPie.md) — retro game emulation
 
 **Security & Passwords**

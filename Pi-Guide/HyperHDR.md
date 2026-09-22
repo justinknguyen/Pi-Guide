@@ -31,6 +31,12 @@ curl -fsSL https://awawa-dev.github.io/hyperhdr.public.apt.gpg.key | sudo dd of=
 && sudo apt install hyperhdr -y
 ```
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow the web interface from your network. It's installed directly on the Pi, so UFW blocks it like anything else:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 8090 proto tcp comment 'HyperHDR'
+```
+
 ## Testing
 
 You can open the HyperHDR website by heading to `[PIIPADDRESS]:8090`

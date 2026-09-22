@@ -23,6 +23,11 @@ Camera hub that bridges almost any IP camera into Apple HomeKit (including HomeK
    mkdir -p ~/.scrypted/volume
    docker run -d --name scrypted --restart unless-stopped --network host -v ~/.scrypted/volume:/server/volume ghcr.io/koush/scrypted
    ```
+1. If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Scrypted's ports. `--network host` means UFW blocks them like any program installed on the Pi:
+   ```bash
+   sudo ufw allow from 192.168.50.0/24 to any port 10443 proto tcp comment 'Scrypted'
+   ```
+   HomeKit also connects to each camera or bridge on its own TCP port, which Scrypted picks. After setting up the HomeKit plugin (below), list the ports Scrypted is listening on with `sudo ss -tlnp | grep node`, and allow each one from your LAN the same way. If a camera shows "No Response" in the Home app after an update, check `sudo journalctl -k | grep 'UFW BLOCK'` for a port that changed.
 
 ## Configuration
 

@@ -38,6 +38,14 @@ services:
 
 Or flip the model around — run Watchtower with `-e WATCHTOWER_LABEL_ENABLE=true` so it *only* updates containers you've labelled `com.centurylinklabs.watchtower.enable=true`.
 
+Other containers worth thinking about before letting Watchtower update them:
+
+- **[Jellyfin](/Pi-Guide/Jellyfin.md), or anything with plugins.** Plugins are built for a specific version, so an overnight update can leave one disabled until its author catches up. Auto-updating can still be the right call, as long as a missing plugin feature makes you check for an update first.
+- **[Gluetun](/Pi-Guide/Gluetun.md), and any container other containers share a network with.** Updating gluetun recreates it, and the containers using its network (`network_mode: service:gluetun`) then fail to start until they're recreated too. Exclude it and update the whole group by hand.
+- **Databases** (Postgres, MariaDB), which may need a manual step between major versions.
+
+Updating also recreates the container, which is how existing containers pick up changes to Docker's defaults, like the [log size limit](/Pi-Guide/Docker.md#limit-container-log-size).
+
 ## Testing
 
 Trigger a one-off check and watch the logs:

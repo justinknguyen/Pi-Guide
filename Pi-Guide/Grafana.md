@@ -55,6 +55,12 @@ Monitor the Pi hardware. The most important information to track is CPU temp/loa
     docker run -d --name=grafana --restart=unless-stopped -p 3000:3000 grafana/grafana
     ```
    - The `--restart=unless-stopped` flag on each container makes them start on their own whenever the Pi reboots.
+1. If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Prometheus and Grafana to reach the Pi's IP. They connect to `[PIIPADDRESS]:9090` and `:9100` from inside Docker, and UFW treats that as incoming traffic from Docker's network:
+   ```bash
+   sudo ufw allow from 172.16.0.0/12 to any port 9090 proto tcp comment 'Prometheus (Docker)'
+   sudo ufw allow from 172.16.0.0/12 to any port 9100 proto tcp comment 'node-exporter (Docker)'
+   ```
+   If `docker network inspect` shows the container on a network outside `172.16.0.0/12`, add the same rule for that subnet — see [the note in SSH Hardening](/Pi-Guide/SSH-Hardening.md#firewall-ufw). Without these rules, Prometheus's Status → Targets page shows the targets as down, and Grafana's "Save & Test" times out.
 
 ## Configuration
 
