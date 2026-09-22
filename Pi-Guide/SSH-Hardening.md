@@ -91,10 +91,17 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
    ```bash
    sudo apt install ufw
    ```
-1. Allow SSH first:
+1. Allow SSH first, **from your own network only**. Replace `192.168.50.0/24` with your LAN (your router's IP with a `0` last digit, plus `/24`):
    ```bash
-   sudo ufw allow ssh
+   sudo ufw allow from 192.168.50.0/24 to any port 22 proto tcp comment 'SSH (LAN)'
    ```
+   - Why not just `sudo ufw allow ssh`? That allows SSH from *anywhere*, over IPv6 too. Most Pis have a public IPv6 address, and if your router doesn't block unsolicited inbound IPv6 (many don't), SSH is then reachable from the whole internet. Check whether yours has one with `ip -6 addr show scope global`.
+   - If you SSH in over IPv6 on your LAN, also allow your IPv6 prefix (the first four groups of that address, then `::/64`):
+     ```bash
+     sudo ufw allow from [YOURIPV6PREFIX]::/64 to any port 22 proto tcp comment 'SSH (LAN IPv6)'
+     ```
+   - Before continuing, check which address your current session came from with `echo $SSH_CONNECTION` (the first field). If it isn't covered by the rules above, enabling the firewall will cut you off.
+   - Reaching the Pi from outside your home? Use [Tailscale](/Pi-Guide/Tailscale.md) (rule below) or [PiVPN](/Pi-Guide/PiVPN.md) rather than opening SSH to the internet.
 1. Allow the ports for the services you run on this Pi. This repo has grown a lot of guides, each with its own port — check the one you're using rather than assuming this list is complete. A few common ones:
    ```bash
    sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface / NGINX Proxy Manager
@@ -102,6 +109,13 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
    sudo ufw allow 51821/tcp   # wg-easy admin UI
    sudo ufw allow 8200/tcp    # Vaultwarden
    ```
+1. If this Pi shares files with [Samba](/Pi-Guide/NAS.md), allow its ports from your network. Samba runs directly on the Pi rather than in Docker, so the firewall blocks it like anything else:
+   ```bash
+   sudo ufw allow from 192.168.50.0/24 to any port 445,139 proto tcp comment 'Samba (LAN)'
+   sudo ufw allow from 192.168.50.0/24 to any port 137,138 proto udp comment 'Samba NetBIOS (LAN)'
+   sudo ufw allow from [YOURIPV6PREFIX]::/64 to any port 445,139 proto tcp comment 'Samba (LAN IPv6)'
+   ```
+   Ports 137/138 (older network browsing) are IPv4-only, so they have no IPv6 rule.
 1. If this Pi runs [Pi-hole](/Pi-Guide/Pi-hole.md), allow DNS (port 53) **only from your own network**, not from anywhere. Replace `192.168.50.0/24` with your LAN (your router's IP with a `0` last digit, plus `/24`):
    ```bash
    sudo ufw allow from 192.168.50.0/24 to any port 53 comment 'Pi-hole DNS (LAN)'
@@ -111,7 +125,7 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
      ```bash
      sudo ufw allow from [YOURIPV6PREFIX]::/64 to any port 53 comment 'Pi-hole DNS (LAN IPv6)'
      ```
-     Many ISPs change this prefix from time to time. If IPv6 devices suddenly lose ad-blocking while IPv4 keeps working, this rule is out of date — update it with the new prefix.
+     Many ISPs change this prefix from time to time. If IPv6 devices suddenly lose ad-blocking while IPv4 keeps working, this rule is out of date — update it, and every other rule that uses the old prefix (SSH, Samba), with the new one.
 1. If this Pi runs [Tailscale](/Pi-Guide/Tailscale.md), allow traffic arriving over the tailnet (this also covers Pi-hole for your devices away from home):
    ```bash
    sudo ufw allow in on tailscale0 comment 'Tailscale'
@@ -122,6 +136,8 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
    sudo ufw enable
    sudo ufw status
    ```
+   - `ufw enable` asks a y/n question. If you're running it somewhere that can't answer the prompt (a script, or a tool that passes commands through), use `sudo ufw --force enable` instead.
+1. Keep your current SSH session open, and from **another device** confirm that a new SSH connection still works and that each service you allowed still opens.
 
 Things to know about UFW:
 

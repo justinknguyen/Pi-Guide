@@ -67,11 +67,16 @@ Setup is complete. Download the immich app from the app store to start backing u
 
 ## Backup and Restore
 
-https://immich.app/docs/administration/backup-and-restore
+Your photos and Immich's database both need backing up. The database holds albums, people and everything else that makes the library more than a folder of files, and copying its files while Immich is running produces a corrupt copy.
+
+- [Immich Backup](/Pi-Guide/Immich-Backup.md) sets up nightly encrypted, versioned backups to a NAS with BorgBackup, including a proper database dump and step-by-step restore instructions.
+- Immich also writes its own database dumps to `library/backups/` (Administration → Settings → Backup Settings). That's a good extra layer, but it's on the same drive as everything else, so on its own it won't survive the drive failing.
+
+See also Immich's own guide: https://docs.immich.app/administration/backup-and-restore
 
 ## Sources
 
 - https://immich.app/docs/install/docker-compose
 - https://immich.app/docs/overview/quick-start
 - https://github.com/immich-app/immich/issues/4530
-- https://immich.app/docs/administration/backup-and-restore/
+- https://docs.immich.app/administration/backup-and-restore
