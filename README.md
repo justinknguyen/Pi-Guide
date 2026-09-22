@@ -87,6 +87,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [SSH Hardening](/Pi-Guide/SSH-Hardening.md) — key-based login, firewall, fail2ban
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md) — automatic security updates
 - [Log2Ram](/Pi-Guide/Log2RAM.md) — reduce SD card wear
+- [System Tuning & Cleanup](/Pi-Guide/System-Tuning.md) — free SD card space, swap less, trim unused services, update the bootloader
 - [Watchdog](/Pi-Guide/Watchdog.md) — auto-reboot on system hang
 - [Job Monitoring](/Pi-Guide/Job-Monitoring.md) — alerts when a scheduled job fails or stops running
 - [XRDP](/Pi-Guide/XRDP.md) — remote desktop access
@@ -121,6 +122,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 **Storage & Backup**
 - [NAS](/Pi-Guide/NAS.md) — network-attached storage
 - [immich](/Pi-Guide/immich.md) — self-hosted photo/video backup
+  - [Immich Backup](/Pi-Guide/Immich-Backup.md) — encrypted, versioned backups of photos + database with BorgBackup
 - [Syncthing](/Pi-Guide/Syncthing.md) — sync files between your devices
 - [raspiBackup](/Pi-Guide/raspiBackup.md) — scheduled system backups
 - [Snapshot Backups](/Pi-Guide/Snapshot-Backups.md) — daily file-level snapshots to USB, plus a NAS copy

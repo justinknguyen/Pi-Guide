@@ -15,6 +15,7 @@ It also adds a status message shown every time you SSH in, covering the same job
 - [Keep the Logs from Growing](#keep-the-logs-from-growing)
 - [Login Status Message](#login-status-message)
 - [Testing](#testing)
+- [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
 ## Create the Checks
@@ -109,6 +110,17 @@ Two details in `hc()` look fussy but are needed:
 
 - `${1:-}` instead of `$1`: the success ping is called with no argument, and with `set -u`, plain `$1` would crash the script on the very last line — after the job itself succeeded, so healthchecks.io would alert you about a job that worked.
 - `|| true`: if healthchecks.io itself is down or the Pi's internet is out, the job still runs and still succeeds.
+
+If you adapt this for a script that uses `set -e`, don't shorten `hc()` to a one-liner like `[[ -n $url ]] && curl ... "$url$1"`. When the URL is empty that line returns 1, and when healthchecks.io is unreachable curl returns 7. Under `set -e`, either one stops the script at `hc /start`, **before the job runs**, and it fails silently because monitoring is the thing that broke. Keep the explicit `return 0` and `|| true`.
+
+A script with several steps (dump a database, then back it up, then prune) shouldn't stop at the first failure, but it still has to *end* with a non-zero exit. Otherwise the failure is only in the log and healthchecks.io gets a success ping. Track it with a flag:
+
+```bash
+FAILED=0
+step_one || { log "FAILED: step one"; FAILED=1; }
+step_two || { log "FAILED: step two"; FAILED=1; }
+exit "$FAILED"
+```
 
 Schedule it with `sudo crontab -e` (root's crontab, since the config file is root-only), sending all output to a log:
 
@@ -232,6 +244,17 @@ Keep this script to local file reads (no network calls, no `apt` or `docker` com
    ```
    You should get an alert within a minute or two. Run the job again afterwards to turn the check green.
 1. Log out and back in to see the status message.
+
+## Troubleshooting
+
+**Every run shows as "late" or down on healthchecks.io, but the logs say the job succeeded.** Check each check's schedule time zone. A Cron check left at the default `UTC` expects pings hours away from when your Pi, on local time, actually sends them, so every run falls outside the grace time. Set it to the Pi's zone (`timedatectl | grep zone`). Nothing on the Pi needs to change.
+
+**The check never goes green, and the job's log has no errors.** The ping URL is probably wrong. A typo'd or empty URL is silently ignored on purpose, so monitoring can't break the job. Send a ping by hand to test it. This should print `OK`:
+```bash
+sudo bash -c '. /etc/job-monitoring.conf && curl -fsS "$HC_MYJOB_URL"'
+```
+
+**The login message says "INTERRUPTED" for a job you just switched to this template.** Its log was written by the old script, so it has no `exit=` line yet, and that looks the same as a killed run. It clears after the first complete run. Run the job once by hand if you don't want to wait.
 
 ## Sources
 

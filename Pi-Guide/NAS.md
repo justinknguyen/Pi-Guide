@@ -87,6 +87,8 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    directory mask=0777
    public=no
    ```
+   - Share a dedicated folder like `shared`, **not the whole drive**, if anything else lives on it. If [Docker](/Pi-Guide/Docker.md) containers like [immich](/Pi-Guide/immich.md) keep their data on this drive, sharing the drive's root also exposes their live files, including database folders, to every device that can open the share. With `create mask=0777` that means read/write. A mistaken drag-and-drop from a laptop, or ransomware on one, can then corrupt a running database.
+   - Keep `public=no`. Settings like `guest ok = yes`, `map to guest = Bad User` or `usershare allow guests = yes` let anyone on your network in without a password.
 1. Restart Samba:
    ```bash
    sudo systemctl restart smbd
@@ -95,6 +97,7 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    ```bash
    sudo smbpasswd -a pi
    ```
+1. If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Samba's ports from your network. It's easy to forget and then wonder why the share stopped working the moment the firewall went on. The rules are in that guide.
 
 ## Docker Containers Depending on External Drive
 

@@ -81,6 +81,12 @@ The cron wrapper uses the same virtual environment, so scheduled runs will use t
    chmod 600 /home/pi/ws_to_actual_env.sh
    source /home/pi/ws_to_actual_env.sh
    ```
+   - Keep this file the **only** place your credentials live. If you want them loaded automatically for manual test runs, add a line to `~/.bashrc` that *sources* the file, rather than copying the `export` lines into `.bashrc`:
+     ```bash
+     echo '[ -f ~/ws_to_actual_env.sh ] && . ~/ws_to_actual_env.sh' >> ~/.bashrc
+     ```
+     `.bashrc` is readable by everyone (mode 644) and gets copied around by backups and dotfile syncs, so passwords pasted straight into it end up exposed in places you didn't intend.
+   - Any backup copy you make of a file holding secrets (e.g. `cp ~/.bashrc ~/.bashrc.bak`) needs `chmod 600` too. A plain `cp` creates the new file with default permissions, readable by everyone.
 1. Run the script manually the first time:
    ```bash
    source ~/actual_env/bin/activate
@@ -102,13 +108,7 @@ source ~/actual_env/bin/activate
 python ~/ws_to_actual.py
 ```
 
-Check logs:
-
-```bash
-tail -n 20 ~/ws_to_actual.log
-```
-
-A successful run will look like:
+The script logs to your terminal. A successful run will look like:
 
 ```
 INFO Found existing Wealthsimple session in keyring.
@@ -124,13 +124,41 @@ INFO Done.
    cat > /home/pi/run_ws_to_actual.sh <<'EOF'
    #!/bin/bash
    set -e
+
+   # Optional healthchecks.io monitoring -- see the Job Monitoring guide.
+   MONITORING_CONF="/home/pi/.job-monitoring.conf"
+   [ -r "$MONITORING_CONF" ] && source "$MONITORING_CONF"
+
+   # A missing URL or an unreachable healthchecks.io must never fail the job.
+   hc_ping() {
+       [ -n "${HC_WS_TO_ACTUAL_URL:-}" ] || return 0
+       curl -fsS -m 10 --retry 3 -o /dev/null "${HC_WS_TO_ACTUAL_URL}${1:-}" || true
+   }
+
+   # Runs on every exit, including a set -e abort: sends the final ping and
+   # writes the "exit=N" line the login status message reads.
+   on_exit() {
+       local rc=$?
+       if [ "$rc" -eq 0 ]; then hc_ping; else hc_ping /fail; fi
+       echo "[$(date '+%Y-%m-%d %H:%M:%S')] exit=$rc"
+   }
+   trap on_exit EXIT
+   trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM
+
+   hc_ping /start
    source /home/pi/ws_to_actual_env.sh
-   source /home/pi/actual_env/bin/activate
    /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py
    EOF
    chmod +x /home/pi/run_ws_to_actual.sh
    ```
-   - This avoids cron failing when `~/.bashrc` is not sourced or contains interactive-only checks.
+   - This avoids cron failing when `~/.bashrc` is not sourced or contains interactive-only checks. Calling the venv's `python` directly is enough; the venv doesn't need to be activated.
+   - The monitoring part is optional and does nothing until you create the config file. To turn it on, create a check as described in [Job Monitoring](/Pi-Guide/Job-Monitoring.md#create-the-checks) (Cron schedule `0 */12 * * *`), then save its ping URL in a file only you can read:
+     ```bash
+     echo 'HC_WS_TO_ACTUAL_URL=https://hc-ping.com/your-uuid-here' > ~/.job-monitoring.conf
+     chmod 600 ~/.job-monitoring.conf
+     ```
+     This file is in your home folder, not `/etc/job-monitoring.conf`, because this job runs from **your** crontab, not root's.
+   - The `exit=N` line at the end of each run is what the [login status message](/Pi-Guide/Job-Monitoring.md#login-status-message) reads. To show this job there, add it to the `JOBS` list with the path to today's log, e.g. `"ws-to-actual|/home/pi/ws_to_actual_$(date +%F).log|ws_to_actual.py|1"`.
 
 1. Open your crontab:
    ```bash
@@ -139,19 +167,21 @@ INFO Done.
 1. Add jobs to run every 12 hours and rotate logs:
    ```
    0 */12 * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual_$(date +\%Y-\%m-\%d).log 2>&1
-   10 0 * * * find /home/pi -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
+   10 0 * * * find /home/pi -maxdepth 1 -name "ws_to_actual_*.log" ! -name "ws_to_actual_$(date +\%Y-\%m-\%d).log" -delete
    ```
+   - `-maxdepth 1` keeps the cleanup to your home folder itself. Without it, `find` also searches every folder below it, including any backups you keep there.
    - (Optional) Test it every minute first:
      ```
      * * * * * /home/pi/run_ws_to_actual.sh >> /home/pi/ws_to_actual.log 2>&1
      ```
 1. Check if it ran successfully:
    ```bash
-   tail -n 20 /home/pi/ws_to_actual.log
+   tail -n 20 /home/pi/ws_to_actual_$(date +%F).log
    ```
+   It should end with `INFO Done.` followed by `exit=0`.
 1. View system cron logs if needed:
    ```bash
-   grep CRON /var/log/syslog | tail -n 20
+   journalctl -u cron --since today
    ```
 
 ## Troubleshooting
@@ -169,13 +199,7 @@ Ensure `ACTUAL_PASSWORD` is exported in `/home/pi/ws_to_actual_env.sh` and that 
 
 **Wealthsimple login issues:**
 
-If cron cannot read `~/.bashrc`, use the dedicated env file instead:
-
-```bash
-source /home/pi/ws_to_actual_env.sh
-```
-
-Ensure the following are set for non-interactive cron runs:
+Cron doesn't read `~/.bashrc`, so the wrapper sources `/home/pi/ws_to_actual_env.sh` itself. Ensure the following are set in that file:
 
 ```bash
 export WS_USERNAME='your_ws_email'
@@ -327,7 +351,11 @@ def load_or_login_ws():
         except Exception:
             log.warning("Could not write session to keyring")
         try:
-            with open(SESSION_CACHE_FILE, "w", encoding="utf-8") as f:
+            # The session holds live access/refresh tokens: create the file
+            # readable by this user only (a plain open() would create it 644).
+            fd = os.open(SESSION_CACHE_FILE, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                os.fchmod(f.fileno(), 0o600)  # also tightens a file left over from older versions
                 f.write(sess_obj)
         except Exception as e:
             log.warning("Could not write local session cache %s: %s", SESSION_CACHE_FILE, e)

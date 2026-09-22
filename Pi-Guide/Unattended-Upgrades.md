@@ -83,6 +83,13 @@ Unattended-upgrades installs updates but **does not reboot** by default. Most up
   ls /boot/firmware/pieeprom.upd 2>/dev/null && echo "EEPROM update staged"
   ```
   To cancel a staged update instead of rebooting: `sudo rpi-eeprom-update -r`.
+  - After updating the bootloader, `rpi-eeprom-update` keeps printing **"UPDATE AVAILABLE"** until you reboot. Its `CURRENT` line shows the bootloader that's *running*, and the new one only runs after a reboot. Don't flash it again because of that message. Reboot, and it should report "up to date".
+- **A "newer kernel available" warning on a Pi 5 is often a false alarm.** Raspberry Pi OS installs two kernel builds of the same version: `-2712` (made for the Pi 5, the one it runs) and `-v8` (generic). `needrestart`, which runs after `apt` installs, can compare the running `-2712` kernel against the `-v8` name and say a reboot is needed when nothing newer is installed. Check for yourself:
+  ```bash
+  uname -r                          # the kernel that's running
+  dpkg -l 'linux-image-*' | grep ^ii  # the kernels that are installed
+  ```
+  If the running version matches the newest installed `-2712` package, there's nothing to reboot for. `/var/run/reboot-required` (above) is the reliable signal.
 - Rather than remembering to check, have it shown every time you log in — see [Job Monitoring](/Pi-Guide/Job-Monitoring.md#login-status-message).
 - Or let it reboot on its own, by adding to your file:
   ```
