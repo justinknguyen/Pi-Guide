@@ -83,6 +83,8 @@ Within the Room Assistant config file (Step 2 of Installation), replace `homeass
 
 Finally, watch this video to set up cards and automations in Home Assistant with Room Assistant: https://www.youtube.com/watch?v=x5ublCxDDWE&t=379s.
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw): Room Assistant mostly makes outgoing connections to MQTT, which UFW doesn't block. If you run several instances as a cluster, they talk to each other on UDP port 6425 — allow it on each Pi from the others (`sudo ufw allow from 192.168.50.0/24 to any port 6425 proto udp`).
+
 ## Troubleshooting
 
 Sometimes Room Assistant's Bluetooth communication stops working (perhaps due to updating/reinstalling NodeJS). Run the following command to fix it:

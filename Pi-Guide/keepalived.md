@@ -258,6 +258,15 @@ Explanation of the options:
    sudo systemctl restart keepalived.service
    ```
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw) on the Pis, allow VRRP from the other Pi on **both** of them. keepalived's heartbeat is VRRP, which isn't TCP or UDP, so no port rule covers it. Without this rule, each Pi thinks the other is down and both take the virtual IP at once:
+
+```bash
+sudo ufw allow from [OTHERPIIPADDRESS] proto vrrp comment 'keepalived'
+sudo ufw allow from [OTHERPIIPv6ADDRESS] proto vrrp comment 'keepalived IPv6'
+```
+
+The second line is only needed if you set up the IPv6 instance above.
+
 ## Testing
 
 1. Check the status of keepalived on both Pis:

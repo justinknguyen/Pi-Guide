@@ -44,6 +44,14 @@ Remotely access your Raspberry Pi's desktop environment from another device.
    ```
    - Replace "pi" with the name of your login username if you changed it.
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Remote Desktop from your network:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 3389 proto tcp comment 'XRDP (LAN)'
+```
+
+Don't open 3389 to the internet — use [Tailscale](/Pi-Guide/Tailscale.md) to reach it from outside.
+
 ## Testing
 
 Type "rdp" into your Windows search bar and open "Remote Desktop Connection". Once opened, you can enter the IP address of the Pi to log in and view the desktop.

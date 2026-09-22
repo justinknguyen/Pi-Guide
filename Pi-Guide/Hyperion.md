@@ -57,6 +57,12 @@ Once Hyperion is installed on the Pi, you can access the Hyperion website using 
    | Signal Detection HMin | 0.4 |
    | Signal Detection HMax | 0.45 |
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow the web interface from your network. It's installed directly on the Pi, so UFW blocks it like anything else:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 8090 proto tcp comment 'Hyperion'
+```
+
 ## Troubleshooting
 
 If you get the following error when trying to update your Pi:

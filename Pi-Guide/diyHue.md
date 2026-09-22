@@ -23,6 +23,15 @@ If Pi-hole is installed, diyHue needs port 80, so change Pi-hole's web interface
    ```
 1. Check the container is running using Portainer.
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow diyHue's ports. `--network=host` means UFW blocks them like any program installed on the Pi:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 80,443 proto tcp comment 'diyHue'
+sudo ufw allow from 192.168.50.0/24 to any port 2100 proto udp comment 'diyHue entertainment'
+```
+
+Port 2100 is only needed for Hue Sync and entertainment areas. UFW already lets in the discovery traffic (SSDP, mDNS) the Hue app uses to find the bridge.
+
 ## Configuration
 
 1. Access the webui using `[PIIPADDRESS]`.

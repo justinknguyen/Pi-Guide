@@ -73,6 +73,8 @@ Use Zigbee devices (sensors, buttons, bulbs, plugs — IKEA, Aqara, Hue, Sonoff,
    docker compose up -d
    ```
 
+If Mosquitto runs on this same Pi and you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), Zigbee2MQTT can't reach it until you allow MQTT from Docker's network — see [Mosquitto](/Pi-Guide/Mosquitto.md#configuration). Otherwise it fails to start with a connection timeout in `docker logs zigbee2mqtt`.
+
 ## Configuration
 
 1. Open the web UI at `[PIIPADDRESS]:8081`.

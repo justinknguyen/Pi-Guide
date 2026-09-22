@@ -13,6 +13,7 @@ Automated media library management. **Sonarr** handles TV shows, **Radarr** hand
   - [3. Download Client](#3-download-client)
   - [4. Connect Prowlarr to Sonarr and Radarr](#4-connect-prowlarr-to-sonarr-and-radarr)
   - [5. Indexers](#5-indexers)
+  - [6. Restrict Allowed Hostnames (Optional)](#6-restrict-allowed-hostnames-optional)
 - [Seerr (Optional)](#seerr-optional)
 - [Testing](#testing)
 - [Updating](#updating)
@@ -150,6 +151,8 @@ Sonarr and Radarr don't download anything themselves — they search indexers, t
 
 Once yours is running, add it in **both** Sonarr and Radarr under Settings → Download Clients → Add, using the container name as the host.
 
+If you want the download client's traffic to go through a VPN, see [Gluetun](/Pi-Guide/Gluetun.md). It routes qBittorrent through the VPN and cuts it off entirely if the VPN drops, so nothing leaks out over your normal connection.
+
 Prowlarr ships with no indexers and neither app comes with any content — you supply those, so make sure whatever you point it at is something you're entitled to access.
 
 ### 4. Connect Prowlarr to Sonarr and Radarr
@@ -169,6 +172,25 @@ Use the container names, not IP addresses. The containers resolve each other by 
 ### 5. Indexers
 
 In Prowlarr, go to Indexers → Add Indexer and add the ones you use. Each gets tested on save and then synced out to Sonarr and Radarr within a minute — you should see them appear under Settings → Indexers in both apps without adding them there manually.
+
+### 6. Restrict Allowed Hostnames (Optional)
+
+By default each app answers a request addressed to any hostname. That leaves an opening for "DNS rebinding", where a malicious web page open in a browser on your LAN tricks the browser into sending requests to the app. Each app can be told to accept only the names you actually use:
+
+1. Stop the app (e.g. `docker compose stop radarr`) and open its config file (`~/arr/radarr/config.xml`).
+1. Set the `<AllowedHosts>` line (add it inside `<Config>` if it's missing):
+   ```xml
+   <AllowedHosts>localhost,127.0.0.1,[PIIPADDRESS],[PIHOSTNAME],radarr</AllowedHosts>
+   ```
+   - **Include the container name** (`radarr`, `sonarr`, `prowlarr`). The apps reach each other by name. Leave it out and Prowlarr's sync and Seerr quietly stop working, with no error on the app's own page.
+   - Add any domain you reach it through, e.g. behind [NGINX Proxy Manager](/Pi-Guide/NGINX.md#docker-alternative-nginx-proxy-manager).
+1. Start it again, and repeat for the other two with their own container names.
+1. Check that a known name is accepted and an unknown one refused:
+   ```bash
+   curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: radarr' http://localhost:7878/ping          # 200
+   curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: something-else' http://localhost:7878/ping # 400
+   ```
+   Then press **Test** on each app under Prowlarr's Settings → Apps.
 
 ## Seerr (Optional)
 
@@ -203,6 +225,7 @@ A friendly request front-end. Instead of you logging into Sonarr and Radarr to a
    ```
 1. Open `http://[PIIPADDRESS]:5055` and work through the setup wizard:
    - **Sign in with Jellyfin** — point it at `http://[PIIPADDRESS]:8096` and log in with your Jellyfin admin account.
+     - If this Pi uses the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw) and runs Jellyfin as in [its guide](/Pi-Guide/Jellyfin.md) (host networking), this step times out. Seerr's request comes from Docker's network, which your LAN rule doesn't cover. Allow it with `sudo ufw allow from 172.16.0.0/12 to any port 8096 proto tcp comment 'Seerr to Jellyfin'`.
    - **Services** — add Sonarr (`http://sonarr:8989`) and Radarr (`http://radarr:7878`) with the same API keys from [step 4](#4-connect-prowlarr-to-sonarr-and-radarr), and set the same root folders and quality profiles you configured there.
 1. Invite household members under Users → Import from Jellyfin. Leave "Auto-Approve" off if you want requests to queue for your approval first.
 

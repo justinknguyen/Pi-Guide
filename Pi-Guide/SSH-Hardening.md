@@ -8,6 +8,8 @@ Secure your Pi's SSH access with key-based login, a firewall, and fail2ban. Stro
 - [Adding More Devices](#adding-more-devices)
 - [Disable Password Login](#disable-password-login)
 - [Firewall (UFW)](#firewall-ufw)
+  - [What UFW Blocks](#what-ufw-blocks)
+  - [Restricting a Docker Port to Your LAN](#restricting-a-docker-port-to-your-lan)
 - [Fail2ban](#fail2ban)
 - [Sources](#sources)
 
@@ -102,13 +104,12 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
      ```
    - Before continuing, check which address your current session came from with `echo $SSH_CONNECTION` (the first field). If it isn't covered by the rules above, enabling the firewall will cut you off.
    - Reaching the Pi from outside your home? Use [Tailscale](/Pi-Guide/Tailscale.md) (rule below) or [PiVPN](/Pi-Guide/PiVPN.md) rather than opening SSH to the internet.
-1. Allow the ports for the services you run on this Pi. This repo has grown a lot of guides, each with its own port — check the one you're using rather than assuming this list is complete. A few common ones:
+1. Allow the ports for the services you run on this Pi. [What UFW Blocks](#what-ufw-blocks) below lists the services from these guides that need a rule. Services in ordinary Docker containers mostly don't, since their published ports bypass UFW. A few common ones:
    ```bash
-   sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface / NGINX Proxy Manager
+   sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface
    sudo ufw allow 51820/udp   # PiVPN (WireGuard)
-   sudo ufw allow 51821/tcp   # wg-easy admin UI
-   sudo ufw allow 8200/tcp    # Vaultwarden
    ```
+   - The same rules are harmless for Dockerized apps like NGINX Proxy Manager, wg-easy (51821) or Vaultwarden (8200), but they aren't what keeps those reachable.
 1. If this Pi shares files with [Samba](/Pi-Guide/NAS.md), allow its ports from your network. Samba runs directly on the Pi rather than in Docker, so the firewall blocks it like anything else:
    ```bash
    sudo ufw allow from 192.168.50.0/24 to any port 445,139 proto tcp comment 'Samba (LAN)'
@@ -141,15 +142,118 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
 
 Things to know about UFW:
 
-- **Docker publishes container ports by writing its own iptables rules, which bypass UFW** — a `-p 8080:80` container is reachable even if UFW doesn't allow it. UFW still protects everything running directly on the Pi; just don't assume it covers Docker containers. The simplest way to limit a container is to publish it on a specific address, e.g. `-p 127.0.0.1:8080:80` (only reachable from the Pi itself, for use behind a reverse proxy like [NGINX](/Pi-Guide/NGINX.md)). For anything more, Docker's docs cover filtering with the `DOCKER-USER` chain (see Sources).
-- **The reverse *does* go through UFW: a container reaching the Pi's own IP.** If a container calls `http://[PIIPADDRESS]:[PORT]` (e.g. [Homepage](/Pi-Guide/Homepage.md) checking a service on the same Pi), that traffic comes from Docker's internal network (`172.16.0.0/12`), which your LAN rule doesn't match — so it's silently blocked. Allow only the port it needs:
+- **Docker publishes container ports by writing its own iptables rules, which bypass UFW** — a `-p 8080:80` container is reachable even if UFW doesn't allow it. UFW still protects everything running directly on the Pi; just don't assume it covers Docker containers. The simplest way to limit a container is to publish it on a specific address, e.g. `-p 127.0.0.1:8080:80` (only reachable from the Pi itself, for use behind a reverse proxy like [NGINX](/Pi-Guide/NGINX.md)). To keep a port reachable from your LAN but nothing else, see [Restricting a Docker Port to Your LAN](#restricting-a-docker-port-to-your-lan).
+- **Containers using `network_mode: host` (or `--network host`) are *not* bypassed.** They don't get Docker's port rules. They listen straight on the Pi like a normal program, so UFW blocks them unless you allow their port. See [What UFW Blocks](#what-ufw-blocks) for the list.
+- **The reverse *does* go through UFW: a container reaching the Pi's own IP.** If a container calls `http://[PIIPADDRESS]:[PORT]` (e.g. [Homepage](/Pi-Guide/Homepage.md) or [Uptime Kuma](/Pi-Guide/Uptime-Kuma.md) checking a service on the same Pi), that traffic comes from Docker's internal network, which your LAN rule doesn't match. So it's silently blocked, **even when the port belongs to another Docker container**. Allow only the port it needs:
   ```bash
   sudo ufw allow from 172.16.0.0/12 to any port [PORT] proto tcp
   ```
   Avoid allowing all of `172.16.0.0/12` with no port — that would open SSH and every other service to every container.
+  - **`172.16.0.0/12` isn't the only range Docker uses.** Docker gives each compose project its own network, and after working through the `172.x` ranges it moves on to `192.168.x.0/20` networks. It doesn't reuse a freed range straight away, so this can happen with only a handful of stacks. Check every network's range:
+    ```bash
+    docker network ls -q | xargs docker network inspect --format '{{.Name}} {{range .IPAM.Config}}{{.Subnet}}{{end}}'
+    ```
+    Any network outside `172.16.0.0/12` needs its own rule with that exact subnet. Don't widen it to `192.168.0.0/16`, which would also cover your LAN.
+  - **`docker compose down` deletes the project's network**, and the next `up` can create it on a different range, outside your rule. That silently breaks things again. Use `docker compose stop`/`start` when you only want the containers stopped, and re-run the check above after any `down`.
+  - Blocked attempts show up in `sudo journalctl -k | grep 'UFW BLOCK'` with a `SRC=172.…` or `SRC=192.168.…` address. That only lists a flow after it has actually been tried, though. A dashboard widget or monitor that hasn't polled since you enabled UFW is already broken without showing up yet. Check the containers that talk to the Pi's IP rather than waiting for the log.
 - **`systemctl status ufw` says `inactive (dead)` even when the firewall is working.** It's a one-shot service that exits after loading the rules. Use `sudo ufw status` to check.
 - **Testing a port from the Pi itself proves nothing.** A connection from the Pi to its own IP never passes through the firewall, so it always succeeds. Test from another device on your network (e.g., open the page on your phone).
 - To see what's being blocked, `sudo ufw logging low`, then watch `sudo journalctl -k -f | grep 'UFW BLOCK'`.
+
+### What UFW Blocks
+
+A service stops working once UFW is enabled if it falls into one of the groups below and has no allow rule. Ports published by an ordinary Docker container (`-p` / `ports:`) aren't in the list, because those bypass UFW.
+
+**Installed directly on the Pi, or a container with host networking.** Allow these from your LAN (`sudo ufw allow from 192.168.50.0/24 to any port [PORT] proto [tcp|udp]`). UFW's defaults already let in mDNS (5353) and UPnP/SSDP (1900) discovery, so those don't need rules:
+
+| Guide | Ports |
+| --- | --- |
+| [Jellyfin](/Pi-Guide/Jellyfin.md) | 8096/tcp, plus 7359/udp so apps can find the server automatically |
+| [Home Assistant](/Pi-Guide/Home-Assistant.md) | 8123/tcp |
+| [Scrypted](/Pi-Guide/Scrypted.md) | 10443/tcp, plus the HomeKit ports — see that guide |
+| [diyHue](/Pi-Guide/diyHue.md) | 80,443/tcp, plus 2100/udp for Hue Sync / entertainment areas |
+| [Mosquitto](/Pi-Guide/Mosquitto.md) | 1883/tcp |
+| [Syncthing](/Pi-Guide/Syncthing.md) | 8384/tcp (web UI), 22000/tcp+udp (syncing), 21027/udp (finding devices on your LAN) |
+| [Hyperion](/Pi-Guide/Hyperion.md) / [HyperHDR](/Pi-Guide/HyperHDR.md) | 8090/tcp |
+| [XRDP](/Pi-Guide/XRDP.md) | 3389/tcp |
+| [Grafana](/Pi-Guide/Grafana.md)'s node-exporter | 9100/tcp — only if Prometheus runs on a *different* machine. On the same Pi, see the next table |
+| [keepalived](/Pi-Guide/keepalived.md) | VRRP from the other Pi — see that guide. Without it, both Pis take over the shared IP at once |
+
+**Containers that call the Pi's own IP.** These need a rule from Docker's networks (see [the note above](#firewall-ufw) about which ranges), not from your LAN:
+
+| Guide | Calls |
+| --- | --- |
+| [Homepage](/Pi-Guide/Homepage.md), [Uptime Kuma](/Pi-Guide/Uptime-Kuma.md) | every service they link to, monitor or show a widget for |
+| [Grafana](/Pi-Guide/Grafana.md) (Prometheus) | 9090 (itself) and 9100 (node-exporter), because `prometheus.yml` targets the Pi's IP |
+| [Zigbee2MQTT](/Pi-Guide/Zigbee2MQTT.md) | 1883 (Mosquitto) |
+| [Seerr](/Pi-Guide/Arr-Stack.md#seerr-optional) | 8096 (Jellyfin) |
+| [nebula-sync](/Pi-Guide/Nebula-Sync.md) | the Pi-hole web port, when one of the Pi-holes is the Pi it runs on |
+
+### Restricting a Docker Port to Your LAN
+
+Some containers have endpoints that don't ask for a password: a media server's playlist URL, a stats page, an admin API meant for the LAN. UFW can't restrict their published port. Publishing on `127.0.0.1` would cut off the rest of your network too. Docker checks a chain called `DOCKER-USER` before its own rules, so you can put the restriction there.
+
+1. Create the script:
+   ```bash
+   sudo nano /usr/local/sbin/docker-user-rules.sh
+   ```
+1. Paste the following in, replacing `LAN` with your network and `PORTS` with the ports to restrict:
+   ```bash
+   #!/bin/bash
+   # Restrict published Docker ports to the LAN and to Docker's own networks.
+   set -u
+   LAN=192.168.50.0/24
+   DOCKER_NETS=(172.16.0.0/12)   # add any network outside this range (see SSH Hardening)
+   PORTS=(9191)                  # the port INSIDE the container, see below
+
+   iptables -L DOCKER-USER -n >/dev/null 2>&1 || { echo "DOCKER-USER missing - is Docker running?"; exit 1; }
+
+   # Remove this script's old rules first, so running it twice doesn't duplicate them.
+   while n=$(iptables -L DOCKER-USER --line-numbers -n | awk '/docker-user-rules/ {print $1; exit}'); [[ -n $n ]]; do
+       iptables -D DOCKER-USER "$n"
+   done
+
+   for port in "${PORTS[@]}"; do
+       for src in "$LAN" "${DOCKER_NETS[@]}"; do
+           iptables -A DOCKER-USER -p tcp --dport "$port" -s "$src" -m comment --comment "docker-user-rules" -j RETURN
+       done
+       iptables -A DOCKER-USER -p tcp --dport "$port" -m comment --comment "docker-user-rules" -j DROP
+   done
+   ```
+   - `--dport` matches the port **inside the container** (the right-hand side of `-p 8080:80`), because Docker has already rewritten the destination by the time traffic reaches `DOCKER-USER`. For `-p 9191:9191` they're the same.
+   - **Keep Docker's networks in the allow list.** Other containers reaching this one by the Pi's IP arrive from a Docker address, not a LAN one. A rule that only allows the LAN would cut them off.
+1. Make it executable, and create a service to run it:
+   ```bash
+   sudo chmod 700 /usr/local/sbin/docker-user-rules.sh
+   sudo nano /etc/systemd/system/docker-user-rules.service
+   ```
+   ```ini
+   [Unit]
+   Description=Apply DOCKER-USER iptables rules
+   After=docker.service
+   Requires=docker.service
+   PartOf=docker.service
+
+   [Service]
+   Type=oneshot
+   RemainAfterExit=yes
+   ExecStart=/usr/local/sbin/docker-user-rules.sh
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+   `PartOf=docker.service` is the important line. Rules in `DOCKER-USER` don't survive a reboot or a Docker restart. Without it, updating Docker quietly reopens the port.
+1. Enable it and check the rules:
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now docker-user-rules
+   sudo iptables -L DOCKER-USER -n --line-numbers
+   ```
+1. Test from a device on your LAN (it should connect), and from outside it, e.g. a phone on mobile data with WiFi off (it should time out). Testing from the Pi itself proves nothing, as above.
+
+IPv6 needs no rule as long as Docker's IPv6 support is off, which is the default. The port is then served over IPv6 by an ordinary program on the Pi, and UFW already blocks that. If you ever enable IPv6 in Docker, add matching `ip6tables` rules.
+
+Undo: `sudo systemctl disable --now docker-user-rules && sudo iptables -F DOCKER-USER`.
 
 ## Fail2ban
 

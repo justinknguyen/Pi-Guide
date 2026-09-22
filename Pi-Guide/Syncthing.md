@@ -47,6 +47,16 @@ By default the web GUI only listens on the Pi itself, so open it up to your LAN:
 1. Install Syncthing on your other devices (desktop apps, or the Möbius Sync/Syncthing-Fork apps on iOS/Android), then on the Pi click "Add Remote Device" — devices find each other by Device ID (shown under Actions > Show ID).
 1. Share a folder: "Add Folder" on one device, then tick the other devices under the folder's Sharing tab and accept the prompt on each.
 
+If you use the [UFW firewall](/Pi-Guide/SSH-Hardening.md#firewall-ufw), allow Syncthing's ports from your network. It's installed directly on the Pi, so UFW blocks it like anything else:
+
+```bash
+sudo ufw allow from 192.168.50.0/24 to any port 8384 proto tcp comment 'Syncthing web UI'
+sudo ufw allow from 192.168.50.0/24 to any port 22000 comment 'Syncthing sync'
+sudo ufw allow from 192.168.50.0/24 to any port 21027 proto udp comment 'Syncthing discovery'
+```
+
+Port 22000 is for syncing (TCP, plus UDP for QUIC connections). 21027 is how devices on your LAN find each other. If 22000 is blocked, other devices can't connect to the Pi directly and Syncthing falls back to its public relays, which is much slower.
+
 ## Testing
 
 Drop a file into the shared folder on one device and watch it appear on the others. The GUI's folder panel shows "Up to Date" when everything is synced.

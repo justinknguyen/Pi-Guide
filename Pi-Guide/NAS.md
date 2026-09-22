@@ -62,11 +62,12 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    ```
    - You can check if it was successfully mounted by entering `lsblk`, or `mountpoint /mnt/sda1`
    - If it says it can't mount the drive, it could be a false alarm. Try rebooting and then check if the drive was mounted with `lsblk`. If it still doesn't say it was mounted, try entering the command again
-1. Create a shared folder and grant it read/write access:
+1. Create a shared folder owned by your user (replace `pi` with your username):
    ```bash
    sudo mkdir /mnt/sda1/shared
-   sudo chmod -R 777 /mnt/sda1/shared
+   sudo chown -R pi:pi /mnt/sda1/shared
    ```
+   - Avoid the common `chmod -R 777` advice. It makes every file writable by every user and every container on the Pi. Samba logs in as your user, so owning the folder is all it needs.
 
 ## Installation
 
@@ -83,11 +84,14 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    [shared]
    path=/mnt/sda1/shared
    writeable=Yes
-   create mask=0777
-   directory mask=0777
+   create mask=0664
+   directory mask=0775
    public=no
+   valid users = pi
    ```
-   - Share a dedicated folder like `shared`, **not the whole drive**, if anything else lives on it. If [Docker](/Pi-Guide/Docker.md) containers like [immich](/Pi-Guide/immich.md) keep their data on this drive, sharing the drive's root also exposes their live files, including database folders, to every device that can open the share. With `create mask=0777` that means read/write. A mistaken drag-and-drop from a laptop, or ransomware on one, can then corrupt a running database.
+   - `create mask`/`directory mask` set the permissions of everything written through the share. `0777`, which many guides use, makes each new file world-writable. On one server that left 85 world-writable files across the system, all created through a share that pointed at `/`. `0664`/`0775` let you and your group write, and everyone else only read.
+   - `valid users` lists who may log in to this share (replace `pi` with your username). It's a second lock alongside `public=no`, so a later change to the global guest settings can't quietly open the share.
+   - Share a dedicated folder like `shared`, **not the whole drive**, if anything else lives on it. If [Docker](/Pi-Guide/Docker.md) containers like [immich](/Pi-Guide/immich.md) keep their data on this drive, sharing the drive's root also exposes their live files, including database folders, to every device that can open the share, read/write. A mistaken drag-and-drop from a laptop, or ransomware on one, can then corrupt a running database. The same goes for sharing your home folder or `/`: that's where your SSH keys, `.env` files and other secrets live.
    - Keep `public=no`. Settings like `guest ok = yes`, `map to guest = Bad User` or `usershare allow guests = yes` let anyone on your network in without a password.
 1. Restart Samba:
    ```bash
