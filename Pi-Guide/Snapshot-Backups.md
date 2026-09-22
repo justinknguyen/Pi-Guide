@@ -53,6 +53,7 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
    NAS_PASS=""                                    # rsync daemon password file, if any
    STATE_DIR="/var/backups/system-state"
    CONF="/etc/job-monitoring.conf"                # optional, see Job Monitoring guide
+   LOCK="/run/lock/snapshot-backup.lock"
 
    KEEP_RECENT=14   # keep this many most-recent daily snapshots...
    KEEP_WEEKLY=8    # ...then one per week for this many weeks
@@ -86,16 +87,31 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
        curl -fsS -m 10 --retry 3 -o /dev/null "${url}${1:-}" 2>/dev/null || true
    }
 
+   # One run at a time. If yesterday's run is stuck, it still holds the lock
+   # (rsync inherits it), so today's run fails loudly instead of piling on.
+   exec 9>"$LOCK"
+   if ! flock -n 9; then
+       log "WARN: previous run still holds $LOCK - skipping this run"
+       hc /fail
+       exit 1
+   fi
+
    # Lists of what's installed and enabled -- enough to rebuild on a fresh card.
+   # A failed capture leaves an empty or stale list, which is useless for a
+   # rebuild, so it counts as a warning rather than being silently ignored.
    capture_state() {
        mkdir -p "$STATE_DIR" || { warn "cannot create $STATE_DIR"; return; }
-       apt-mark showmanual > "$STATE_DIR/packages-manual.list" 2>/dev/null
-       dpkg --get-selections > "$STATE_DIR/packages-all.list" 2>/dev/null
-       systemctl list-unit-files --state=enabled --no-legend > "$STATE_DIR/services-enabled.list" 2>/dev/null
+       cap() {
+           local file=$1; shift
+           "$@" > "$STATE_DIR/$file" 2>/dev/null || warn "system-state: $file failed ($1)"
+       }
+       cap packages-manual.list  apt-mark showmanual
+       cap packages-all.list     dpkg --get-selections
+       cap services-enabled.list systemctl list-unit-files --state=enabled --no-legend
        command -v docker >/dev/null &&
-           docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Ports}}' > "$STATE_DIR/docker-containers.list" 2>/dev/null
-       blkid > "$STATE_DIR/blkid.txt" 2>/dev/null
-       cp /etc/fstab "$STATE_DIR/fstab" 2>/dev/null
+           cap docker-containers.list docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Ports}}'
+       cap blkid.txt             blkid
+       cap fstab                 cat /etc/fstab
    }
 
    excludes() {
@@ -137,17 +153,28 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
    if mountpoint -q "$USB_MOUNT"; then
        mkdir -p "$SNAP_ROOT"
        PREV="$(previous_snapshot)"
+       usb_ok=1
        for entry in "${SOURCES[@]}"; do
            IFS='|' read -r label src excl <<< "$entry"
-           [[ -e $src ]] || { warn "$label: $src missing, skipped"; continue; }
+           [[ -e $src ]] || { warn "$label: $src missing, skipped"; usb_ok=0; continue; }
            dest="$SNAP_ROOT/$TODAY/$label"
            mkdir -p "$dest"
            opts=("${RSYNC_OPTS[@]}")
            mapfile -t -O "${#opts[@]}" opts < <(excludes "$excl")
            [[ -n $PREV && -d $PREV/$label ]] && opts+=(--link-dest="$PREV/$label")
-           rsync "${opts[@]}" "$src" "$dest/" && log "USB $label OK" || warn "USB $label FAILED"
+           if rsync "${opts[@]}" "$src" "$dest/"; then
+               log "USB $label OK"
+           else
+               warn "USB $label FAILED"; usb_ok=0
+           fi
        done
-       ln -sfn "snapshots/$TODAY" "$USB_ROOT/latest"
+       # Only point "latest" at a complete snapshot. A partial one is kept under
+       # its date, but "latest" stays on the last good one.
+       if (( usb_ok )); then
+           ln -sfn "snapshots/$TODAY" "$USB_ROOT/latest"
+       else
+           warn "snapshot $TODAY incomplete - latest left at $(readlink "$USB_ROOT/latest")"
+       fi
        prune_snapshots
    else
        warn "$USB_MOUNT is not mounted - skipped USB snapshots"
@@ -164,7 +191,9 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
        for entry in "${SOURCES[@]}"; do
            IFS='|' read -r label src excl <<< "$entry"
            [[ -e $src ]] || continue
-           opts=("${RSYNC_OPTS[@]}")
+           # Give up if the NAS stops responding, instead of hanging forever.
+           opts=("${RSYNC_OPTS[@]}" --timeout=300)
+           [[ $NAS_TARGET == *::* ]] && opts+=(--contimeout=30)   # rsync daemon only
            [[ -n $NAS_PASS ]] && opts+=(--password-file="$NAS_PASS")
            mapfile -t -O "${#opts[@]}" opts < <(excludes "$excl")
            rsync "${opts[@]}" "$src" "$NAS_TARGET/$label/" && log "NAS $label OK" || warn "NAS $label FAILED"
@@ -196,10 +225,12 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
    ```
    Then set up log rotation and monitoring for it as described in [Job Monitoring](/Pi-Guide/Job-Monitoring.md). The script already includes the healthchecks.io pings — it reads `HC_BACKUP_URL` from `/etc/job-monitoring.conf` if that file exists.
 
-Two safety checks in the script are there for a reason — don't remove them:
+A few safety checks in the script are there for a reason. Don't remove them:
 
 - **`mountpoint -q`**: if the USB drive ever fails to mount, `/mnt/sda1` is just an empty folder on the SD card. Without this check, the backup would quietly copy everything onto your SD card until it filled up.
 - **The pruning check** only ever deletes a folder named like a date directly inside `snapshots/`. A typo in a path setting can't turn it into `rm -rf` on something else.
+- **The `flock` lock** keeps two runs from overlapping. If a run gets stuck, the next day's run logs a warning and reports a failure instead of starting a second copy alongside it.
+- **`latest` only moves on a complete run.** If any source fails, that day's folder is kept but `latest`, which is what you'd restore from, still points at the last complete snapshot.
 
 ## Adding a NAS Copy
 
@@ -222,6 +253,7 @@ Set `NAS_HOST` to the NAS's IP address and `NAS_TARGET` to where the copy should
 A few things to know:
 
 - The NAS reachability check means a NAS that's off or rebooting doesn't stop the USB backup; it's logged as a warning and the run is reported as failed so you notice.
+- `--timeout=300` ends the NAS copy if the NAS stops responding for 5 minutes. Without it, a NAS that goes away mid-copy can leave rsync waiting forever. `--contimeout` does the same for the initial connection, but rsync only accepts it for rsync-daemon (`::`) targets and errors out over SSH, so the script adds it only for those.
 - `--numeric-ids` keeps file owners correct. Without it, rsync matches owners **by name**, and if the NAS has its own user called `pi` (or anything else) with a different ID number, restored files come back owned by the wrong user. Keep it.
 - **Your backup contains secrets**: password hashes (`/etc/shadow`), the Pi's SSH host keys, API tokens and passwords in service configs. File permissions are preserved, but anyone with admin access to the NAS — or any machine that mounts that share — can read them. Give the backup its own share or folder that only you can access. If that isn't enough, encrypt the backup (e.g. use [BorgBackup](https://www.borgbackup.org/) or restic instead of plain rsync).
 - rsync's `--delete` doesn't touch excluded paths. If you remove a source from the list or add a new exclude, the old copy stays in the NAS mirror until you delete it by hand.
