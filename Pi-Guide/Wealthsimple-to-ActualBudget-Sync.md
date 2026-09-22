@@ -147,7 +147,9 @@ INFO Done.
 
    hc_ping /start
    source /home/pi/ws_to_actual_env.sh
-   /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py
+   # A normal run takes seconds; the timeout stops a hung Wealthsimple/Actual
+   # call from lingering until the next run (exits 124, which pings /fail).
+   timeout 10m /home/pi/actual_env/bin/python /home/pi/ws_to_actual.py
    EOF
    chmod +x /home/pi/run_ws_to_actual.sh
    ```
@@ -232,6 +234,16 @@ rm -f ~/.ws_to_actual_session.json
 ```
 Then rerun the script manually to reauthenticate.
 
+**`Wealthsimple asked for a 2FA code (attempt N/3)`:**
+
+The TOTP code was rejected, usually because `WS_TOTP_SECRET` is wrong or the Pi's clock is off (check `timedatectl`). The script tries 3 times, 30 seconds apart, then exits with an error instead of retrying forever, which could get your Wealthsimple account locked.
+
+**A new Actual rule isn't applied to older transactions:**
+
+The script runs your rules on **newly imported** transactions only, the way Actual's own import does, so a later sync never overwrites a category or payee you changed by hand. To apply a new rule to transactions that were already imported, do it from Actual's rule editor, which can apply a rule to the existing transactions it matches.
+
+Each run's log shows `Committed N new and N updated transactions (N already up to date).`, or `All N transactions already up to date; nothing to commit.` when nothing changed.
+
 **Script not running from cron:**
 
 Make sure cron is using your user's environment, not root's:
@@ -267,6 +279,7 @@ import json
 import decimal
 import getpass
 import logging
+import time
 import pyotp
 from datetime import date, timedelta
 from dateutil import parser as dateparser
@@ -282,7 +295,7 @@ from ws_api import (
 
 # Actual (actualpy)
 from actual import Actual
-from actual.queries import get_or_create_account, reconcile_transaction
+from actual.queries import create_transaction, get_or_create_account, match_transaction
 
 # Store sessions securely
 import keyring
@@ -409,8 +422,11 @@ def load_or_login_ws():
         )
 
     otp_answer = None
+    # Cap retries: with WS_TOTP_SECRET set, a rejected code used to loop forever,
+    # hammering Wealthsimple's login endpoint from cron.
+    max_attempts = 3
 
-    while True:
+    for attempt in range(1, max_attempts + 1):
         try:
             if secret:
                 otp_answer = pyotp.TOTP(secret).now()
@@ -433,7 +449,11 @@ def load_or_login_ws():
             log.info("Logged in to Wealthsimple and saved session.")
             return ws
         except OTPRequiredException:
-            if not secret:
+            log.warning("Wealthsimple asked for a 2FA code (attempt %d/%d).", attempt, max_attempts)
+            if secret:
+                # The TOTP code was rejected; wait for the next 30 s window before retrying.
+                time.sleep(30)
+            else:
                 otp_answer = input("2FA/TOTP code: ").strip()
         except LoginFailedException:
             log.error("Login failed.")
@@ -445,6 +465,8 @@ def load_or_login_ws():
         except Exception as e:
             log.exception("Unexpected error during Wealthsimple login: %s", e)
             raise
+
+    raise RuntimeError(f"Wealthsimple login failed after {max_attempts} attempts")
 
 
 def is_interest_activity(act: Dict) -> bool:
@@ -638,7 +660,6 @@ def import_into_actual(
     Automatically creates the budget file on the Actual server if it does not exist.
     """
     from actual.exceptions import UnknownFileId
-    import time
 
     if not actual_password:
         raise RuntimeError(
@@ -672,41 +693,65 @@ def import_into_actual(
             base_url=actual_base_url, password=actual_password, file=budget_file_name
         )
 
+    # Entering the context downloads the budget (and raises if that fails).
     with actual:
-        try:
-            actual.download_budget()
-            log.info("Using budget file: %s", budget_file_name)
-        except Exception as e:
-            log.warning("Could not download budget file: %s", e)
+        log.info("Using budget file: %s", budget_file_name)
 
-        added_transactions = []
+        matched = []  # every reconciled transaction, so duplicates in one run pair up correctly
+        new_transactions = []
+        changed = 0
         for tx in transactions:
             account = get_or_create_account(actual.session, tx["account_name"])
 
-            t = reconcile_transaction(
+            # Same logic as actualpy's reconcile_transaction(), unrolled so we know whether
+            # each transaction is new. Matches by imported_id (financial_id) first, then
+            # fuzzily by amount within +/-7 days.
+            t = match_transaction(
                 actual.session,
                 tx["date"],
                 account,
                 tx["payee"],
-                tx["notes"],
-                None,  # category (None = uncategorized)
                 tx["amount"],
-                cleared=False,
-                already_matched=added_transactions,
+                tx["canonical_id"],
+                matched,
             )
-            added_transactions.append(t)
-            if t.changed():
-                print(
-                    f"Added/modified transaction: {tx['date']} {tx['payee']} {tx['amount']}"
+            if t is None:
+                t = create_transaction(
+                    actual.session,
+                    tx["date"],
+                    account,
+                    tx["payee"],
+                    tx["notes"],
+                    None,  # category (None = uncategorized)
+                    tx["amount"],
+                    # Stored as financial_id, so later runs match this transaction exactly.
+                    imported_id=tx["canonical_id"],
+                    cleared=False,
                 )
+                new_transactions.append(t)
+                print(f"Added transaction: {tx['date']} {tx['payee']} {tx['amount']}")
+            else:
+                t.notes = tx["notes"]
+                t.set_date(tx["date"])
+                if t.changed():
+                    changed += 1
+                    print(f"Updated transaction: {tx['date']} {tx['payee']} {tx['amount']}")
+            matched.append(t)
 
-        # Run rules only if something new was added
-        if added_transactions:
-            actual.run_rules(transactions=added_transactions)
+        # Rules run on new transactions only, like Actual's own import, so a re-run never
+        # overwrites categories/payees edited by hand on transactions imported earlier.
+        if new_transactions:
+            actual.run_rules(transactions=new_transactions)
+        if new_transactions or changed:
             actual.commit()
-            log.info("Rules applied and %d transactions committed.", len(added_transactions))
+            log.info(
+                "Committed %d new and %d updated transactions (%d already up to date).",
+                len(new_transactions),
+                changed,
+                len(matched) - len(new_transactions) - changed,
+            )
         else:
-            log.info("No new transactions; nothing to import.")
+            log.info("All %d transactions already up to date; nothing to commit.", len(matched))
 
 
 def main():
