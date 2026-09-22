@@ -55,19 +55,30 @@ ssh pi@[PIIPADDRESS] "chmod 755 ~"
 
 <ins>IMPORTANT:</ins> Only do this after confirming key-based login works, or you will lock yourself out. Keep your current SSH session open and test the login from a second terminal.
 
-1. Open the SSH server config:
+1. Create a drop-in config file rather than editing the main `sshd_config` — it keeps your changes in one place and survives package updates that replace the main file:
    ```bash
-   sudo nano /etc/ssh/sshd_config
+   sudo nano /etc/ssh/sshd_config.d/10-hardening.conf
    ```
-1. Find the `PasswordAuthentication` line, uncomment it if needed, and set it to:
+1. Paste the following in and save with `Ctrl+X` then `Y` then `Enter`:
    ```
    PasswordAuthentication no
+   KbdInteractiveAuthentication no
+   PermitRootLogin no
    ```
-1. To save the file, press `Ctrl+X` then `Y` then `Enter`.
-1. Restart SSH:
+1. Check the config for errors before applying it — a typo here can stop SSH from starting:
    ```bash
-   sudo systemctl restart ssh
+   sudo sshd -t
    ```
+   No output means it's valid.
+1. Apply it with `reload`, which keeps your current session connected (`restart` can drop it):
+   ```bash
+   sudo systemctl reload ssh
+   ```
+1. Confirm the setting that SSH is *actually* using:
+   ```bash
+   sudo sshd -T | grep -Ei 'passwordauthentication|permitrootlogin'
+   ```
+   It should show `passwordauthentication no`. If it still says `yes`, another file is overriding yours: for each setting, SSH uses the **first** value it reads, and the files in `/etc/ssh/sshd_config.d/` are read in alphabetical order before the rest of `sshd_config`. Some images (e.g. ones set up by cloud-init) ship a file there that turns password login back on. Look with `grep -r PasswordAuthentication /etc/ssh/sshd_config.d/`, and make sure yours sorts first (hence the `10-` prefix).
 1. From a second terminal, confirm you can still log in (and that password login is refused if you try `ssh -o PubkeyAuthentication=no pi@[PIIPADDRESS]`).
 
 ## Firewall (UFW)
@@ -86,19 +97,43 @@ UFW (Uncomplicated Firewall) blocks all incoming connections except the ones you
    ```
 1. Allow the ports for the services you run on this Pi. This repo has grown a lot of guides, each with its own port — check the one you're using rather than assuming this list is complete. A few common ones:
    ```bash
-   sudo ufw allow 53          # Pi-hole DNS
    sudo ufw allow 80,443/tcp  # NGINX / Pi-hole web interface / NGINX Proxy Manager
    sudo ufw allow 51820/udp   # PiVPN (WireGuard)
    sudo ufw allow 51821/tcp   # wg-easy admin UI
    sudo ufw allow 8200/tcp    # Vaultwarden
    ```
+1. If this Pi runs [Pi-hole](/Pi-Guide/Pi-hole.md), allow DNS (port 53) **only from your own network**, not from anywhere. Replace `192.168.50.0/24` with your LAN (your router's IP with a `0` last digit, plus `/24`):
+   ```bash
+   sudo ufw allow from 192.168.50.0/24 to any port 53 comment 'Pi-hole DNS (LAN)'
+   ```
+   - Why not just `sudo ufw allow 53`? That rule also applies to IPv6, where the Pi usually has a public address. Many routers block unsolicited inbound IPv6, but not all — and if yours doesn't, your Pi-hole becomes an open DNS server for the whole internet, which gets abused for DDoS attacks.
+   - If you use IPv6 DNS on your LAN, also allow your IPv6 prefix. Find it with `ip -6 addr show scope global` (the first four groups of the address, then `::/64`):
+     ```bash
+     sudo ufw allow from [YOURIPV6PREFIX]::/64 to any port 53 comment 'Pi-hole DNS (LAN IPv6)'
+     ```
+     Many ISPs change this prefix from time to time. If IPv6 devices suddenly lose ad-blocking while IPv4 keeps working, this rule is out of date — update it with the new prefix.
+1. If this Pi runs [Tailscale](/Pi-Guide/Tailscale.md), allow traffic arriving over the tailnet (this also covers Pi-hole for your devices away from home):
+   ```bash
+   sudo ufw allow in on tailscale0 comment 'Tailscale'
+   ```
+   If the Pi is also a subnet router or exit node, see [Tailscale's firewall notes](/Pi-Guide/Tailscale.md#firewall-ufw) too.
 1. Enable the firewall and check its status:
    ```bash
    sudo ufw enable
    sudo ufw status
    ```
 
-Note: Docker publishes container ports by writing its own iptables rules, which **bypass UFW** — a `-p 8080:80` container is reachable even if UFW doesn't allow it. UFW still protects everything running directly on the Pi; just don't assume it covers Docker containers.
+Things to know about UFW:
+
+- **Docker publishes container ports by writing its own iptables rules, which bypass UFW** — a `-p 8080:80` container is reachable even if UFW doesn't allow it. UFW still protects everything running directly on the Pi; just don't assume it covers Docker containers. The simplest way to limit a container is to publish it on a specific address, e.g. `-p 127.0.0.1:8080:80` (only reachable from the Pi itself, for use behind a reverse proxy like [NGINX](/Pi-Guide/NGINX.md)). For anything more, Docker's docs cover filtering with the `DOCKER-USER` chain (see Sources).
+- **The reverse *does* go through UFW: a container reaching the Pi's own IP.** If a container calls `http://[PIIPADDRESS]:[PORT]` (e.g. [Homepage](/Pi-Guide/Homepage.md) checking a service on the same Pi), that traffic comes from Docker's internal network (`172.16.0.0/12`), which your LAN rule doesn't match — so it's silently blocked. Allow only the port it needs:
+  ```bash
+  sudo ufw allow from 172.16.0.0/12 to any port [PORT] proto tcp
+  ```
+  Avoid allowing all of `172.16.0.0/12` with no port — that would open SSH and every other service to every container.
+- **`systemctl status ufw` says `inactive (dead)` even when the firewall is working.** It's a one-shot service that exits after loading the rules. Use `sudo ufw status` to check.
+- **Testing a port from the Pi itself proves nothing.** A connection from the Pi to its own IP never passes through the firewall, so it always succeeds. Test from another device on your network (e.g., open the page on your phone).
+- To see what's being blocked, `sudo ufw logging low`, then watch `sudo journalctl -k -f | grep 'UFW BLOCK'`.
 
 ## Fail2ban
 
@@ -130,3 +165,4 @@ fail2ban temporarily bans IP addresses that repeatedly fail to log in.
 - https://help.ubuntu.com/community/UFW
 - https://github.com/fail2ban/fail2ban
 - https://github.com/moby/moby/issues/4737
+- https://docs.docker.com/engine/network/packet-filtering-firewalls/

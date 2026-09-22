@@ -51,6 +51,7 @@ Backup anything to any cloud service.
     0 0 * * * rclone copy [FOLDERDIRECTORY] "gdrive:backups" --log-file /home/pi/rclone.log
     ```
     - The `--log-file` flag gives you something to check in [Testing](#testing) below, since cron won't show you any output otherwise.
+    - To be alerted automatically when a backup fails or stops running, see [Job Monitoring](/Pi-Guide/Job-Monitoring.md#monitoring-a-one-line-cron-job).
 
 ## Testing
 

@@ -2,6 +2,8 @@
 
 Write system logs to RAM instead of the micro SD card, greatly reducing SD card wear (the most common cause of Pi failures). Logs are flushed to disk daily and on shutdown/reboot.
 
+The tradeoff: if the Pi **crashes or loses power**, anything logged since the last daily flush is gone — often exactly the logs that would explain the crash. A clean `sudo reboot` is fine. If you're chasing a problem that crashes the Pi, temporarily disable Log2Ram (`sudo systemctl disable log2ram` then reboot) until you've caught it.
+
 ## Table of Contents
 
 - [Installation](#installation)

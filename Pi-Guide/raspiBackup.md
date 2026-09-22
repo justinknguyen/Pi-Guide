@@ -95,6 +95,8 @@ Use this when the SD card itself has failed or the Pi won't boot. Unlike the sin
 
 Test this occasionally on a spare SD card before you actually need it — a backup you've never restored from is a backup you don't really know works.
 
+Email notifications (below) only tell you about backups that ran and failed. If raspiBackup stops running altogether, no email is sent. To catch that too, see [Job Monitoring](/Pi-Guide/Job-Monitoring.md).
+
 ## Setup Email Notifications
 
 1. Install ssmtp and mailutils:

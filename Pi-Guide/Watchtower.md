@@ -2,6 +2,8 @@
 
 Automatically updates your running Docker containers to the latest image — no more manual `docker pull` in each guide's Updating section.
 
+Note: the `containrrr/watchtower` project was **archived in December 2025** and its last release was in November 2023 — it won't get fixes, including for future Docker API changes. It still works today, but for a new setup consider updating containers manually with each guide's Updating section, or look for an actively maintained fork.
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)

@@ -5,7 +5,9 @@ Containerize packages for easy removal. Docker lets you remove an entire package
 ## Table of Contents
 
 - [Installation](#installation)
+- [Limit Container Log Size](#limit-container-log-size)
 - [Testing](#testing)
+- [Keeping Disk Usage in Check](#keeping-disk-usage-in-check)
 - [Troubleshooting](#troubleshooting)
 - [Sources](#sources)
 
@@ -41,6 +43,37 @@ Containerize packages for easy removal. Docker lets you remove an entire package
    sudo systemctl enable docker
    ```
 
+## Limit Container Log Size
+
+By default Docker keeps every line a container has ever logged, forever — a chatty container can slowly fill your SD card. Cap it for all containers:
+
+1. Create Docker's config file:
+   ```bash
+   sudo nano /etc/docker/daemon.json
+   ```
+1. Paste the following in and save. This keeps at most 3 log files of 10 MB each per container:
+   ```json
+   {
+     "log-driver": "json-file",
+     "log-opts": {
+       "max-size": "10m",
+       "max-file": "3"
+     }
+   }
+   ```
+1. Restart Docker:
+   ```bash
+   sudo systemctl restart docker
+   ```
+
+<ins>IMPORTANT:</ins> this only applies to containers **created after** the change. Containers that already exist keep unlimited logs until you remove and recreate them (`docker compose up -d --force-recreate` for compose-based ones, or `docker rm` and re-run the `docker run` command). Check a container's actual setting with:
+
+```bash
+docker inspect --format '{{.HostConfig.LogConfig}}' [CONTAINERNAME]
+```
+
+An empty `map[]` means it's still on the old, unlimited setting.
+
 ## Testing
 
 Test by running the Hello World container:
@@ -48,6 +81,22 @@ Test by running the Hello World container:
 ```bash
 docker run hello-world
 ```
+
+## Keeping Disk Usage in Check
+
+Every time a container updates, the old image stays on disk unless something deletes it. Check now and then:
+
+```bash
+docker system df
+```
+
+The `RECLAIMABLE` column is space you can get back. If it's large, remove images no container is using:
+
+```bash
+docker image prune -a
+```
+
+If you run [Watchtower](/Pi-Guide/Watchtower.md) with `WATCHTOWER_CLEANUP=true`, old images are removed automatically after each update and this should stay near zero.
 
 ## Troubleshooting
 

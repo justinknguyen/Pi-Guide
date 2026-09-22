@@ -67,6 +67,18 @@ There's no software reset button on a Pi — wiping the SD card and reflashing i
 
 **Faster, if you do this often:** reflashing still means redoing every setup step from scratch — WiFi, SSH, hostname, and all your guides. Skip that by keeping a clean backup instead. Right after your first full setup (before installing anything else), take a backup with [raspiBackup](/Pi-Guide/raspiBackup.md). Next time you want to start over, [restore that backup](/Pi-Guide/raspiBackup.md#restoring-the-whole-pi) onto the card instead of reflashing — it comes back exactly as it was the moment you backed it up, in a fraction of the time.
 
+### Upgrading to a New OS Release
+
+When a new Raspberry Pi OS release comes out (e.g., "Bookworm" to "Trixie"), don't upgrade in place with `apt full-upgrade` or by editing your sources lists. Raspberry Pi [doesn't support or recommend](https://www.raspberrypi.com/news/trixie-the-new-version-of-raspberry-pi-os/) upgrading a running system across major versions — it can work, but it fails unpredictably, and on a headless Pi that means repairing a half-finished upgrade over SSH (with your network's DNS down, if it runs Pi-hole).
+
+Instead:
+
+1. Flash the new release onto a **new** SD card, per [Setting up the Raspberry Pi](#setting-up-the-raspberry-pi).
+1. Restore your services and settings from backup — see [Snapshot Backups](/Pi-Guide/Snapshot-Backups.md#restoring). (A [raspiBackup](/Pi-Guide/raspiBackup.md) image restore puts back the *old* OS, so it doesn't help here.)
+1. Keep the old card untouched. If anything goes wrong, swap it back in and you're running again in a minute.
+
+There's no rush: each release keeps getting security updates for a while after the next one comes out.
+
 ## Table of Contents
 
 Grouped by category. Indented guides depend on their parent guide — each guide's own Prerequisites section lists exactly what it needs.
@@ -76,6 +88,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md) — automatic security updates
 - [Log2Ram](/Pi-Guide/Log2RAM.md) — reduce SD card wear
 - [Watchdog](/Pi-Guide/Watchdog.md) — auto-reboot on system hang
+- [Job Monitoring](/Pi-Guide/Job-Monitoring.md) — alerts when a scheduled job fails or stops running
 - [XRDP](/Pi-Guide/XRDP.md) — remote desktop access
 
 **Containers & Monitoring**
@@ -110,6 +123,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [immich](/Pi-Guide/immich.md) — self-hosted photo/video backup
 - [Syncthing](/Pi-Guide/Syncthing.md) — sync files between your devices
 - [raspiBackup](/Pi-Guide/raspiBackup.md) — scheduled system backups
+- [Snapshot Backups](/Pi-Guide/Snapshot-Backups.md) — daily file-level snapshots to USB, plus a NAS copy
 - [Rclone](/Pi-Guide/Rclone.md) — cloud backup
 
 **Media & Gaming**
@@ -123,6 +137,9 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 **Apple Ecosystem**
 - [AltServer](/Pi-Guide/AltServer.md) — sideload apps to iOS without a computer
 - [Scrypted](/Pi-Guide/Scrypted.md) — bring any camera into HomeKit
+
+**TV**
+- [webOS Dev Mode Renewal](/Pi-Guide/webOS-Dev-Mode.md) — keep an LG TV's Developer Mode from expiring
 
 **Personal Finance**
 - [Actual Budget](/Pi-Guide/Actual-Budget.md) — self-hosted budgeting app
