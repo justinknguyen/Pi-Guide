@@ -76,6 +76,15 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
    log()  { printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"; }
    warn() { log "WARN: $*"; rc=1; }
 
+   # rsync exit 24 means "some files vanished before they could be copied". That is
+   # normal when backing up running services (a log or temp file was rotated away
+   # mid-run), and the copy is otherwise complete, so it counts as success.
+   copy() {
+       rsync "$@"; local r=$?
+       (( r == 24 )) && { log "note: some files vanished during the copy (rsync 24)"; r=0; }
+       return "$r"
+   }
+
    log "start"
    trap 'log "exit=$?"' EXIT
    trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM
@@ -139,7 +148,8 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
            [[ " ${keep[*]-} " == *" $d "* ]] && continue
            # Safety: only ever delete a dated folder directly inside snapshots/.
            [[ $d == "$SNAP_ROOT"/20??-??-?? ]] || { warn "refusing to prune $d"; continue; }
-           rm -rf -- "$d" && log "pruned $(basename "$d")"
+           # A failed prune is a warning: unnoticed, snapshots pile up until the drive fills.
+           if rm -rf -- "$d"; then log "pruned $(basename "$d")"; else warn "could not prune $d"; fi
        done
    }
 
@@ -162,7 +172,7 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
            opts=("${RSYNC_OPTS[@]}")
            mapfile -t -O "${#opts[@]}" opts < <(excludes "$excl")
            [[ -n $PREV && -d $PREV/$label ]] && opts+=(--link-dest="$PREV/$label")
-           if rsync "${opts[@]}" "$src" "$dest/"; then
+           if copy "${opts[@]}" "$src" "$dest/"; then
                log "USB $label OK"
            else
                warn "USB $label FAILED"; usb_ok=0
@@ -196,7 +206,7 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
            [[ $NAS_TARGET == *::* ]] && opts+=(--contimeout=30)   # rsync daemon only
            [[ -n $NAS_PASS ]] && opts+=(--password-file="$NAS_PASS")
            mapfile -t -O "${#opts[@]}" opts < <(excludes "$excl")
-           rsync "${opts[@]}" "$src" "$NAS_TARGET/$label/" && log "NAS $label OK" || warn "NAS $label FAILED"
+           copy "${opts[@]}" "$src" "$NAS_TARGET/$label/" && log "NAS $label OK" || warn "NAS $label FAILED"
        done
    fi
 

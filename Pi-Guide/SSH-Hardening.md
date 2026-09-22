@@ -209,16 +209,27 @@ Some containers have endpoints that don't ask for a password: a media server's p
    iptables -L DOCKER-USER -n >/dev/null 2>&1 || { echo "DOCKER-USER missing - is Docker running?"; exit 1; }
 
    # Remove this script's old rules first, so running it twice doesn't duplicate them.
+   # `|| break` matters: without it, a delete that fails loops forever, at boot.
    while n=$(iptables -L DOCKER-USER --line-numbers -n | awk '/docker-user-rules/ {print $1; exit}'); [[ -n $n ]]; do
-       iptables -D DOCKER-USER "$n"
+       iptables -D DOCKER-USER "$n" || break
    done
 
+   rc=0
    for port in "${PORTS[@]}"; do
+       ok=1
        for src in "$LAN" "${DOCKER_NETS[@]}"; do
-           iptables -A DOCKER-USER -p tcp --dport "$port" -s "$src" -m comment --comment "docker-user-rules" -j RETURN
+           iptables -A DOCKER-USER -p tcp --dport "$port" -s "$src" -m comment --comment "docker-user-rules" -j RETURN || ok=0
        done
-       iptables -A DOCKER-USER -p tcp --dport "$port" -m comment --comment "docker-user-rules" -j DROP
+       # Only add the DROP if every allow went in. Otherwise a typo in one address
+       # would block the LAN or your other containers along with everyone else.
+       if (( ok )) && iptables -A DOCKER-USER -p tcp --dport "$port" -m comment --comment "docker-user-rules" -j DROP; then
+           echo "restricted tcp/$port"
+       else
+           echo "FAILED to restrict tcp/$port - check: iptables -L DOCKER-USER -n"; rc=1
+       fi
    done
+   # A non-zero exit shows the service as failed, instead of looking applied.
+   exit "$rc"
    ```
    - `--dport` matches the port **inside the container** (the right-hand side of `-p 8080:80`), because Docker has already rewritten the destination by the time traffic reaches `DOCKER-USER`. For `-p 9191:9191` they're the same.
    - **Keep Docker's networks in the allow list.** Other containers reaching this one by the Pi's IP arrive from a Docker address, not a LAN one. A rule that only allows the LAN would cut them off.

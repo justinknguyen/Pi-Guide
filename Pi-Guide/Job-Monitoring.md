@@ -159,6 +159,8 @@ sudo nano /etc/logrotate.d/myjob
 
 This keeps 6 months of history. Check it with `sudo logrotate -d /etc/logrotate.d/myjob`.
 
+After rotating, logrotate leaves a new **empty** log behind (Raspberry Pi OS turns on `create` for every log in `/etc/logrotate.conf`). Until the job runs again, the log has no `exit=` line. The [login status message](#login-status-message) below reads the rotated copy in that case. A simpler script would report the job as interrupted.
+
 ## Login Status Message
 
 healthchecks.io tells you when something breaks. This shows the current state every time you SSH in, plus two things that are otherwise invisible: a reboot waiting to apply updates (see [Unattended-Upgrades](/Pi-Guide/Unattended-Upgrades.md#pending-reboots)), and staged bootloader firmware.
@@ -190,6 +192,8 @@ healthchecks.io tells you when something breaks. This shows the current state ev
        if [[ ! -r $log ]]; then
            echo "  $name: ${YEL}no log yet${OFF}"; continue
        fi
+       # Just rotated? The new log is empty until the next run - judge the old one.
+       [[ ! -s $log && -s $log.1 ]] && log=$log.1
        age=$(( ($(date +%s) - $(stat -c %Y "$log")) / 86400 ))
        # Judge ONLY the last line. Don't search the log for a success message:
        # a killed run leaves the previous run's success line just above it.
