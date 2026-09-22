@@ -9,6 +9,7 @@ Zero-config VPN (built on WireGuard) that connects your devices into a private n
   - [1. Access Your Whole Home Network (Subnet Router)](#1-access-your-whole-home-network-subnet-router)
   - [2. Route All Traffic Through Home (Exit Node)](#2-route-all-traffic-through-home-exit-node)
   - [3. Pi-hole Ad-Blocking Everywhere](#3-pi-hole-ad-blocking-everywhere)
+- [Firewall (UFW)](#firewall-ufw)
 - [Testing](#testing)
 - [Sources](#sources)
 
@@ -62,6 +63,35 @@ If this Pi runs [Pi-hole](/Pi-Guide/Pi-hole.md), you can get ad-blocking on your
 1. In the [Tailscale admin console](https://login.tailscale.com/admin/dns) (not Pi-hole) — go to the DNS tab.
 1. Still in the Tailscale admin console: add the Pi's Tailscale IP (`100.x.y.z`, shown with `tailscale ip -4`) as a global nameserver and enable "Override local DNS". This tells every device on your Tailnet to send DNS queries to the Pi instead of their normal DNS, even away from home.
 1. Now in Pi-hole's web UI, make sure Interface settings allow answering on the Tailscale interface ("Permit all origins" is the simple option) — otherwise Pi-hole ignores the queries Tailscale just started sending it.
+   - Tailscale queries come from `100.x.y.z` addresses, which Pi-hole doesn't count as "local" — so "Allow only local requests" silently drops them, and ad-blocking quietly stops working away from home while still working at home.
+   - "Permit all origins" means Pi-hole answers anyone who can reach it, so the firewall has to do the limiting. Set up [UFW](/Pi-Guide/SSH-Hardening.md#firewall-ufw) to allow port 53 only from your LAN and Tailscale.
+
+## Firewall (UFW)
+
+If you use [UFW](/Pi-Guide/SSH-Hardening.md#firewall-ufw), it needs a few rules for Tailscale:
+
+```bash
+sudo ufw allow in on tailscale0 comment 'Tailscale'
+sudo ufw allow 41641/udp comment 'Tailscale direct connections'
+```
+
+- The first lets your tailnet devices reach services on the Pi.
+- The second is optional — without it Tailscale still works, but more often falls back to slower relayed connections.
+
+If the Pi is a subnet router or exit node, also allow forwarded traffic:
+
+```bash
+sudo ufw route allow in on tailscale0 comment 'Tailscale subnet/exit node'
+sudo ufw route allow out on tailscale0 comment 'Tailscale return path'
+```
+
+Tailscale adds its own firewall chain (`ts-forward`), which must sit **above** UFW's chains for exit-node traffic to flow. After any firewall change, check the order:
+
+```bash
+sudo iptables -L FORWARD -n --line-numbers
+```
+
+`ts-forward` should appear before the `ufw-` entries. If it doesn't, `sudo systemctl restart tailscaled` puts it back on top — run that from your LAN, not over Tailscale, since it briefly drops Tailscale connections.
 
 ## Testing
 

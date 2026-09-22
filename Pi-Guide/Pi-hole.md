@@ -24,10 +24,11 @@ Network-wide ad-blocking.
    ```
 1. Go through the install wizard using default settings (just keep pressing Enter/Yes).
 1. Once installed, take note of the IPv4 and (if enabled) IPv6 address. This will be used in your router settings.
-1. Change the Pi-hole login password by entering:
+1. Change the Pi-hole login password by entering the command below **with no password after it** — it will prompt you, without showing what you type:
    ```bash
-   sudo pihole setpassword [NEWPASSWORD]
+   sudo pihole setpassword
    ```
+   - Avoid `sudo pihole setpassword [NEWPASSWORD]`. Anything typed on the command line is saved in plain text to `~/.bash_history` (and ends up in any backup of your home folder). If you've already done it that way, set a new password with the prompt, then remove the old line with `history -d [LINENUMBER]` (find it with `history | grep setpassword`).
 
 ## Configuration
 
@@ -47,6 +48,7 @@ Click "Apply" after each change.
 1. Log in to Pi-hole by typing `[PIIPADDRESS]/admin` into your address bar, then head to "Settings" then "DNS".
 1. Under "Upstream DNS Servers", select "Quad9 (filtered, DNSSEC)" (recommended), and check both boxes under the "IPv4" column. Do the same for IPv6 if you have it enabled.
 1. Under `Interface settings`, keep "Allow only local requests" checked. If you notice any devices not being ad-blocked, select "Permit all origins" instead.
+   - "Permit all origins" is needed if you use [Tailscale](/Pi-Guide/Tailscale.md#3-pi-hole-ad-blocking-everywhere) for ad-blocking away from home, since those queries don't come from your local subnet. It's safe **only if a firewall limits who can reach port 53** — otherwise, if the Pi has a public IPv6 address and your router doesn't block inbound IPv6, anyone on the internet can use your Pi-hole as a DNS server. See [Firewall (UFW)](/Pi-Guide/SSH-Hardening.md#firewall-ufw) for rules that allow only your LAN and Tailscale.
 1. Under `Advanced DNS settings`, enable the first three check boxes and set the rate-limiting to 1000 and 60.
 1. Still under `Advanced DNS settings`, enable conditional forwarding so Pi-hole can show device names in its client list. Depending on your router, your IP address will look a little different, but it should be similar to something like this:
 
@@ -116,6 +118,18 @@ Then access Pi-hole's WebUI at `[PIIPADDRESS]:8080/admin`.
 ## Testing
 
 Go to any site you know with ads and check if they're blocked. Make sure you turn off any ad-blocking extensions you may have. A recommended site is https://www.speedtest.net/.
+
+To test from the command line, use a domain that's actually on your blocklists. Don't just guess a well-known ad domain like `doubleclick.net` — a guess can look "unblocked" when blocking is working fine. Pull a few real entries from Pi-hole's database instead:
+
+```bash
+sudo pihole-FTL sqlite3 /etc/pihole/gravity.db "SELECT domain FROM gravity ORDER BY RANDOM() LIMIT 3;"
+```
+
+Entries from adblock-style lists come back wrapped like `||ads.example.com^` — strip the `||` and `^`, then look it up. A blocked domain returns `0.0.0.0`:
+
+```bash
+dig +short ads.example.com @[PIIPADDRESS]
+```
 
 If you have IPv6 enabled, you can test if IPv6 is working by going to https://test-ipv6.com/, then making sure ad-block works.
 

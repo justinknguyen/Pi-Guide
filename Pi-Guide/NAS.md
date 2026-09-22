@@ -32,34 +32,35 @@ If you have an external ssd, your Pi may have trouble booting due to static on t
    sudo mkfs.ext4 /dev/sda1
    ```
    - If formatting fails, reboot with `sudo reboot` and try again
+1. Find your drive's UUID — a permanent ID that doesn't change if you plug in another USB drive (which can shuffle `sda`/`sdb` around):
+   ```bash
+   sudo blkid /dev/sda1
+   ```
+   Copy the value after `UUID=` (not `PARTUUID=`).
 1. To mount your drive on boot, open the file:
    ```bash
    sudo nano /etc/fstab
    ```
-   enter the following line at the bottom of the file and save with `Ctrl+X` then `Y`:
+   enter the following line at the bottom of the file, replacing the UUID with yours, and save with `Ctrl+X` then `Y`:
    ```
-   /dev/sda1 /mnt/sda1 ext4 defaults,noatime 0 1
+   UUID=your-uuid-here /mnt/sda1 ext4 defaults,noatime,nofail,x-systemd.device-timeout=10 0 2
    ```
-   - If your Pi is not mounting on boot, enter the following command to obtain its UUID:
-     ```bash
-     sudo blkid
-     ```
-     and then enter the following within the `fstab` file instead:
-     ```
-     UUID=your-uuid-here /mnt/sda1 ext4 defaults,auto,users,rw,nofail 0 0
-     ```
+   - `nofail` is the important part on a headless Pi. Without it, if the drive is unplugged or fails, the Pi stops partway through booting and waits for someone at a keyboard — so it never comes back on the network, and you'd have to pull the SD card to fix it.
+   - `x-systemd.device-timeout=10` means a missing drive only delays boot by 10 seconds instead of the default 90.
+   - The final `2` checks the drive for errors at boot, after the SD card (which is `1`).
+1. Check the file for mistakes before rebooting — a broken `fstab` is one of the easiest ways to make a Pi unbootable:
+   ```bash
+   sudo findmnt --verify
+   ```
+   It should report `0 parse errors, 0 errors`. A warning that "systemd still uses the old version" is expected — the next step takes care of it. Fix anything else it reports about your new line.
 1. Reload the daemon and mount your drive:
    ```bash
    sudo systemctl daemon-reload
    sudo mkdir -p /mnt/sda1
-   sudo mount /dev/sda1 /mnt/sda1
+   sudo mount -a
    lsblk
    ```
-   - Use the following to mount if you used the UUID instead:
-     ```bash
-     sudo mount -a
-     ```
-   - You can check if it was successfully mounted by entering `lsblk`
+   - You can check if it was successfully mounted by entering `lsblk`, or `mountpoint /mnt/sda1`
    - If it says it can't mount the drive, it could be a false alarm. Try rebooting and then check if the drive was mounted with `lsblk`. If it still doesn't say it was mounted, try entering the command again
 1. Create a shared folder and grant it read/write access:
    ```bash
@@ -109,6 +110,8 @@ If you have Docker containers that depend on your external drive, you will need 
    RequiresMountsFor=/mnt/sda1
    ```
    - replace the path accordingly
+
+The same goes for any script that writes to the drive (like a backup): if the drive ever fails to mount, `/mnt/sda1` is just an empty folder on your SD card, and the script will happily fill the SD card instead. Have the script check first — `mountpoint -q /mnt/sda1 || exit 1` — as [Snapshot Backups](/Pi-Guide/Snapshot-Backups.md) does.
 
 ## Testing
 
