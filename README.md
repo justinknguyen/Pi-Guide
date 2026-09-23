@@ -138,7 +138,6 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [Vaultwarden](/Pi-Guide/Vaultwarden.md) — self-hosted Bitwarden password manager
 
 **Apple Ecosystem**
-- [AltServer](/Pi-Guide/AltServer.md) — sideload apps to iOS without a computer
 - [Scrypted](/Pi-Guide/Scrypted.md) — bring any camera into HomeKit
 
 **TV**
@@ -147,3 +146,9 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 **Personal Finance**
 - [Actual Budget](/Pi-Guide/Actual-Budget.md) — self-hosted budgeting app
 - [Wealthsimple to Actual Budget Sync](/Pi-Guide/Wealthsimple-to-ActualBudget-Sync.md) — automated transaction import
+
+## Archived
+
+No longer maintained; kept for reference.
+
+- [AltServer](/Pi-Guide/Archive/AltServer.md) — sideload apps to iOS without a computer

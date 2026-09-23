@@ -1,5 +1,7 @@
 # AltServer
 
+> **Archived — no longer maintained.** This guide is kept for reference only and may be out of date. For refreshing sideloaded apps without a computer, [SideStore](https://sidestore.io) is the usual alternative.
+
 Run AltServer on your Raspberry Pi to refresh AltStore and sideloaded apps on your iPhone or iPad.
 
 If you have trouble, the tutorial this guide is based on has more detail on parts skipped here: https://gist.github.com/jschiefner/95a22d7f4803e7ad32a95b0f3aa655dc
