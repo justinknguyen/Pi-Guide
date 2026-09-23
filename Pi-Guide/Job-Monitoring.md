@@ -57,6 +57,9 @@ sudo nano /usr/local/sbin/myjob.sh
 #!/bin/bash
 # Template for a monitored cron job.
 set -uo pipefail
+# cron's PATH is only /usr/bin:/bin. Without this, admin tools in /usr/sbin
+# (blkid, ufw, iptables...) work when you test by hand but fail under cron.
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 CONF=/etc/job-monitoring.conf
 URL_VAR=HC_MYJOB_URL        # which line of $CONF holds this job's ping URL
@@ -242,6 +245,12 @@ Keep this script to local file reads (no network calls, no `apt` or `docker` com
    sudo /usr/local/sbin/myjob.sh >> /var/log/myjob.log 2>&1
    tail -3 /var/log/myjob.log
    ```
+1. Run it again the way **cron** will. `sudo` gives the script your full `PATH`, while cron gives it only `/usr/bin:/bin`. So a job can pass every test by hand and then fail at its first scheduled run. This command runs it with cron's bare environment:
+   ```bash
+   sudo env -i HOME=/root LOGNAME=root SHELL=/bin/sh PATH=/usr/bin:/bin \
+       /bin/sh -c '/usr/local/sbin/myjob.sh >> /var/log/myjob.log 2>&1'
+   tail -3 /var/log/myjob.log
+   ```
 1. Confirm alerts actually reach you — this is the step people skip, and it's the one that matters. Send a failure ping by hand:
    ```bash
    sudo bash -c '. /etc/job-monitoring.conf && curl -fsS "$HC_MYJOB_URL/fail"'
@@ -252,6 +261,8 @@ Keep this script to local file reads (no network calls, no `apt` or `docker` com
 ## Troubleshooting
 
 **Every run shows as "late" or down on healthchecks.io, but the logs say the job succeeded.** Check each check's schedule time zone. A Cron check left at the default `UTC` expects pings hours away from when your Pi, on local time, actually sends them, so every run falls outside the grace time. Set it to the Pi's zone (`timedatectl | grep zone`). Nothing on the Pi needs to change.
+
+**The job works when you run it by hand, but fails when cron runs it.** It's almost always `PATH`. cron's `PATH` is only `/usr/bin:/bin`, so any command in `/usr/sbin` or `/sbin` (`blkid`, `ufw`, `iptables`, `ip`) comes back as "command not found". If the script hides a command's errors, that same failure can show up as an empty output file instead. Add the `export PATH=...` line from the template near the top of the script, then test it with the cron-style command in [Testing](#testing).
 
 **The check never goes green, and the job's log has no errors.** The ping URL is probably wrong. A typo'd or empty URL is silently ignored on purpose, so monitoring can't break the job. Send a ping by hand to test it. This should print `OK`:
 ```bash
