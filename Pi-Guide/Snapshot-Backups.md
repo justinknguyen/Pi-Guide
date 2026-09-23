@@ -44,6 +44,8 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
    #   USB drive : dated, hardlinked snapshots -> go back to any recent day
    #   NAS       : plain mirror of today       -> a copy off this Pi
    set -uo pipefail
+   # cron's PATH is only /usr/bin:/bin, which doesn't include blkid (/usr/sbin).
+   export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
    # ---- settings ---------------------------------------------------------------
    USB_MOUNT="/mnt/sda1"                          # the drive's mount point
@@ -237,6 +239,7 @@ The script keeps the 14 most recent snapshots, then one per week for 8 more week
 
 A few safety checks in the script are there for a reason. Don't remove them:
 
+- **`export PATH`**: cron runs jobs with a much shorter `PATH` than your shell, one that leaves out `/usr/sbin`. Without this line, `blkid` works when you run the script by hand but fails under cron, and every scheduled run reports a warning.
 - **`mountpoint -q`**: if the USB drive ever fails to mount, `/mnt/sda1` is just an empty folder on the SD card. Without this check, the backup would quietly copy everything onto your SD card until it filled up.
 - **The pruning check** only ever deletes a folder named like a date directly inside `snapshots/`. A typo in a path setting can't turn it into `rm -rf` on something else.
 - **The `flock` lock** keeps two runs from overlapping. If a run gets stuck, the next day's run logs a warning and reports a failure instead of starting a second copy alongside it.
