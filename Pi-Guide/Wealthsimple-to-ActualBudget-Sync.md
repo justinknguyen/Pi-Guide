@@ -244,6 +244,23 @@ The script runs your rules on **newly imported** transactions only, the way Actu
 
 Each run's log shows `Committed N new and N updated transactions (N already up to date).`, or `All N transactions already up to date; nothing to commit.` when nothing changed.
 
+**A rule doesn't catch the same merchant every time:**
+
+Card payees usually include a store number or reference, e.g. `Credit card purchase: Dairy Queen #27344`, so a rule on **Payee is** only ever matches one location. Match on the raw description instead: in Actual's rule editor, use **Imported payee** → **contains** → `dairy queen`. The match ignores upper/lower case. One rule per category, set to match **any** of its conditions, keeps the list short, e.g. a Food rule matching `subway`, `tim horton` or `doordash`.
+
+The script saves that raw description on every transaction it imports (`imported_payee=` in `create_transaction`). Versions of this script before that line was added didn't, so transactions they imported have no imported payee, and an **Imported payee** rule won't match them, even when applied from the rule editor.
+
+Keep rules from overlapping: the script applies them in the order they're stored, not by Actual's own ranking, so if two rules match one transaction, which category wins isn't obvious. For example, `uber` would match both `Uber Canada/Ubertrip` and `Uber Canada/Ubereats`; use `ubertrip` and `ubereats` instead.
+
+**An Actual schedule always shows "missed":**
+
+The script runs your rules on each new transaction, including the rule that links a transaction to its schedule, so a synced payment marks its schedule paid as long as it matches all of the schedule's conditions. When a schedule never gets marked paid, check:
+
+- **The amount's sign.** Money coming in is positive and money going out is negative. A paycheque schedule with an amount range of `-3,500` to `-2,500` can never match a `+3,000` deposit.
+- **How close the amount is.** "Approximately" allows 7.5% either way. For bills that vary (utilities, or a plan whose promotional price ends), use **is between** with a range wide enough for the real amounts.
+- **How close the date is.** The date only matches within 2 days of the scheduled one. Card charges can post a few days late, so set a schedule's date to the middle of the days its payments usually land on.
+- **The payee and account.** Both must be the exact payee and account the sync creates, e.g. `Payroll: YOUR EMPLOYER` on the Cash account.
+
 **Script not running from cron:**
 
 Make sure cron is using your user's environment, not root's:
@@ -727,6 +744,8 @@ def import_into_actual(
                     # Stored as financial_id, so later runs match this transaction exactly.
                     imported_id=tx["canonical_id"],
                     cleared=False,
+                    # Raw description, which rules can match with "Imported payee contains".
+                    imported_payee=tx["payee"],
                 )
                 new_transactions.append(t)
                 print(f"Added transaction: {tx['date']} {tx['payee']} {tx['amount']}")
