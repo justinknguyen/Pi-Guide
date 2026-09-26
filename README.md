@@ -89,6 +89,7 @@ Grouped by category. Indented guides depend on their parent guide — each guide
 - [Log2Ram](/Pi-Guide/Log2RAM.md) — reduce SD card wear
 - [System Tuning & Cleanup](/Pi-Guide/System-Tuning.md) — free SD card space, swap less, trim unused services, update the bootloader
 - [Watchdog](/Pi-Guide/Watchdog.md) — auto-reboot on system hang
+- [UPS](/Pi-Guide/UPS.md) — shut down cleanly before a UPS runs flat, and power back on afterwards (NUT)
 - [Job Monitoring](/Pi-Guide/Job-Monitoring.md) — alerts when a scheduled job fails or stops running
 - [XRDP](/Pi-Guide/XRDP.md) — remote desktop access
 
