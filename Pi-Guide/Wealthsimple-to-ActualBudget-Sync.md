@@ -66,6 +66,99 @@ python ~/ws_to_actual.py
 
 The cron wrapper uses the same virtual environment, so scheduled runs will use the upgraded version automatically.
 
+### Automatic upgrades
+
+`ws-api` releases often, to keep up with changes on Wealthsimple's side. If you fall behind, Wealthsimple can start treating the script as an unrecognized device and email you each time it logs in. This job upgrades `ws-api` every night shortly before the midnight sync. When the version changes, it tests the new one with a real sync, which is safe to repeat, and rolls back to the previous packages if that sync fails.
+
+1. Create the script:
+   ```bash
+   cat > /home/pi/update_ws_api.sh <<'EOF'
+   #!/bin/bash
+   # Upgrade ws-api in the sync venv, test it with a real sync, and roll back if the sync fails.
+
+   VENV=/home/pi/actual_env
+
+   # Optional healthchecks.io monitoring -- see the Job Monitoring guide.
+   MONITORING_CONF="/home/pi/.job-monitoring.conf"
+   [ -r "$MONITORING_CONF" ] && source "$MONITORING_CONF"
+
+   # A missing URL or an unreachable healthchecks.io must never fail the job.
+   hc_ping() {
+       [ -n "${HC_WS_API_UPDATE_URL:-}" ] || return 0
+       curl -fsS -m 10 --retry 3 -o /dev/null "${HC_WS_API_UPDATE_URL}${1:-}" || true
+   }
+
+   # Runs on every exit: sends the final ping and writes the "exit=N" line.
+   on_exit() {
+       local rc=$?
+       rm -f "${SNAPSHOT:-}"
+       if [ "$rc" -eq 0 ]; then hc_ping; else hc_ping /fail; fi
+       echo "[$(date '+%Y-%m-%d %H:%M:%S')] exit=$rc"
+   }
+   trap on_exit EXIT
+   trap 'exit 129' HUP; trap 'exit 130' INT; trap 'exit 143' TERM
+
+   log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
+   version() { "$VENV/bin/python" -m pip show ws-api 2>/dev/null | awk '/^Version:/ {print $2}'; }
+   pip() { "$VENV/bin/python" -m pip --disable-pip-version-check "$@"; }
+
+   hc_ping /start
+
+   OLD=$(version)
+   if [ -z "$OLD" ]; then
+       log "ws-api isn't installed in $VENV"
+       exit 1
+   fi
+   # Remember every installed package, so a rollback also undoes dependency upgrades.
+   SNAPSHOT=$(mktemp)
+   pip freeze > "$SNAPSHOT"
+
+   if ! pip install --quiet --upgrade ws-api; then
+       log "pip upgrade failed; still on ws-api $OLD"
+       exit 1
+   fi
+   NEW=$(version)
+   if [ "$NEW" = "$OLD" ]; then
+       log "ws-api $OLD is current"
+       exit 0
+   fi
+
+   log "ws-api upgraded $OLD -> $NEW; testing with a sync"
+   if (source /home/pi/ws_to_actual_env.sh && timeout 10m "$VENV/bin/python" /home/pi/ws_to_actual.py); then
+       log "sync works on ws-api $NEW"
+       exit 0
+   fi
+
+   log "sync failed on ws-api $NEW; rolling back to $OLD"
+   if pip install --quiet -r "$SNAPSHOT" && [ "$(version)" = "$OLD" ]; then
+       log "rolled back to ws-api $OLD"
+   else
+       log "rollback failed too; check $VENV by hand"
+   fi
+   exit 1
+   EOF
+   chmod +x /home/pi/update_ws_api.sh
+   ```
+   - A failed test, a failed upgrade and a failed rollback all exit non-zero, which sends `/fail` if monitoring is on. A broken `ws-api` release therefore can't quietly stop your syncs: you get the alert, and you stay on the version that worked.
+   - The test sync is a normal run, so if a new transaction came in since the last sync, the test imports it. The midnight sync then finds nothing new.
+   - To turn on monitoring, create a second check in [Job Monitoring](/Pi-Guide/Job-Monitoring.md#create-the-checks) with the Cron schedule `45 23 * * *`, and add its URL to the same file as the sync's:
+     ```bash
+     echo 'HC_WS_API_UPDATE_URL=https://hc-ping.com/your-uuid-here' >> ~/.job-monitoring.conf
+     ```
+1. Run it once by hand, the way cron will (cron's `PATH` is only `/usr/bin:/bin`):
+   ```bash
+   env -i HOME=/home/pi LOGNAME=pi SHELL=/bin/sh PATH=/usr/bin:/bin \
+       /bin/sh -c '/home/pi/update_ws_api.sh >> /home/pi/update_ws_api.log 2>&1'
+   tail -3 /home/pi/update_ws_api.log
+   ```
+   It ends with either `ws-api X is current` or `sync works on ws-api X`, followed by `exit=0`.
+1. Add it to your crontab (`crontab -e`), with log cleanup:
+   ```
+   45 23 * * * /home/pi/update_ws_api.sh >> /home/pi/update_ws_api_$(date +\%Y-\%m-\%d).log 2>&1
+   50 23 * * * find /home/pi -maxdepth 1 -name "update_ws_api_*.log" -mtime +30 -delete
+   ```
+   - 23:45 gives the test sync time to finish before the 00:00 sync. Both use the same saved Wealthsimple session, so they shouldn't run at the same time.
+
 ## Configuration
 
 1. Create a dedicated cron environment file in your home directory, then apply it to the current shell:
