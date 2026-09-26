@@ -194,6 +194,37 @@ upsc UPS | grep delay
 
 The Pi now shuts down when the host tells it to, or on its own if it sees `OB LB`.
 
+### If the Pi mounts a NAS over NFS
+
+If the NAS is on the same UPS, it shuts down at the same moment as the Pi. With a `hard` NFS mount (the usual choice, and what [Immich Backup](/Pi-Guide/Immich-Backup.md) uses), unmounting a share whose server has already gone can hang for up to 90 seconds while the Pi is shutting down. That eats into the time before the UPS cuts its outlets (`offdelay`), and the Pi can lose power before it finishes.
+
+If the share is only used now and then (a nightly backup, or copying files by hand), let it unmount itself when idle, so there's usually nothing mounted when a shutdown comes:
+
+1. Open `/etc/fstab`:
+   ```bash
+   sudo nano /etc/fstab
+   ```
+   and add `x-systemd.idle-timeout=10min` to the NFS line's options, next to `x-systemd.automount`:
+   ```
+   192.168.50.20:/volume1/backups /mnt/nas nfs rw,_netdev,vers=4,hard,noatime,x-systemd.automount,x-systemd.idle-timeout=10min,nofail 0 0
+   ```
+   The share unmounts after 10 minutes of nobody using it, and `x-systemd.automount` mounts it again the next time something does.
+1. Check the file, then apply it without rebooting:
+   ```bash
+   sudo findmnt --verify
+   sudo systemctl daemon-reload
+   sudo umount /mnt/nas
+   sudo systemctl restart mnt-nas.automount
+   ```
+   The unit name comes from the mount path: `/mnt/nas` becomes `mnt-nas.automount`. If `umount` says the target is busy, something is still using the share; close it and try again.
+1. Check it took effect:
+   ```bash
+   systemctl show -p TimeoutIdleUSec --value mnt-nas.automount
+   ```
+   It should print `10min`.
+
+A shutdown can still hang if it comes within 10 minutes of the share being used, but that's now the exception rather than the rule.
+
 ## Add a NAS
 
 Most NAS systems have a built-in NUT client, usually under a UPS or Power page, as "network UPS", "NUT server" or "UPS slave".
