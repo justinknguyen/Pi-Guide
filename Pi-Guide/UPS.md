@@ -196,9 +196,9 @@ The Pi now shuts down when the host tells it to, or on its own if it sees `OB LB
 
 ### If the Pi mounts a NAS over NFS
 
-If the NAS is on the same UPS, it shuts down at the same moment as the Pi. With a `hard` NFS mount (the usual choice, and what [Immich Backup](/Pi-Guide/Immich-Backup.md) uses), unmounting a share whose server has already gone can hang for up to 90 seconds while the Pi is shutting down. That eats into the time before the UPS cuts its outlets (`offdelay`), and the Pi can lose power before it finishes.
+If the NAS is on the same UPS, it shuts down at the same moment as the Pi. With a `hard` NFS mount (the usual choice, and what [Immich Backup](/Pi-Guide/Immich-Backup.md) uses), unmounting a share whose server has already gone can hang for up to 90 seconds while the Pi is shutting down. `offdelay` only starts counting once the UPS host has shut down, so a 90-second hang usually still fits inside 120 seconds. But it uses up most of the margin, and anything else that's slow to stop on top of it can push the Pi past the point where the UPS cuts its outlets.
 
-If the share is only used now and then (a nightly backup, or copying files by hand), let it unmount itself when idle, so there's usually nothing mounted when a shutdown comes:
+If the share is only used now and then (a nightly backup, or copying files by hand), let it unmount itself when idle, so there's usually nothing mounted when a shutdown comes. The fstab line in [Immich Backup](/Pi-Guide/Immich-Backup.md) already includes this; if you set up your mount before it did, or from somewhere else, add it like this:
 
 1. Open `/etc/fstab`:
    ```bash
@@ -217,11 +217,13 @@ If the share is only used now and then (a nightly backup, or copying files by ha
    sudo systemctl restart mnt-nas.automount
    ```
    The unit name comes from the mount path: `/mnt/nas` becomes `mnt-nas.automount`. If `umount` says the target is busy, something is still using the share; close it and try again.
-1. Check it took effect:
+1. Check it took effect. Leave the share alone for a little over 10 minutes, then:
    ```bash
-   systemctl show -p TimeoutIdleUSec --value mnt-nas.automount
+   findmnt /mnt/nas
    ```
-   It should print `10min`.
+   Only an `autofs` line should be left. If there's also an `nfs` or `nfs4` line, the share is still mounted: either something used it in the last 10 minutes, or the automount wasn't restarted in the step above.
+
+   `systemctl show -p TimeoutIdleUSec mnt-nas.automount` isn't enough on its own: it prints `10min` as soon as you run `daemon-reload`, before the restart that actually applies it.
 
 A shutdown can still hang if it comes within 10 minutes of the share being used, but that's now the exception rather than the rule.
 

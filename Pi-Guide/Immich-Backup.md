@@ -41,9 +41,10 @@ Why borg rather than plain rsync:
    ```
    and add a line like this, with your NAS's address and export path:
    ```
-   192.168.50.20:/volume1/backups /mnt/nas nfs rw,_netdev,vers=4,hard,noatime,x-systemd.automount,nofail 0 0
+   192.168.50.20:/volume1/backups /mnt/nas nfs rw,_netdev,vers=4,hard,noatime,x-systemd.automount,x-systemd.idle-timeout=10min,nofail 0 0
    ```
    - `x-systemd.automount` mounts the share the first time something uses it, rather than at boot, and `nofail` means a NAS that's switched off can't stop the Pi from booting.
+   - `x-systemd.idle-timeout=10min` unmounts it again after 10 minutes unused, so it's only mounted around the nightly backup. A share left mounted all day can hang the Pi's shutdown for up to 90 seconds if the NAS goes away first, which matters if both are on a UPS (see [UPS](/Pi-Guide/UPS.md#if-the-pi-mounts-a-nas-over-nfs)).
    - Then `sudo findmnt --verify`, `sudo systemctl daemon-reload`, `sudo mkdir -p /mnt/nas`, and `ls /mnt/nas` to trigger the mount.
 
 ## Create the Repository
